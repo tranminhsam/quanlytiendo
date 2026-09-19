@@ -578,7 +578,7 @@
                 else if (item.phanLoai && (item.phanLoai.includes('Khuôn bế') || item.phanLoai.includes('模板'))) khuonBeChuaGiao++;
             }
         });
-        document.getElementById('topSummary').innerHTML = `⏳ TỒN ĐỌNG CHƯA GIAO / 待交货:<span style="margin-left: 10px;">${banInChuaGiao} Bản in</span><span style="color: #333;"> | </span><span>${khuonBeChuaGiao} Khuôn bế</span><span style="color: #333;"> | </span><span>${khuonSuaChuaGiao} Khuôn sửa</span>`;
+        document.getElementById('topSummary').innerHTML = `⏳ TỒN ĐỌNG CHƯA GIAO / 待交货:<span style="margin-left: 10px;">${banInChuaGiao} Bản in 印版</span><span style="color: #333;"> | </span><span>${khuonBeChuaGiao} Khuôn bế 模具</span><span style="color: #333;"> | </span><span>${khuonSuaChuaGiao} Khuôn sửa修模</span>`;
     }
 
     // ==========================================
