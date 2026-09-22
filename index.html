@@ -69,7 +69,8 @@
         .table-container { width: 100%; overflow-x: auto; background: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 8px; -webkit-overflow-scrolling: touch; }
         table { width: 100%; border-collapse: collapse; white-space: nowrap; font-size: 13px; }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #2c3e50; color: white; text-align: center; line-height: 1.4; }
+        th { background-color: #2c3e50; color: white; text-align: center; line-height: 1.4; transition: 0.2s; user-select: none; }
+        th:hover { background-color: #34495e; }
         .table-container input[type="text"], .table-container input[type="date"], .table-container input[type="number"] { width: 90%; min-width: 80px; padding: 5px; border: 1px solid #ccc; border-radius: 3px; font-size: 13px; box-sizing: border-box; }
         .input-money { text-align: right; font-weight: bold; color: #c0392b; }
         
@@ -81,6 +82,7 @@
         .status-tre { color: red; font-weight: bold; }
         .status-dagiao { color: green; font-weight: bold; }
         .status-dangcho { color: #d35400; font-weight: bold; }
+        .sort-icon { font-size: 10px; margin-left: 3px; }
 
         /* KỆ BẢN IN (EXCEL-LIKE) & KÉO THẢ */
         .ke-suggestions { background: #fff3cd; padding: 15px; border-left: 5px solid #f1c40f; border-radius: 5px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
@@ -251,17 +253,17 @@
                 <thead>
                     <tr>
                         <th width="2%" style="text-align: center;"><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
-                        <th width="3%">STT<br>序号</th>
-                        <th width="12%">Khách hàng<br>客户名称</th>
-                        <th width="10%">Mã số<br>编号</th>
-                        <th width="8%">Phân loại<br>分类</th>
-                        <th width="15%">Tên sản phẩm<br>产品名称</th>
-                        <th width="8%">Người nhập<br>录入员</th>
-                        <th width="8%">Ngày đặt<br>下单日期</th>
-                        <th width="9%">Ngày giao<br>交货日期</th>
-                        <th width="8%">Trạng thái<br>状态</th>
-                        <th width="8%">Tổng số tiền<br>总金额</th>
-                        <th width="12%">Ghi chú<br>备注</th>
+                        <th width="3%" onclick="handleSort('stt')" style="cursor:pointer" title="Sắp xếp theo STT">STT<br>序号 <span class="sort-icon" id="sort-stt"></span></th>
+                        <th width="12%" onclick="handleSort('khachHang')" style="cursor:pointer" title="Sắp xếp theo Khách hàng">Khách hàng<br>客户名称 <span class="sort-icon" id="sort-khachHang"></span></th>
+                        <th width="10%" onclick="handleSort('ma')" style="cursor:pointer" title="Sắp xếp theo Mã số">Mã số<br>编号 <span class="sort-icon" id="sort-ma"></span></th>
+                        <th width="8%" onclick="handleSort('phanLoai')" style="cursor:pointer" title="Sắp xếp theo Phân loại">Phân loại<br>分类 <span class="sort-icon" id="sort-phanLoai"></span></th>
+                        <th width="15%" onclick="handleSort('tenSP')" style="cursor:pointer" title="Sắp xếp theo Tên sản phẩm">Tên sản phẩm<br>产品名称 <span class="sort-icon" id="sort-tenSP"></span></th>
+                        <th width="8%" onclick="handleSort('nguoiNhap')" style="cursor:pointer" title="Sắp xếp theo Người nhập">Người nhập<br>录入员 <span class="sort-icon" id="sort-nguoiNhap"></span></th>
+                        <th width="8%" onclick="handleSort('ngayDat')" style="cursor:pointer" title="Sắp xếp theo Ngày đặt">Ngày đặt<br>下单日期 <span class="sort-icon" id="sort-ngayDat"></span></th>
+                        <th width="9%" onclick="handleSort('ngayGiao')" style="cursor:pointer" title="Sắp xếp theo Ngày giao">Ngày giao<br>交货日期 <span class="sort-icon" id="sort-ngayGiao"></span></th>
+                        <th width="8%" onclick="handleSort('status')" style="cursor:pointer" title="Sắp xếp theo Trạng thái">Trạng thái<br>状态 <span class="sort-icon" id="sort-status"></span></th>
+                        <th width="8%" onclick="handleSort('tongTien')" style="cursor:pointer" title="Sắp xếp theo Tổng số tiền">Tổng số tiền<br>总金额 <span class="sort-icon" id="sort-tongTien"></span></th>
+                        <th width="12%" onclick="handleSort('ghiChu')" style="cursor:pointer" title="Sắp xếp theo Ghi chú">Ghi chú<br>备注 <span class="sort-icon" id="sort-ghiChu"></span></th>
                     </tr>
                 </thead>
                 <tbody id="tableBody"></tbody>
@@ -843,7 +845,7 @@
             tabsHtml += `<button class="ke-tab-btn ${activeClass}" onclick="openKeTab('${shelf}', this)">${displayName}</button>`;
             
             let tableHtml = `<div class="table-container" style="max-height: 60vh; overflow-y: auto;"><table class="ke-table"><thead><tr>`;
-            for(let c = 0; c < 6; c++) tableHtml += `<th>SỐ KỆ<br>架子号</th><th>MÃ BẢN IN<br>印版号</th>`;
+            for(let c = 0; c < 6; c++) tableHtml += `<th>SỐ KỆ<br>架子号</th><th>Mã BẢN IN<br>印版号</th>`;
             tableHtml += `</tr></thead><tbody>`;
             
             for(let r = 0; r < 54; r++) {
@@ -990,17 +992,43 @@
         });
     }
 
+    // ==========================================
+    // THÊM LOGIC SẮP XẾP GIAO DIỆN
+    // ==========================================
+    let sortCol = '';
+    let sortAsc = true;
+
+    function handleSort(col) {
+        if (sortCol === col) {
+            sortAsc = !sortAsc; // Đảo chiều nếu bấm lại cùng cột
+        } else {
+            sortCol = col;
+            sortAsc = true; // Mặc định từ nhỏ đến lớn cho cột mới
+        }
+        
+        // Cập nhật biểu tượng UI
+        document.querySelectorAll('.sort-icon').forEach(el => el.innerHTML = '');
+        let icon = document.getElementById('sort-' + col);
+        if (icon) {
+            icon.innerHTML = sortAsc ? ' 🔼' : ' 🔽';
+        }
+        
+        filterData(); // Gọi lại hàm render để cập nhật bảng
+    }
+
+    // ==========================================
+    // CẬP NHẬT HÀM LỌC, SẮP XẾP VÀ HIỂN THỊ (filterData)
+    // ==========================================
     function filterData() {
         const start = document.getElementById('startDate').value; const end = document.getElementById('endDate').value;
         const typeFilter = document.getElementById('typeFilter').value; const customerFilter = document.getElementById('customerSearch').value;
         const nguoiNhapFilter = document.getElementById('nguoiNhapSearch').value; const statusFilter = document.getElementById('statusFilter').value; 
         const maFilter = document.getElementById('maSearch').value.toLowerCase().trim(); const spFilter = document.getElementById('tenSPSearch').value.toLowerCase().trim();
-        const tbody = document.getElementById('tableBody'); tbody.innerHTML = ''; let stt = 1;
+        const tbody = document.getElementById('tableBody'); tbody.innerHTML = ''; 
 
-        let disAttr = isAdmin ? "" : "disabled title='Chỉ Admin mới có thể sửa'";
-        let readAttr = isAdmin ? "" : "readonly title='Chỉ Admin mới có thể sửa' class='readonly-input'";
-
-        excelData.forEach((item) => {
+        // 1. Tạo danh sách lọc dữ liệu
+        let filteredList = [];
+        excelData.forEach((item, index) => {
             if (start && item.ngayDat < start) return; if (end && item.ngayDat > end) return;
             if (typeFilter !== 'all' && !item.phanLoai.includes(typeFilter)) return;
             let khCheck = item.khachHang || 'Khách lẻ / 散客'; if (customerFilter && khCheck !== customerFilter) return;
@@ -1010,6 +1038,39 @@
             if (maFilter && (!item.ma || !item.ma.toLowerCase().includes(maFilter))) return;
             if (spFilter && (!item.tenSP || !item.tenSP.toLowerCase().includes(spFilter))) return;
             
+            // Lưu index gốc và status đã tính toán để hỗ trợ sắp xếp
+            filteredList.push({ ...item, originalIndex: index + 1, computedStatus: status });
+        });
+
+        // 2. Sắp xếp danh sách dựa vào cột được chọn (nếu có)
+        if (sortCol) {
+            filteredList.sort((a, b) => {
+                let valA = a[sortCol];
+                let valB = b[sortCol];
+
+                // Xử lý các cột đặc biệt
+                if (sortCol === 'stt') {
+                    valA = a.originalIndex; valB = b.originalIndex;
+                } else if (sortCol === 'status') {
+                    valA = a.computedStatus.text; valB = b.computedStatus.text;
+                } else if (sortCol === 'tongTien') {
+                    valA = parseFloat(a.tongTien) || 0; valB = parseFloat(b.tongTien) || 0;
+                } else {
+                    valA = (valA || '').toString().toLowerCase();
+                    valB = (valB || '').toString().toLowerCase();
+                }
+
+                if (valA < valB) return sortAsc ? -1 : 1;
+                if (valA > valB) return sortAsc ? 1 : -1;
+                return 0;
+            });
+        }
+
+        // 3. Render giao diện
+        let disAttr = isAdmin ? "" : "disabled title='Chỉ Admin mới có thể sửa'";
+        let readAttr = isAdmin ? "" : "readonly title='Chỉ Admin mới có thể sửa' class='readonly-input'";
+
+        filteredList.forEach((item) => {
             let rowClass = "";
             if (item.isManual) rowClass = "row-manual";
             else if (item.phanLoai.includes('Bản in') || item.phanLoai.includes('印版')) rowClass = "row-banin";
@@ -1019,13 +1080,32 @@
             let manualTag = item.isManual ? `<span class="badge-manual">✍️ Nhập tay / 手动</span>` : '';
             let displayTien = isAdmin ? formatCurrencyVND(item.tongTien) : "***";
 
+            // Thay đổi định dạng ngày giao theo cài đặt hệ điều hành của máy (sử dụng toLocaleDateString)
+            let formattedNgayGiaoDisplay = "";
+            if (item.ngayGiao) {
+                try {
+                    let d = new Date(item.ngayGiao);
+                    if (!isNaN(d)) formattedNgayGiaoDisplay = d.toLocaleDateString(); 
+                } catch(e) { }
+            }
+
+            // Tự động chuyển đổi giao diện Edit (admin) / Read-only dựa theo ngày đã format của hệ thống
+            let ngayGiaoHTML = isAdmin ? 
+                `<input type="date" value="${item.ngayGiao || ''}" onchange="if(isAdmin) updateNgayGiao('${item.firebaseId}', this.value)" onkeydown="return false" onpaste="return false" onclick="if(isAdmin) this.showPicker()" style="cursor: pointer;" ${disAttr}>`
+                : `<span style="font-weight: bold; color: #2c3e50;">${formattedNgayGiaoDisplay}</span>`;
+
             let tr = document.createElement('tr'); tr.className = rowClass;
             tr.innerHTML = `
                 <td style="text-align: center;"><input type="checkbox" class="row-checkbox" value="${item.firebaseId}" ${disAttr}></td>
-                <td>${stt++}</td><td>${item.khachHang || ''}</td><td>${item.ma || ''}</td><td style="text-align:center;">${plText}</td>
-                <td style="white-space: normal; min-width: 200px;">${item.tenSP || ''}</td><td>${item.nguoiNhap || ''}</td><td>${item.ngayDat || ''}</td>
-                <td><input type="date" value="${item.ngayGiao || ''}" onchange="if(isAdmin) updateNgayGiao('${item.firebaseId}', this.value)" onkeydown="return false" onpaste="return false" onclick="if(isAdmin) this.showPicker()" style="cursor: pointer;" ${disAttr}></td>
-                <td class="${status.class}" style="text-align:center;">${status.text}</td>
+                <td>${item.originalIndex}</td>
+                <td>${item.khachHang || ''}</td>
+                <td>${item.ma || ''}</td>
+                <td style="text-align:center;">${plText}</td>
+                <td style="white-space: normal; min-width: 200px;">${item.tenSP || ''}</td>
+                <td>${item.nguoiNhap || ''}</td>
+                <td>${item.ngayDat || ''}</td>
+                <td>${ngayGiaoHTML}</td>
+                <td class="${item.computedStatus.class}" style="text-align:center;">${item.computedStatus.text}</td>
                 <td><input type="text" class="input-money ${readAttr}" value="${displayTien}" placeholder="0" onchange="if(isAdmin) updateTien('${item.firebaseId}', this)" ${readAttr}></td>
                 <td>${manualTag}<input type="text" class="${readAttr}" value="${item.ghiChu || ''}" onchange="if(isAdmin) updateGhiChu('${item.firebaseId}', this.value)" ${readAttr}></td>
             `;
