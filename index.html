@@ -49,7 +49,7 @@
         
         .image-widget { 
             flex: 1; 
-            background: url('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGdhZGVqeXByb3NlcDc5cDN3aDNmaWh2NjUyYmk4b2c2dm44amZ4cSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/bEs40jYsdQjmM/giphy.gif') center/cover no-repeat; 
+            background: url('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3psaWludHk0MGJkYW9kbnluM2IzbG12M2Y0cnM1bDNwOTB3MmRrMyZlcD12MV9naWZzX3JlbGF0ZWQmY3Q9Zw/PnPU9GhN3V7oVizSHG/giphy.gif') center/cover no-repeat; 
             border-radius: 8px; 
             box-shadow: 0 0 15px rgba(0,0,0,0.2); 
             transition: background 0.3s ease;
@@ -275,6 +275,16 @@
     <!-- TAB 2: QUẢN LÝ KỆ BẢN IN / 印版架管理         -->
     <!-- ========================================== -->
     <div id="appKhoKe" class="app-section">
+        
+        <!-- THANH TÌM KIẾM MÃ BẢN IN TRÊN KỆ -->
+        <div class="controls" style="background-color: #fef9e7; border-left: 5px solid #f1c40f; align-items: center;">
+            <div class="control-group" style="flex: 1; min-width: 250px;">
+                <label><b>🔍 Tìm kiếm mã trên kệ / 搜索架子上的印版:</b></label>
+                <input type="text" id="keSearchInput" placeholder="Nhập mã bản in để tìm vị trí..." onkeyup="searchKe(true)">
+            </div>
+            <div id="keSearchResult" style="font-size: 15px; font-weight: bold; margin-left: 10px; flex: 2; padding-bottom: 5px;"></div>
+        </div>
+
         <div class="ke-suggestions">
             <h4>💡 Các Bản in vừa giao (Đang chờ lên kệ) / 刚交货的印版（待上架）</h4>
             <div id="suggestionBox" style="font-size: 13px; color: #555;">Đang tải dữ liệu... / 数据加载中...</div>
@@ -506,7 +516,7 @@
         document.querySelectorAll('.app-section').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.main-tab-btn').forEach(el => el.classList.remove('active'));
         document.getElementById(tabId).classList.add('active'); btnElement.classList.add('active');
-        if(tabId === 'appKhoKe') checkSuggestions();
+        if(tabId === 'appKhoKe') { checkSuggestions(); searchKe(false); }
         if(tabId === 'appCatMau') renderCatMau();
     }
 
@@ -877,6 +887,7 @@
     function updateKeGridValues() {
         document.querySelectorAll('.ke-input').forEach(input => input.value = '');
         for (let slotId in keData) { let inputEl = document.getElementById('slot_' + slotId); if(inputEl) inputEl.value = keData[slotId]; }
+        searchKe(false); // Áp dụng lại hiệu ứng tìm kiếm (nếu đang bật) sau khi cập nhật db
     }
 
     function saveKeData(slotId, value) {
@@ -901,6 +912,69 @@
         const box = document.getElementById('suggestionBox');
         if (count === 0) box.innerHTML = '<span style="color: green;">✔ Mọi bản in đã giao đều đã được xếp lên kệ. / 所有已交货的印版已上架。</span>';
         else box.innerHTML = suggestionHtml;
+    }
+
+    // HÀM TÌM KIẾM MÃ BẢN IN TRÊN KỆ
+    function searchKe(autoScroll = false) {
+        let searchEl = document.getElementById('keSearchInput');
+        if (!searchEl) return;
+        
+        let keyword = searchEl.value.trim().toUpperCase();
+        let resText = document.getElementById('keSearchResult');
+        
+        // Xóa các dòng highlight cũ
+        document.querySelectorAll('.ke-input').forEach(input => {
+            input.style.backgroundColor = ''; 
+            input.style.color = '';
+            input.parentElement.style.backgroundColor = ''; 
+        });
+
+        if (!keyword) {
+            if(resText) resText.innerHTML = '';
+            return;
+        }
+
+        let foundSlots = [];
+        let firstTab = null;
+
+        for (let slotId in keData) {
+            let val = keData[slotId].toUpperCase();
+            if (val.includes(keyword)) { // TÌm kiếm gần đúng (nhập một phần mã cũng ra)
+                foundSlots.push(slotId);
+                let inputEl = document.getElementById('slot_' + slotId);
+                if (inputEl) {
+                    inputEl.style.backgroundColor = '#f1c40f'; // Màu vàng highlight
+                    inputEl.style.color = '#c0392b';
+                    inputEl.parentElement.style.backgroundColor = '#fcf3cf';
+                }
+                if (!firstTab) {
+                    firstTab = slotId.startsWith('ML') ? 'ML' : slotId.charAt(0);
+                }
+            }
+        }
+
+        if (foundSlots.length > 0) {
+            if(resText) {
+                resText.innerHTML = `✅ Vị trí: <b>${foundSlots.join(', ')}</b>`;
+                resText.style.color = "#27ae60";
+            }
+            // Tự động chuyển Tab và cuộn màn hình đến kết quả đầu tiên (chỉ khi người dùng gõ phím)
+            if (autoScroll && firstTab) {
+                let targetBtn = Array.from(document.querySelectorAll('.ke-tab-btn')).find(b => b.getAttribute('onclick').includes(`'${firstTab}'`));
+                if (targetBtn && !targetBtn.classList.contains('active')) {
+                    openKeTab(firstTab, targetBtn);
+                }
+                let firstInput = document.getElementById('slot_' + foundSlots[0]);
+                if (firstInput) {
+                    firstInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        } else {
+            if(resText) {
+                resText.innerHTML = `❌ Không tìm thấy mã này`;
+                resText.style.color = "#e74c3c";
+            }
+        }
     }
 
     // ==========================================
@@ -1069,6 +1143,9 @@
         // 3. Render giao diện
         let disAttr = isAdmin ? "" : "disabled title='Chỉ Admin mới có thể sửa'";
         let readAttr = isAdmin ? "" : "readonly title='Chỉ Admin mới có thể sửa' class='readonly-input'";
+        
+        // Khởi tạo bộ đếm STT hiển thị trên màn hình luôn bắt đầu từ 1
+        let sttCounter = 1;
 
         filteredList.forEach((item) => {
             let rowClass = "";
@@ -1097,7 +1174,7 @@
             let tr = document.createElement('tr'); tr.className = rowClass;
             tr.innerHTML = `
                 <td style="text-align: center;"><input type="checkbox" class="row-checkbox" value="${item.firebaseId}" ${disAttr}></td>
-                <td>${item.originalIndex}</td>
+                <td>${sttCounter++}</td> <!-- STT nay luon la so tu 1 tro di -->
                 <td>${item.khachHang || ''}</td>
                 <td>${item.ma || ''}</td>
                 <td style="text-align:center;">${plText}</td>
