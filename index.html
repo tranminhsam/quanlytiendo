@@ -857,6 +857,7 @@
                         <option value="F">KỆ F / F 架子</option>
                         <option value="G">KỆ G / G 架子</option>
                         <option value="H">KỆ H / H 架子</option>
+                        <option value="L">KỆ L / L 架子</option>
                         <option value="ML">KỆ MÁY LỚN / 大机架子</option>
                     </select>
                 </div>
@@ -1456,7 +1457,7 @@
         }
     }
 
-    const shelves = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'ML'];
+    const shelves = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'L', 'ML'];
 
     // HÀM TẠO BẢNG CHO MỖI TẦNG (160 VỊ TRÍ = 5 CẶP CỘT x 32 HÀNG)
     function renderFloorTableHtml(shelf, floorNumber, startSlot, slotsCount) {
@@ -1675,7 +1676,7 @@
         let totalPages = targetShelves.length * targetFloors.length;
         let summaryEl = document.getElementById('printPageSummary');
         if (summaryEl) {
-            let shelfDesc = shelfChoice === 'ALL' ? 'Tất cả 9 kệ' : (shelfChoice === 'ML' ? 'Kệ Máy Lớn' : `Kệ ${shelfChoice}`);
+            let shelfDesc = shelfChoice === 'ALL' ? 'Tất cả 10 kệ' : (shelfChoice === 'ML' ? 'Kệ Máy Lớn' : `Kệ ${shelfChoice}`);
             let floorDesc = floorChoice === 'both' ? 'Cả 2 tầng (T1 & T2)' : `Chỉ Tầng ${floorChoice}`;
             summaryEl.innerHTML = `📄 <b>Dự kiến in: ${totalPages} trang A4</b> (${shelfDesc} • ${floorDesc} • Đúng 160 vị trí / trang)`;
         }
