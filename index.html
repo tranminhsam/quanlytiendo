@@ -201,6 +201,289 @@
             .ke-tab-btn { font-size: 12px; padding: 8px 10px; }
             .pill { font-size: 12px; padding: 4px 8px; }
         }
+        /* ==========================================
+           QUẢN LÝ KỆ: PHÂN TẦNG & GIAO DIỆN IN A4
+           ========================================== */
+        .ke-shelf-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px 14px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e2e8f0;
+            border-radius: 6px 6px 0 0;
+            margin-bottom: 12px;
+        }
+        .ke-floor-filter-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .ke-floor-filter-btn {
+            background: #e2e8f0;
+            color: #2c3e50;
+            border: 1px solid #cbd5e1;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .ke-floor-filter-btn:hover {
+            background: #cbd5e1;
+        }
+        .ke-floor-filter-btn.active {
+            background: #2980b9;
+            color: #fff;
+            border-color: #2471a3;
+            box-shadow: 0 2px 4px rgba(41, 128, 185, 0.3);
+        }
+        .ke-floor-block {
+            margin-bottom: 22px;
+            background: #fff;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+        }
+        .ke-floor-title-bar {
+            background: #eef6fc;
+            border-left: 5px solid #3498db;
+            padding: 8px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .btn-print-floor-fast {
+            background: #fff;
+            color: #27ae60;
+            border: 1px solid #27ae60;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: 0.2s;
+        }
+        .btn-print-floor-fast:hover {
+            background: #27ae60;
+            color: #fff;
+        }
+        .btn-shelf-action {
+            color: white;
+            border: none;
+            padding: 7px 14px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+            transition: 0.2s;
+        }
+        .btn-shelf-action:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* MODAL IN MÃ KỆ */
+        .print-modal-content {
+            background-color: #fff;
+            margin: 1.5% auto;
+            padding: 18px 22px;
+            border-radius: 10px;
+            width: 94%;
+            max-width: 980px;
+            max-height: 95vh;
+            overflow-y: auto;
+            box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+        }
+        .print-settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            background: #f8fafc;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 12px;
+        }
+        .print-preview-container {
+            background: #475569;
+            padding: 18px 10px;
+            border-radius: 8px;
+            max-height: 540px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.25);
+        }
+        .preview-a4-sheet {
+            background: #ffffff;
+            width: 100%;
+            max-width: 680px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+            border-radius: 2px;
+            box-sizing: border-box;
+            padding: 14px 18px;
+            color: #000;
+            font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+        }
+        .preview-sheet-title {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+        .preview-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9.5px;
+            table-layout: fixed;
+            background: #fff;
+        }
+        .preview-table th, .preview-table td {
+            border: 1px solid #000;
+            padding: 1px 2px;
+            text-align: center;
+            vertical-align: middle;
+            box-sizing: border-box;
+        }
+        .preview-table th {
+            font-weight: bold;
+            background: #fff;
+            color: #000;
+            line-height: 1.2;
+            padding: 3px 1px;
+        }
+        .preview-table td {
+            height: 15px;
+            line-height: 1.1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .preview-table .cell-shelf {
+            width: 11%;
+            font-weight: normal;
+        }
+        .preview-table .cell-plate {
+            width: 22.33%;
+            font-weight: normal;
+        }
+
+        /* ==========================================
+           CSS CHUYÊN DỤNG KHI IN RA KHỔ A4 (@MEDIA PRINT)
+           ========================================== */
+        #printArea {
+            display: none;
+        }
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 5mm 6mm;
+            }
+            html, body {
+                width: 100% !important;
+                height: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #fff !important;
+                font-family: Arial, "Helvetica Neue", Helvetica, sans-serif !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            body > *:not(#printArea) {
+                display: none !important;
+            }
+            #printArea {
+                display: block !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .a4-print-sheet {
+                width: 100%;
+                height: 286mm;
+                max-height: 286mm;
+                page-break-after: always;
+                break-after: page;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                padding: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            .a4-print-sheet:last-child {
+                page-break-after: avoid;
+                break-after: avoid;
+            }
+            .a4-print-title {
+                text-align: center;
+                font-size: 15pt;
+                font-weight: bold;
+                color: #000;
+                margin: 0 0 3mm 0;
+                padding: 0;
+                letter-spacing: 0.5px;
+                line-height: 1.2;
+            }
+            .a4-print-table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+                table-layout: fixed !important;
+                border: 1px solid #000 !important;
+            }
+            .a4-print-table th, .a4-print-table td {
+                border: 1px solid #000 !important;
+                padding: 0 2px !important;
+                text-align: center !important;
+                vertical-align: middle !important;
+                box-sizing: border-box !important;
+            }
+            .a4-print-table th {
+                height: 6.8mm !important;
+                font-size: 8.5pt !important;
+                font-weight: bold !important;
+                background: #fff !important;
+                color: #000 !important;
+                line-height: 1.15 !important;
+            }
+            .a4-print-table td {
+                height: 4.8mm !important;
+                max-height: 4.8mm !important;
+                font-size: 7.5pt !important;
+                color: #000 !important;
+                line-height: 1.05 !important;
+                overflow: hidden !important;
+                white-space: nowrap !important;
+            }
+            .a4-print-table .cell-shelf {
+                width: 11% !important;
+                font-weight: normal !important;
+            }
+            .a4-print-table .cell-plate {
+                width: 22.333% !important;
+                font-weight: normal !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -231,8 +514,7 @@
         </div>
         
         <div class="backup-controls">
-            <button class="btn-gif" onclick="document.getElementById('gifModal').style.display='block'">🖼️ Đổi GIF / 更改 GIF</button>
-            <button id="btnLogin" class="btn-auth" onclick="document.getElementById('loginModal').style.display='block'">🔒 Đăng nhập / 登录</button>
+                        <button id="btnLogin" class="btn-auth" onclick="document.getElementById('loginModal').style.display='block'">🔒 Đăng nhập / 登录</button>
             <button id="btnLogout" class="btn-auth" style="display: none; background: #c0392b;" onclick="doLogout()">🔓 Đăng xuất / 登出</button>
             <button class="btn-backup" onclick="manualBackup()" title="Tải file lưu trữ về máy">💾 Backup / 手动备份</button>
             <label class="btn-restore" style="padding: 9px 15px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold; display: inline-block;">
@@ -249,13 +531,12 @@
     <!-- TAB 1: TIẾN ĐỘ ĐẶT HÀNG / 订单进度          -->
     <!-- ========================================== -->
     <div id="appTienDo" class="app-section active">
-        <div class="top-section">
-            <div class="quick-stats">
+        <div class="top-section" style="display: block;">
+            <div class="quick-stats" style="width: 100%;">
                 <h3>📊 Số lượng đặt theo Khách hàng / 按客户统计订单数量</h3>
                 <div style="font-size: 12px; color: #7f8c8d; margin-bottom: 10px;">Dữ liệu tự động cập nhật theo Bộ lọc bên dưới / 数据根据下方过滤器自动更新</div>
                 <div class="chart-container"><canvas id="myChart"></canvas></div>
             </div>
-            <div class="image-widget" title="Meow ~"></div>
         </div>
 
         <div class="controls">
@@ -314,12 +595,15 @@
     <div id="appKhoKe" class="app-section">
         
         <!-- THANH TÌM KIẾM MÃ BẢN IN TRÊN KỆ -->
-        <div class="controls" style="background-color: #fef9e7; border-left: 5px solid #f1c40f; align-items: center;">
+        <div class="controls" style="background-color: #fef9e7; border-left: 5px solid #f1c40f; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
             <div class="control-group" style="flex: 1; min-width: 250px;">
                 <label><b>🔍 Tìm kiếm mã trên kệ / 搜索架子上的印版:</b></label>
                 <input type="text" id="keSearchInput" placeholder="Nhập mã bản in để tìm vị trí..." onkeyup="searchKe(true)">
             </div>
             <div id="keSearchResult" style="font-size: 15px; font-weight: bold; margin-left: 10px; flex: 2; padding-bottom: 5px;"></div>
+            <button type="button" class="btn-shelf-action" style="background: #27ae60; font-size: 14px; padding: 10px 18px;" onclick="openPrintModal()">
+                🖨️ In mã kệ A4 (160 kệ/trang) / 打印A4架子标签
+            </button>
         </div>
 
         <div class="ke-suggestions">
@@ -491,9 +775,119 @@
         </div>
     </div>
 
+    <!-- MODAL IN MÃ KỆ RA GIẤY A4 (160 KỆ / TRANG) -->
+    <div id="kePrintModal" class="modal">
+        <div class="print-modal-content">
+            <span class="close" onclick="closePrintModal()">&times;</span>
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+                <span style="font-size: 26px;">🖨️</span>
+                <div>
+                    <h3 style="margin: 0; color: #1e293b; font-size: 18px;">IN BẢNG MÃ KỆ A4 (160 VỊ TRÍ / TRANG)</h3>
+                    <div style="font-size: 12px; color: #64748b;">Mỗi kệ 2 tầng • Mỗi tầng 160 bản in • Định dạng bảng 3 cặp cột chuẩn vừa đúng 1 trang A4 / 每个架子2层，每层160位，A4打印每页160位</div>
+                </div>
+            </div>
+
+            <!-- THANH TÙY CHỈNH IN -->
+            <div class="print-settings-grid">
+                <div class="form-group">
+                    <label><b>1. Chọn kệ / 选择架子:</b></label>
+                    <select id="printShelfSelect" onchange="updatePrintPreview()">
+                        <option value="ALL">-- Tất cả các kệ (A -> ML) / 所有架子 --</option>
+                        <option value="A">KỆ A / A 架子</option>
+                        <option value="B">KỆ B / B 架子</option>
+                        <option value="C">KỆ C / C 架子</option>
+                        <option value="D">KỆ D / D 架子</option>
+                        <option value="E">KỆ E / E 架子</option>
+                        <option value="F">KỆ F / F 架子</option>
+                        <option value="G">KỆ G / G 架子</option>
+                        <option value="H">KỆ H / H 架子</option>
+                        <option value="ML">KỆ MÁY LỚN / 大机架子</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label><b>2. Chọn tầng / 选择层数:</b></label>
+                    <select id="printFloorSelect" onchange="updatePrintPreview()">
+                        <option value="both">🏢 Cả 2 tầng (2 trang A4 / kệ) / 全部两层</option>
+                        <option value="1">🔽 Chỉ Tầng 1 (001 - 160) - 1 trang A4 / 仅第1层</option>
+                        <option value="2">🔼 Chỉ Tầng 2 (161 - 320) - 1 trang A4 / 仅第2层</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label><b>3. Dữ liệu in / 打印数据:</b></label>
+                    <select id="printContentSelect" onchange="updatePrintPreview()">
+                        <option value="with_data">Kèm mã bản in thực tế trên kệ (Như mẫu) / 包含实际印版号</option>
+                        <option value="blank">Biểu mẫu trống (Cột mã bản in để trống) / 空白表格</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- TỔNG KẾT & NÚT BẮT ĐẦU IN -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+                <div id="printPageSummary" style="font-size: 14px; font-weight: bold; color: #0284c7; background: #e0f2fe; padding: 7px 14px; border-radius: 6px; border-left: 4px solid #0284c7;">
+                    📄 Dự kiến in: 1 trang A4 (160 ô mã kệ)
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" class="btn-shelf-action" style="background: #64748b;" onclick="closePrintModal()">Hủy / 取消</button>
+                    <button type="button" class="btn-shelf-action" style="background: #27ae60; font-size: 15px; padding: 9px 22px;" onclick="startPrint()">
+                        🖨️ Bắt đầu in / 立即打印
+                    </button>
+                </div>
+            </div>
+
+            <!-- KHUNG XEM TRƯỚC (LIVE PREVIEW) -->
+            <div style="font-size: 13px; font-weight: bold; color: #475569; margin-bottom: 6px;">
+                👁️ Xem trước trang in A4 (Chuẩn 160 vị trí/trang như hình mẫu):
+            </div>
+            <div class="print-preview-container" id="printPreviewContainer">
+                <!-- Bảng preview A4 được sinh tự động ở đây -->
+            </div>
+        </div>
+    </div>
+    <!-- KHU VỰC IN THỰC TẾ A4 (CHỈ HIỂN THỊ KHI GỌI WINDOW.PRINT) -->
+    <div id="printArea"></div>
+
 <script>
     Chart.register(ChartDataLabels);
-    let isAdmin = sessionStorage.getItem('isAdmin') === 'true';
+    const _AUTH_KEY = "QuanLyBanIn_Secured_2026_!#%";
+    const _TARGET_AUTH_HASH = "8ad249d55ea6a942bce64c579c830125bd2574e09f5ae3777695a69894669cf4";
+
+    // Thuật toán mã hóa băm một chiều SHA-256 (NIST FIPS 180-4)
+    function calcSecureHash(ascii) {
+        function rightRotate(v, n) { return (v >>> n) | (v << (32 - n)); }
+        const K = [0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5, 0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174, 0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da, 0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967, 0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85, 0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070, 0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3, 0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2];
+        let H = [0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19];
+        const words = [];
+        for (let i = 0; i < ascii.length * 8; i += 8) { words[i >> 5] |= (ascii.charCodeAt(i / 8) & 0xff) << (24 - (i % 32)); }
+        const bitLen = ascii.length * 8;
+        words[bitLen >> 5] |= 0x80 << (24 - (bitLen % 32));
+        words[(((bitLen + 64) >> 9) << 4) + 15] = bitLen;
+        for (let i = 0; i < words.length; i += 16) {
+            const w = new Array(64);
+            for (let t = 0; t < 16; t++) w[t] = words[i + t] | 0;
+            for (let t = 16; t < 64; t++) {
+                const s0 = rightRotate(w[t - 15], 7) ^ rightRotate(w[t - 15], 18) ^ (w[t - 15] >>> 3);
+                const s1 = rightRotate(w[t - 2], 17) ^ rightRotate(w[t - 2], 19) ^ (w[t - 2] >>> 10);
+                w[t] = (w[t - 16] + s0 + w[t - 7] + s1) | 0;
+            }
+            let a = H[0], b = H[1], c = H[2], d = H[3], e = H[4], f = H[5], g = H[6], h = H[7];
+            for (let t = 0; t < 64; t++) {
+                const S1 = rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25);
+                const ch = (e & f) ^ ((~e) & g);
+                const temp1 = (h + S1 + ch + K[t] + w[t]) | 0;
+                const S0 = rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22);
+                const maj = (a & b) ^ (a & c) ^ (b & c);
+                const temp2 = (S0 + maj) | 0;
+                h = g; g = f; f = e; e = (d + temp1) | 0; d = c; c = b; b = a; a = (temp1 + temp2) | 0;
+            }
+            H[0] = (H[0] + a) | 0; H[1] = (H[1] + b) | 0; H[2] = (H[2] + c) | 0; H[3] = (H[3] + d) | 0;
+            H[4] = (H[4] + e) | 0; H[5] = (H[5] + f) | 0; H[6] = (H[6] + g) | 0; H[7] = (H[7] + h) | 0;
+        }
+        return H.map(v => (v >>> 0).toString(16).padStart(8, '0')).join('');
+    }
+
+    let isAdmin = sessionStorage.getItem('isAdmin') === 'true' && sessionStorage.getItem('_authSig') === _TARGET_AUTH_HASH;
 
     document.addEventListener("DOMContentLoaded", () => {
         applyGifUrl(); 
@@ -544,13 +938,51 @@
         document.getElementById('cmMonth').value = new Date().getMonth() + 1;
     }
 
+    let _loginFailCount = 0;
+    let _loginLockTime = 0;
+
     function doLogin() {
-        const u = document.getElementById('authUsername').value;
-        const p = document.getElementById('authPassword').value;
-        if (u === 'admin' && p === '6868') { sessionStorage.setItem('isAdmin', 'true'); location.reload(); } 
-        else { alert("Tài khoản hoặc mật khẩu không đúng! / 账号或密码不正确！"); }
+        const now = Date.now();
+        if (now < _loginLockTime) {
+            const waitSec = Math.ceil((_loginLockTime - now) / 1000);
+            alert(`Hệ thống đang tạm khóa do nhập sai nhiều lần! Vui lòng thử lại sau ${waitSec} giây. / 密码错误次数过多，请稍候重试。`);
+            return;
+        }
+
+        const u = (document.getElementById('authUsername').value || '').trim();
+        const p = (document.getElementById('authPassword').value || '').trim();
+
+        if (!u || !p) {
+            alert("Vui lòng nhập đầy đủ tài khoản và mật khẩu! / 请输入完整的账号和密码！");
+            return;
+        }
+
+        // Mã hóa băm một chiều và đối chiếu
+        const checkHash = calcSecureHash(u + ":" + p + ":" + _AUTH_KEY);
+
+        if (checkHash === _TARGET_AUTH_HASH) {
+            _loginFailCount = 0;
+            sessionStorage.setItem('isAdmin', 'true');
+            sessionStorage.setItem('_authSig', _TARGET_AUTH_HASH);
+            document.getElementById('authPassword').value = '';
+            location.reload();
+        } else {
+            _loginFailCount++;
+            document.getElementById('authPassword').value = '';
+            if (_loginFailCount >= 5) {
+                _loginLockTime = Date.now() + 30000; // Khóa 30 giây
+                alert("Nhập sai 5 lần liên tiếp! Hệ thống tạm thời khóa 30 giây. / 登录失败5次，系统临时锁定30秒！");
+            } else {
+                alert(`Tài khoản hoặc mật khẩu không đúng! / 账号或密码不正确！(Còn ${5 - _loginFailCount} lần thử)`);
+            }
+        }
     }
-    function doLogout() { sessionStorage.removeItem('isAdmin'); location.reload(); }
+
+    function doLogout() {
+        sessionStorage.removeItem('isAdmin');
+        sessionStorage.removeItem('_authSig');
+        location.reload();
+    }
 
     function switchMainTab(tabId, btnElement) {
         document.querySelectorAll('.app-section').forEach(el => el.classList.remove('active'));
@@ -870,17 +1302,54 @@
         document.body.appendChild(downloadAnchor); downloadAnchor.click(); downloadAnchor.remove();
     }
 
+    function performAutoBackup(slotName) {
+        if (excelData.length === 0 && cmData.length === 0 && Object.keys(keData).length === 0) return;
+        const now = new Date();
+        const todayStr = now.toISOString().split('T')[0];
+        const fullBackupObject = { 
+            timestamp: now.toISOString(), 
+            slot: slotName,
+            TienDoDuAn: excelData, 
+            KeBanIn: keData, 
+            CatMauDonHang: cmData 
+        };
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(fullBackupObject, null, 2));
+        const downloadAnchor = document.createElement('a'); 
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", `AutoBackup_${todayStr}_${slotName}.json`);
+        document.body.appendChild(downloadAnchor); 
+        downloadAnchor.click(); 
+        downloadAnchor.remove();
+        console.log(`[AutoBackup] Đã tự động sao lưu mốc ${slotName} ngày ${todayStr}`);
+    }
+
     function checkDailyAutoBackup() {
-        const todayStr = new Date().toISOString().split('T')[0]; const lastBackupDate = localStorage.getItem('last_auto_backup_date');
-        if (lastBackupDate !== todayStr && excelData.length > 0) {
-            const fullBackupObject = { timestamp: new Date().toISOString(), TienDoDuAn: excelData, KeBanIn: keData, CatMauDonHang: cmData };
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(fullBackupObject, null, 2));
-            const downloadAnchor = document.createElement('a'); downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `AutoBackup_${todayStr}.json`);
-            document.body.appendChild(downloadAnchor); downloadAnchor.click(); downloadAnchor.remove();
-            localStorage.setItem('last_auto_backup_date', todayStr);
+        if (excelData.length === 0 && cmData.length === 0 && Object.keys(keData).length === 0) return;
+        const now = new Date();
+        const todayStr = now.toISOString().split('T')[0];
+        const currentHour = now.getHours();
+
+        // Mốc 17h hàng ngày (từ 17:00 trở đi)
+        if (currentHour >= 17) {
+            const backedUp17h = localStorage.getItem('auto_backup_' + todayStr + '_17h');
+            if (!backedUp17h) {
+                performAutoBackup('17h00');
+                localStorage.setItem('auto_backup_' + todayStr + '_17h', 'true');
+                localStorage.setItem('auto_backup_' + todayStr + '_12h', 'true');
+            }
+        } 
+        // Mốc 12h trưa hàng ngày (từ 12:00 đến trước 17:00)
+        else if (currentHour >= 12) {
+            const backedUp12h = localStorage.getItem('auto_backup_' + todayStr + '_12h');
+            if (!backedUp12h) {
+                performAutoBackup('12h00');
+                localStorage.setItem('auto_backup_' + todayStr + '_12h', 'true');
+            }
         }
     }
+
+    // Đặt lịch kiểm tra tự động định kỳ mỗi 30 giây để đảm bảo backup đúng 12h trưa và 17h chiều
+    setInterval(checkDailyAutoBackup, 30000);
 
     function restoreData(event) {
         if(!isAdmin) { alert("Chỉ Admin mới có quyền Khôi phục dữ liệu! / 只有管理员可以恢复数据！"); event.target.value = ''; return; }
@@ -932,36 +1401,267 @@
     }
 
     const shelves = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'ML'];
+
+    // HÀM TẠO BẢNG CHO MỖI TẦNG (160 VỊ TRÍ = 5 CẶP CỘT x 32 HÀNG)
+    function renderFloorTableHtml(shelf, floorNumber, startSlot, slotsCount) {
+        let cols = 5;
+        let rows = 32; // 5 x 32 = 160 slots
+        let html = `<div class="table-container" style="max-height: 55vh; overflow-y: auto; border: 1px solid #bdc3c7;"><table class="ke-table"><thead><tr>`;
+        for(let c = 0; c < cols; c++) html += `<th style="width: 7%;">SỐ KỆ<br>架子号</th><th style="width: 13%;">MÃ BẢN IN<br>印版号</th>`;
+        html += `</tr></thead><tbody>`;
+        
+        for(let r = 0; r < rows; r++) {
+            html += `<tr>`;
+            for(let c = 0; c < cols; c++) {
+                let slotNum = startSlot + (c * rows) + r;
+                let slotId = shelf + String(slotNum).padStart(3, '0');
+                let readonlyAttr = isAdmin ? '' : 'readonly title="Chỉ Admin mới có thể chỉnh sửa"';
+                html += `
+                    <td class="ke-slot" style="border: 1px solid #bdc3c7;">${slotId}</td>
+                    <td class="ke-input-cell" style="border: 1px solid #bdc3c7;" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="drop(event, '${slotId}')">
+                        <input type="text" class="ke-input" id="slot_${slotId}" onchange="if(isAdmin) saveKeData('${slotId}', this.value)" onfocus="this.select()" ${readonlyAttr}>
+                    </td>`;
+            }
+            html += `</tr>`;
+        }
+        html += `</tbody></table></div>`;
+        return html;
+    }
     function initKeTabs() {
         let tabsHtml = ''; let contentHtml = '';
         shelves.forEach((shelf, idx) => {
             let activeClass = idx === 0 ? 'active' : '';
-            let displayName = shelf === 'ML' ? 'KỆ MÁY LỚN / 大机架子' : `KỆ ${shelf} /${shelf} 架子`;
+            let displayName = shelf === 'ML' ? 'KỆ MÁY LỚN / 大机架子' : `KỆ ${shelf} / ${shelf} 架子`;
             tabsHtml += `<button class="ke-tab-btn ${activeClass}" onclick="openKeTab('${shelf}', this)">${displayName}</button>`;
             
-            let tableHtml = `<div class="table-container" style="max-height: 60vh; overflow-y: auto;"><table class="ke-table"><thead><tr>`;
-            for(let c = 0; c < 6; c++) tableHtml += `<th>SỐ KỆ<br>架子号</th><th>Mã BẢN IN<br>印版号</th>`;
-            tableHtml += `</tr></thead><tbody>`;
+            // Thanh chuyển tầng và nút in nhanh
+            let toolbarHtml = `
+                <div class="ke-shelf-toolbar">
+                    <div class="ke-floor-filter-group">
+                        <button type="button" class="ke-floor-filter-btn active" id="btnFloorAll_${shelf}" onclick="filterKeFloor('${shelf}', 'all', this)">🏢 Cả 2 tầng (1 - 320)</button>
+                        <button type="button" class="ke-floor-filter-btn" id="btnFloor1_${shelf}" onclick="filterKeFloor('${shelf}', 1, this)">🔽 Tầng 1 (001 - 160)</button>
+                        <button type="button" class="ke-floor-filter-btn" id="btnFloor2_${shelf}" onclick="filterKeFloor('${shelf}', 2, this)">🔼 Tầng 2 (161 - 320)</button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn-shelf-action" style="background: #27ae60;" onclick="openPrintModal('${shelf}', 'both')">
+                            🖨️ In mã Kệ ${shelf} (2 trang A4) / 打印该架标签
+                        </button>
+                    </div>
+                </div>`;
+                
+            // Khối Tầng 1 (001 - 160)
+            let floor1Html = `
+                <div class="ke-floor-block" id="floorBlock_${shelf}_1">
+                    <div class="ke-floor-title-bar">
+                        <span>🏢 <b>TẦNG 1 / 第1层</b> (Vị trí 001 - 160) • Sức chứa: 160 bản in</span>
+                        <button type="button" class="btn-print-floor-fast" onclick="openPrintModal('${shelf}', 1)">
+                            🖨️ In mã Tầng 1 (1 trang A4 = 160 kệ)
+                        </button>
+                    </div>
+                    ${renderFloorTableHtml(shelf, 1, 1, 160)}
+                </div>`;
+
+            // Khối Tầng 2 (161 - 320)
+            let floor2Html = `
+                <div class="ke-floor-block" id="floorBlock_${shelf}_2">
+                    <div class="ke-floor-title-bar" style="background: #e8f4f8; border-left-color: #2980b9;">
+                        <span>🏢 <b>TẦNG 2 / 第2层</b> (Vị trí 161 - 320) • Sức chứa: 160 bản in</span>
+                        <button type="button" class="btn-print-floor-fast" onclick="openPrintModal('${shelf}', 2)">
+                            🖨️ In mã Tầng 2 (1 trang A4 = 160 kệ)
+                        </button>
+                    </div>
+                    ${renderFloorTableHtml(shelf, 2, 161, 160)}
+                </div>`;
             
-            for(let r = 0; r < 54; r++) {
-                tableHtml += `<tr>`;
-                for(let c = 0; c < 6; c++) {
-                    let slotNum = (c * 54) + r + 1; let slotId = shelf + String(slotNum).padStart(3, '0');
-                    let readonlyAttr = isAdmin ? '' : 'readonly title="Chỉ Admin mới có thể chỉnh sửa"';
-                    tableHtml += `
-                        <td class="ke-slot" style="border: 1px solid #bdc3c7;">${slotId}</td>
-                        <td class="ke-input-cell" style="border: 1px solid #bdc3c7;" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" ondrop="drop(event, '${slotId}')">
-                            <input type="text" class="ke-input" id="slot_${slotId}" onchange="if(isAdmin) saveKeData('${slotId}', this.value)" onfocus="this.select()" ${readonlyAttr}>
-                        </td>`;
-                }
-                tableHtml += `</tr>`;
-            }
-            tableHtml += `</tbody></table></div>`;
-            contentHtml += `<div id="ke-${shelf}" class="ke-tabcontent" style="display: ${idx===0 ? 'block' : 'none'}">${tableHtml}</div>`;
+            contentHtml += `<div id="ke-${shelf}" class="ke-tabcontent" style="display: ${idx===0 ? 'block' : 'none'}; padding: 15px;">
+                ${toolbarHtml}
+                ${floor1Html}
+                ${floor2Html}
+            </div>`;
         });
-        document.getElementById('keTabs').innerHTML = tabsHtml; document.getElementById('keContents').innerHTML = contentHtml;
+        document.getElementById('keTabs').innerHTML = tabsHtml; 
+        document.getElementById('keContents').innerHTML = contentHtml;
     }
     initKeTabs();
+
+    function filterKeFloor(shelf, floor, btn) {
+        let tabEl = document.getElementById('ke-' + shelf);
+        if (!tabEl) return;
+        let block1 = tabEl.querySelector('#floorBlock_' + shelf + '_1');
+        let block2 = tabEl.querySelector('#floorBlock_' + shelf + '_2');
+        if (btn) {
+            tabEl.querySelectorAll('.ke-floor-filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+        if (floor === 'all') {
+            if (block1) block1.style.display = 'block';
+            if (block2) block2.style.display = 'block';
+        } else if (floor == 1) {
+            if (block1) block1.style.display = 'block';
+            if (block2) block2.style.display = 'none';
+        } else if (floor == 2) {
+            if (block1) block1.style.display = 'none';
+            if (block2) block2.style.display = 'block';
+        }
+    }
+
+    // ==========================================
+    // LOGIC IN BẢNG MÃ KỆ RA GIẤY A4 (160 KỆ / TRANG)
+    // ==========================================
+    function openPrintModal(defaultShelf = null, defaultFloor = null) {
+        let modal = document.getElementById('kePrintModal');
+        if (!modal) return;
+        
+        if (defaultShelf) {
+            let shelfSelect = document.getElementById('printShelfSelect');
+            if (shelfSelect) shelfSelect.value = defaultShelf;
+        }
+        if (defaultFloor !== null && defaultFloor !== undefined) {
+            let floorSelect = document.getElementById('printFloorSelect');
+            if (floorSelect) floorSelect.value = String(defaultFloor);
+        }
+        
+        updatePrintPreview();
+        modal.style.display = 'block';
+    }
+
+    function closePrintModal() {
+        let modal = document.getElementById('kePrintModal');
+        if (modal) modal.style.display = 'none';
+    }
+
+    window.addEventListener('click', function(e) {
+        let pModal = document.getElementById('kePrintModal');
+        if (pModal && e.target === pModal) closePrintModal();
+    });
+
+    function generateSingleA4PageHtml(shelf, floor, isBlank, isPrintMode = false) {
+        // Mỗi tầng có 160 vị trí:
+        // Tầng 1: startNum = 1, maxSlot = 160
+        // Tầng 2: startNum = 161, maxSlot = 320
+        let startNum = floor === 1 ? 1 : 161;
+        let maxSlot = floor === 1 ? 160 : 320;
+        
+        let shelfTitle = shelf === 'ML' ? 'KỆ MÁY LỚN - 大机架子' : `KỆ ${shelf} - ${shelf} 架子`;
+        let floorSub = `TẦNG ${floor} / 第${floor}层 (${String(startNum).padStart(3, '0')} - ${String(maxSlot).padStart(3, '0')})`;
+        
+        let sheetClass = isPrintMode ? 'a4-print-sheet' : 'preview-a4-sheet';
+        let titleClass = isPrintMode ? 'a4-print-title' : 'preview-sheet-title';
+        let tableClass = isPrintMode ? 'a4-print-table' : 'preview-table';
+        
+        // Bảng gồm 54 hàng dữ liệu (3 cặp cột):
+        // Cột 1: 54 vị trí (startNum .. startNum+53)
+        // Cột 2: 54 vị trí (startNum+54 .. startNum+107)
+        // Cột 3: 52 vị trí (startNum+108 .. startNum+159) -> 2 hàng cuối để trống
+        let rowsHtml = '';
+        let totalRows = 54;
+        
+        for (let r = 0; r < totalRows; r++) {
+            // Cột 1
+            let num1 = startNum + r;
+            let id1 = shelf + String(num1).padStart(3, '0');
+            let val1 = isBlank ? '' : (keData[id1] || '');
+            
+            // Cột 2
+            let num2 = startNum + 54 + r;
+            let id2 = shelf + String(num2).padStart(3, '0');
+            let val2 = isBlank ? '' : (keData[id2] || '');
+            
+            // Cột 3
+            let num3 = startNum + 108 + r;
+            let id3 = '';
+            let val3 = '';
+            if (num3 <= maxSlot) {
+                id3 = shelf + String(num3).padStart(3, '0');
+                val3 = isBlank ? '' : (keData[id3] || '');
+            }
+            
+            rowsHtml += `<tr>
+                <td class="cell-shelf">${id1}</td>
+                <td class="cell-plate">${val1}</td>
+                <td class="cell-shelf">${id2}</td>
+                <td class="cell-plate">${val2}</td>
+                <td class="cell-shelf">${id3}</td>
+                <td class="cell-plate">${val3}</td>
+            </tr>`;
+        }
+        
+        return `
+            <div class="${sheetClass}">
+                <div class="${titleClass}">${shelfTitle} <span style="font-size: 0.8em; font-weight: normal; margin-left: 10px;">[${floorSub}]</span></div>
+                <table class="${tableClass}">
+                    <thead>
+                        <tr>
+                            <th class="cell-shelf">SỐ KỆ</th>
+                            <th class="cell-plate">MÃ BẢN IN<br>印版号</th>
+                            <th class="cell-shelf">SỐ KỆ</th>
+                            <th class="cell-plate">MÃ BẢN IN<br>印版号</th>
+                            <th class="cell-shelf">SỐ KỆ</th>
+                            <th class="cell-plate">MÃ BẢN IN<br>印版号</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rowsHtml}
+                    </tbody>
+                </table>
+            </div>`;
+    }
+
+    function updatePrintPreview() {
+        let shelfChoice = document.getElementById('printShelfSelect').value;
+        let floorChoice = document.getElementById('printFloorSelect').value;
+        let contentChoice = document.getElementById('printContentSelect').value;
+        let isBlank = contentChoice === 'blank';
+        
+        let targetShelves = shelfChoice === 'ALL' ? shelves : [shelfChoice];
+        let targetFloors = floorChoice === 'both' ? [1, 2] : [parseInt(floorChoice, 10)];
+        
+        let totalPages = targetShelves.length * targetFloors.length;
+        let summaryEl = document.getElementById('printPageSummary');
+        if (summaryEl) {
+            let shelfDesc = shelfChoice === 'ALL' ? 'Tất cả 9 kệ' : (shelfChoice === 'ML' ? 'Kệ Máy Lớn' : `Kệ ${shelfChoice}`);
+            let floorDesc = floorChoice === 'both' ? 'Cả 2 tầng (T1 & T2)' : `Chỉ Tầng ${floorChoice}`;
+            summaryEl.innerHTML = `📄 <b>Dự kiến in: ${totalPages} trang A4</b> (${shelfDesc} • ${floorDesc} • Đúng 160 vị trí / trang)`;
+        }
+        
+        let previewContainer = document.getElementById('printPreviewContainer');
+        if (!previewContainer) return;
+        
+        let previewHtml = '';
+        targetShelves.forEach(sh => {
+            targetFloors.forEach(fl => {
+                previewHtml += generateSingleA4PageHtml(sh, fl, isBlank, false);
+            });
+        });
+        
+        previewContainer.innerHTML = previewHtml;
+    }
+
+    function startPrint() {
+        let shelfChoice = document.getElementById('printShelfSelect').value;
+        let floorChoice = document.getElementById('printFloorSelect').value;
+        let contentChoice = document.getElementById('printContentSelect').value;
+        let isBlank = contentChoice === 'blank';
+        
+        let targetShelves = shelfChoice === 'ALL' ? shelves : [shelfChoice];
+        let targetFloors = floorChoice === 'both' ? [1, 2] : [parseInt(floorChoice, 10)];
+        
+        let printArea = document.getElementById('printArea');
+        if (!printArea) return;
+        
+        let printHtml = '';
+        targetShelves.forEach(sh => {
+            targetFloors.forEach(fl => {
+                printHtml += generateSingleA4PageHtml(sh, fl, isBlank, true);
+            });
+        });
+        
+        printArea.innerHTML = printHtml;
+        
+        setTimeout(() => {
+            window.print();
+        }, 150);
+    }
 
     function openKeTab(shelfName, btnEl) {
         document.querySelectorAll('.ke-tabcontent').forEach(el => el.style.display = 'none');
@@ -1047,6 +1747,22 @@
                 if (targetBtn && !targetBtn.classList.contains('active')) {
                     openKeTab(firstTab, targetBtn);
                 }
+                
+                // Đảm bảo tầng chứa vị trí tìm thấy đang được hiển thị
+                let firstSlotId = foundSlots[0];
+                let numPart = parseInt(firstSlotId.replace(/^[A-Za-z]+/, ''), 10);
+                if (!isNaN(numPart)) {
+                    let targetFloor = numPart > 160 ? 2 : 1;
+                    let tabEl = document.getElementById('ke-' + firstTab);
+                    if (tabEl) {
+                        let targetBlock = tabEl.querySelector('#floorBlock_' + firstTab + '_' + targetFloor);
+                        if (targetBlock && targetBlock.style.display === 'none') {
+                            let allBtn = tabEl.querySelector('#btnFloorAll_' + firstTab);
+                            filterKeFloor(firstTab, 'all', allBtn);
+                        }
+                    }
+                }
+                
                 let firstInput = document.getElementById('slot_' + foundSlots[0]);
                 if (firstInput) {
                     firstInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
