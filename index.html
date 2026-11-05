@@ -6,6 +6,7 @@
     <title>Quản lý tiến độ đặt bản in/khuôn bế - 印版，模具下单进度管理</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="baophe_data.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
     
@@ -485,24 +486,32 @@
             }
         }
 
-        /* BANNER SLOGAN TRUYỀN CẢM HỨNG */
+        /* BANNER SLOGAN TRUYỀN CẢM HỨNG & NÚT TIỆN ÍCH CÙNG HÀNG */
         .slogan-banner {
             background: linear-gradient(90deg, #ecfdf5 0%, #f0fdf4 40%, #eff6ff 100%);
             border: 1px solid #bbf7d0;
             border-left: 5px solid #10b981;
             border-radius: 8px;
-            padding: 8px 16px;
-            margin-bottom: 16px;
+            padding: 8px 14px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 12px;
             box-shadow: 0 2px 6px rgba(16, 185, 129, 0.1);
             flex-wrap: wrap;
         }
+        .slogan-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            flex: 1 1 auto;
+        }
         .slogan-badge {
             background: #10b981;
             color: #fff;
-            padding: 3px 10px;
+            padding: 2px 8px;
             border-radius: 12px;
             font-size: 11px;
             font-weight: 800;
@@ -511,26 +520,178 @@
             box-shadow: 0 1px 3px rgba(16, 185, 129, 0.3);
         }
         .slogan-text {
-            font-size: 14.5px;
+            font-size: 13.5px;
             font-weight: 700;
             color: #065f46;
             letter-spacing: 0.3px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
         }
         .slogan-text-cn {
-            font-size: 12.5px;
+            font-size: 12px;
             font-weight: 500;
             color: #047857;
             opacity: 0.9;
         }
-        @media screen and (max-width: 768px) {
-            .slogan-banner { padding: 6px 12px; margin-bottom: 12px; gap: 8px; }
-            .slogan-text { font-size: 13px; }
-            .slogan-text-cn { font-size: 11.5px; }
+        .backup-controls-compact {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-left: auto;
         }
+        .btn-compact {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11.5px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            color: #fff;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            white-space: nowrap;
+        }
+        .btn-compact:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        .btn-compact-auth { background: #2980b9; }
+        .btn-compact-logout { background: #c0392b; }
+        .btn-compact-backup { background: #27ae60; }
+        .btn-compact-restore { background: #e67e22; }
+
+        @media screen and (max-width: 768px) {
+            .slogan-banner { flex-direction: column; align-items: stretch; gap: 8px; }
+            .backup-controls-compact { width: 100%; justify-content: flex-end; }
+        }
+    
+        /* ==========================================
+           TAB BÁO PHẾ BẢN IN & KHUÔN BẾ (印版与模板报废)
+           ========================================== */
+        .bp-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .bp-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .bp-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .bp-card-total { border-left: 5px solid #e74c3c; }
+        .bp-card-banin { border-left: 5px solid #2980b9; }
+        .bp-card-khuonbe { border-left: 5px solid #8e44ad; }
+        .bp-card-unused { border-left: 5px solid #f39c12; }
+        .bp-card-icon {
+            font-size: 26px;
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .bp-card-content { flex: 1; }
+        .bp-card-title {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .bp-card-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 2px 0;
+        }
+        .bp-card-sub {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .badge-loai {
+            display: inline-block;
+            padding: 3px 9px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .badge-ban-in {
+            background: #e0f2fe;
+            color: #0369a1;
+            border: 1px solid #bae6fd;
+        }
+        .badge-khuon-be {
+            background: #f3e8ff;
+            color: #7e22ce;
+            border: 1px solid #e9d5ff;
+        }
+        .badge-unused-alert {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: #fee2e2;
+            color: #b91c1c;
+            font-weight: 600;
+            font-size: 11px;
+        }
+
+        .bp-pagination-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 12px 14px;
+            background: #fff;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            margin-top: 12px;
+        }
+        .bp-page-buttons button {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #334155;
+            padding: 5px 11px;
+            border-radius: 4px;
+            margin: 0 2px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .bp-page-buttons button:hover {
+            background: #e2e8f0;
+        }
+        .bp-page-buttons button.active {
+            background: #2980b9;
+            color: #fff;
+            border-color: #2471a3;
+        }
+        .bp-page-buttons button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
     </style>
 </head>
 <body>
@@ -552,31 +713,36 @@
         <span class="status-sync" id="syncStatus">Đang kết nối... / 连接中...</span>
     </div>
 
-    <!-- BANNER SLOGAN TRUYỀN CẢM HỨNG -->
+    <!-- BANNER SLOGAN TRUYỀN CẢM HỨNG + NÚT TIỆN ÍCH (THU NHỎ CÙNG HÀNG) -->
     <div class="slogan-banner">
-        <div class="slogan-badge"></div>
-        <div class="slogan-text">
-            <span>"Cách làm việc nhanh nhất là hãy làm đúng ngay từ đầu"</span>
-            <span class="slogan-text-cn">/ 最快的工作方式是一开始就做对</span>
+        <div class="slogan-left">
+            <div class="slogan-badge"></div>
+            <div class="slogan-text">
+                <span>"Cách làm việc nhanh nhất là hãy làm đúng ngay từ đầu"</span>
+                <span class="slogan-text-cn">/ 最快的工作方式是一开始就做对</span>
+            </div>
         </div>
-    </div>
 
-    <!-- THANH ĐIỀU HƯỚNG & TÍNH NĂNG BACKUP / RESTORE / LOGIN -->
-    <div class="header-bar">
-        <div class="main-navigation">
-            <button class="main-tab-btn active" onclick="switchMainTab('appTienDo', this)">📦 Tiến độ Đặt hàng / 订单进度</button>
-            <button class="main-tab-btn" onclick="switchMainTab('appKhoKe', this)">🗄️ Quản lý Kệ Bản In / 印版架管理</button>
-            <button class="main-tab-btn" onclick="switchMainTab('appCatMau', this)">✂️ Cắt mẫu & Đơn hàng / 裁剪与订单</button>
-        </div>
-        
-        <div class="backup-controls">
-                        <button id="btnLogin" class="btn-auth" onclick="document.getElementById('loginModal').style.display='block'">🔒 Đăng nhập / 登录</button>
-            <button id="btnLogout" class="btn-auth" style="display: none; background: #c0392b;" onclick="doLogout()">🔓 Đăng xuất / 登出</button>
-            <button class="btn-backup" onclick="manualBackup()" title="Tải file lưu trữ về máy">💾 Backup / 手动备份</button>
-            <label class="btn-restore" style="padding: 9px 15px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold; display: inline-block;">
+        <!-- CÁC NÚT ĐĂNG NHẬP, BACKUP, KHÔI PHỤC THU NHỎ CÙNG HÀNG -->
+        <div class="backup-controls-compact">
+            <button id="btnLogin" class="btn-compact btn-compact-auth" onclick="document.getElementById('loginModal').style.display='block'" title="Đăng nhập quản trị viên">🔒 Đăng nhập / 登录</button>
+            <button id="btnLogout" class="btn-compact btn-compact-logout" style="display: none;" onclick="doLogout()" title="Đăng xuất">🔓 Đăng xuất / 登出</button>
+            <button class="btn-compact btn-compact-backup" onclick="manualBackup()" title="Tải file sao lưu dữ liệu về máy">💾 Backup / 备份</button>
+            <label id="lblRestore" class="btn-compact btn-compact-restore" style="display: none;" title="Khôi phục dữ liệu từ file JSON (Chỉ dành cho Admin)">
                 📥 Khôi phục / 恢复
                 <input type="file" id="restoreFile" accept=".json" style="display: none;" onchange="restoreData(event)">
             </label>
+        </div>
+    </div>
+
+    <!-- THANH ĐIỀU HƯỚNG CÁC TAB CHÍNH -->
+    <div class="header-bar" style="margin-bottom: 16px; padding: 6px 10px;">
+        <div class="main-navigation" style="width: 100%;">
+            <button class="main-tab-btn active" onclick="switchMainTab('appTienDo', this)">📦 Tiến độ Đặt hàng / 订单进度</button>
+            <button class="main-tab-btn" onclick="switchMainTab('appKhoKe', this)">🗄️ Quản lý Kệ Bản In / 印版架管理</button>
+            <button class="main-tab-btn" onclick="switchMainTab('appCatMau', this)">✂️ Cắt mẫu & Đơn hàng / 裁剪与订单</button>
+            <button class="main-tab-btn" onclick="switchMainTab('appBaoPhe', this)">🗑️ Báo phế Bản in & Khuôn / 报废印版与模板</button>
+            <button class="main-tab-btn" onclick="switchMainTab('appQuyTrinh', this)">📐 Quy trình Kỹ thuật & SX / 设计与生产流程</button>
         </div>
     </div>
 
@@ -734,6 +900,228 @@
         </div>
     </div>
 
+
+    <!-- ========================================== -->
+    <!-- TAB: BẢN IN & KHUÔN BẾ ĐÃ BÁO PHẾ (报废)    -->
+    <!-- ========================================== -->
+    <div id="appBaoPhe" class="app-section">
+        <!-- TOP SUMMARY CARDS -->
+        <div class="bp-summary-grid">
+            <div class="bp-card bp-card-total">
+                <div class="bp-card-icon">🗑️</div>
+                <div class="bp-card-content">
+                    <div class="bp-card-title">Tổng Báo Phế / 报废总数</div>
+                    <div class="bp-card-value" id="bpStatTotal">0</div>
+                    <div class="bp-card-sub" id="bpStatTotalSub">Đang lọc / 筛选: 0</div>
+                </div>
+            </div>
+            <div class="bp-card bp-card-banin">
+                <div class="bp-card-icon">🖨️</div>
+                <div class="bp-card-content">
+                    <div class="bp-card-title">Bản In Báo Phế / 报废印版</div>
+                    <div class="bp-card-value" id="bpStatBanIn">0</div>
+                    <div class="bp-card-sub">印版 Bản in</div>
+                </div>
+            </div>
+            <div class="bp-card bp-card-khuonbe">
+                <div class="bp-card-icon">✂️</div>
+                <div class="bp-card-content">
+                    <div class="bp-card-title">Khuôn Bế Báo Phế / 报废模板</div>
+                    <div class="bp-card-value" id="bpStatKhuonBe">0</div>
+                    <div class="bp-card-sub">模板 Khuôn bế</div>
+                </div>
+            </div>
+            <div class="bp-card bp-card-unused">
+                <div class="bp-card-icon">⏳</div>
+                <div class="bp-card-content">
+                    <div class="bp-card-title">Chưa Dùng > 1 Năm / 闲置超365天</div>
+                    <div class="bp-card-value" id="bpStatUnused1Y">0</div>
+                    <div class="bp-card-sub">Cần rà soát kho / 待仓库复核</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEARCH & QUERY CONTROLS (LIKE %%) -->
+        <div class="controls" style="background-color: #fef9e7; border-left: 5px solid #f39c12; margin-top: 10px;">
+            <div class="control-group" style="flex: 2 1 320px;">
+                <label><b>🔍 Tìm kiếm chung / 综合搜索 (like %):</b></label>
+                <input type="text" id="bpSearchKeyword" placeholder="Nhập mã bản in, khuôn bế, tên sản phẩm, khách hàng... / 输入编号、产品或客户关键字" oninput="debounceFilterBaoPhe()">
+            </div>
+            <div class="control-group" style="flex: 1 1 180px;">
+                <label><b>🏢 Khách hàng / 客户名称:</b></label>
+                <select id="bpFilterKhachHang" onchange="filterAndRenderBaoPhe()">
+                    <option value="">-- Tất cả khách hàng / 全部客户 --</option>
+                </select>
+            </div>
+            <div class="control-group" style="flex: 1 1 150px;">
+                <label><b>🏷️ Phân loại / 类型:</b></label>
+                <select id="bpFilterLoai" onchange="onBaoPheLoaiChange()">
+                    <option value="">-- Tất cả loại / 全部类型 --</option>
+                    <option value="印版">🖨️ 印版 (Bản in)</option>
+                    <option value="模板">✂️ 模板 (Khuôn bế)</option>
+                </select>
+            </div>
+            <div class="control-group" style="flex: 1 1 160px;">
+                <label><b>⏱️ Số ngày chưa dùng / 未使用天数:</b></label>
+                <select id="bpFilterDays" onchange="filterAndRenderBaoPhe()">
+                    <option value="">-- Tất cả số ngày / 全部 --</option>
+                    <option value="90">> 90 ngày / 天</option>
+                    <option value="180">> 180 ngày / 天 (6 tháng)</option>
+                    <option value="365">> 365 ngày / 天 (1 năm)</option>
+                    <option value="500">> 500 ngày / 天</option>
+                </select>
+            </div>
+            <div class="control-group" style="flex: 1 1 160px;">
+                <label><b>🔃 Sắp xếp / 排序:</b></label>
+                <select id="bpSortBy" onchange="filterAndRenderBaoPhe()">
+                    <option value="ngayDesc">Ngày dùng: Mới nhất / 最新使用</option>
+                    <option value="ngayAsc">Ngày dùng: Cũ nhất / 最早使用</option>
+                    <option value="daysDesc">Chưa dùng: Lâu nhất / 闲置最长</option>
+                    <option value="donDesc">Tổng xuống đơn: Nhiều nhất / 下单最多</option>
+                    <option value="maAsc">Mã: A → Z / 编号升序</option>
+                </select>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div style="display: flex; gap: 6px; align-items: flex-end; flex-wrap: wrap; margin-left: auto; width: 100%; justify-content: flex-end; margin-top: 10px; border-top: 1px dashed #e2e8f0; padding-top: 10px;">
+                <button type="button" class="btn-stat" onclick="resetBaoPheFilters()" title="Đặt lại bộ lọc về mặc định">
+                    🔄 Đặt lại / 重置
+                </button>
+                <label id="divUploadBaoPhe" class="btn-backup" style="padding: 7px 15px; border-radius: 4px; cursor: pointer; margin: 0; font-size: 13px; font-weight: bold; background: #27ae60; color: #fff; display: inline-flex; align-items: center; gap: 5px;" title="Nhập danh sách từ Excel (.xlsx, .xls, .csv)">
+                    📥 Nhập File Excel / 导入 Excel
+                    <input type="file" id="excelBaoPheFile" accept=".xlsx, .xls, .csv" style="display: none;" onchange="importBaoPheExcel(event)">
+                </label>
+                <button type="button" class="btn-manual" id="btnAddBaoPhe" style="display: none;" onclick="openBaoPheModal()">
+                    ➕ Thêm mới / 新增
+                </button>
+                <button type="button" class="btn-delete" id="btnDelBaoPhe" style="display: none;" onclick="deleteBaoPheSelected()">
+                    🗑️ Xóa đã chọn / 删除选中
+                </button>
+            </div>
+        </div>
+
+        <!-- TABLE CONTAINER -->
+        <div class="table-container" style="margin-top: 12px;">
+            <table id="tableBaoPhe">
+                <thead>
+                    <tr>
+                        <th width="3%" style="text-align: center;"><input type="checkbox" id="bpSelectAll" onclick="toggleBpSelectAll()"></th>
+                        <th width="4%" style="text-align: center;">STT<br>序号</th>
+                        <th width="14%">Khách Hàng<br>客户名称</th>
+                        <th width="8%" style="text-align: center;">Phân Loại<br>印模类型</th>
+                        <th width="15%" id="thBaoPheMa">Mã Bản In / Khuôn Bế<br>印版/模板编号</th>
+                        <th width="20%">Tên Sản Phẩm<br>产品名称</th>
+                        <th width="8%" style="text-align: center;">Hình Thái<br>印模形态</th>
+                        <th width="9%" style="text-align: center;">Ngày Dùng Gần Nhất<br>最后使用日期</th>
+                        <th width="7%" style="text-align: center;">Số Ngày Chưa Dùng<br>未使用天数</th>
+                        <th width="7%" style="text-align: right;">Tổng Số Lượng Xuống Đơn<br>总下单数</th>
+                        <th width="5%" style="text-align: center;">Thao Tác<br>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBaoPheBody"></tbody>
+            </table>
+        </div>
+
+        <!-- PAGINATION CONTROLS -->
+        <div class="bp-pagination-bar" id="bpPaginationBar">
+            <div class="bp-page-info" id="bpPageInfo">Hiển thị 0 - 0 trong tổng số 0 mục / 显示 0 - 0 共 0 条</div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <label style="font-size: 13px; color: #555;">Số dòng / 页大小:</label>
+                <select id="bpPageSize" onchange="changeBaoPhePageSize(this.value)" style="padding: 4px 8px; border-radius: 4px; border: 1px solid #ccc; font-size: 13px;">
+                    <option value="25">25</option>
+                    <option value="50" selected>50</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                    <option value="all">Tất cả / 全部</option>
+                </select>
+                <div class="bp-page-buttons" id="bpPageButtons"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL THÊM BẢN IN / KHUÔN BẾ BÁO PHẾ MỚI -->
+    <div id="baoPheModal" class="modal">
+        <div class="modal-content" style="max-width: 580px;">
+            <span class="close" onclick="closeBaoPheModal()">&times;</span>
+            <h3 style="color: #e67e22; margin-top: 0; display: flex; align-items: center; gap: 8px;">
+                <span>🗑️</span>
+                <span>Thêm Bản In / Khuôn Bế Báo Phế<br><small style="font-size: 13px; color: #7f8c8d; font-weight: normal;">新增报废印版/模板</small></span>
+            </h3>
+            <div style="font-size: 12px; color: #64748b; margin-bottom: 15px; background: #fff8e1; padding: 8px 12px; border-radius: 4px; border-left: 3px solid #ffb300;">
+                Hệ thống tự động kiểm tra trùng lặp dựa trên Mã khuôn bế / bản in. / 系统将根据印模编号自动查重。
+            </div>
+            <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="form-group">
+                    <label>Khách Hàng / 客户名称: <span style="color: red;">*</span></label>
+                    <input type="text" id="bpAddKhachHang" placeholder="VD: 越南易达 / YNYD" list="bpCustomerList">
+                    <datalist id="bpCustomerList"></datalist>
+                </div>
+                <div class="form-group">
+                    <label>Phân Loại / 印模类型: <span style="color: red;">*</span></label>
+                    <select id="bpAddLoai" onchange="onAddLoaiChange(this.value)">
+                        <option value="印版">印版 (Bản in)</option>
+                        <option value="模板">模板 (Khuôn bế)</option>
+                    </select>
+                </div>
+                <div class="form-group" style="grid-column: span 2;">
+                    <label id="bpAddMaLabel">Mã Bản In / 印版编号: <span style="color: red;">*</span></label>
+                    <input type="text" id="bpAddMa" placeholder="VD: YD-2636-010" required>
+                </div>
+                <div class="form-group" style="grid-column: span 2;">
+                    <label>Tên Sản Phẩm / 产品名称:</label>
+                    <input type="text" id="bpAddTenSP" placeholder="VD: N736P409499K 2150x260x245">
+                </div>
+                <div class="form-group">
+                    <label>Hình Thái / 印模形态:</label>
+                    <input type="text" id="bpAddHinhThai" placeholder="VD: 树脂版 / 圆模 / 平压平">
+                </div>
+                <div class="form-group">
+                    <label>Ngày Dùng Gần Nhất / 最后使用日期:</label>
+                    <input type="date" id="bpAddNgayDung">
+                </div>
+                <div class="form-group">
+                    <label>Số Ngày Chưa Dùng / 未使用天数:</label>
+                    <input type="number" id="bpAddDays" placeholder="VD: 303">
+                </div>
+                <div class="form-group">
+                    <label>Tổng Số Lượng Xuống Đơn / 总下单数:</label>
+                    <input type="number" id="bpAddTongDon" placeholder="VD: 95">
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                <button type="button" class="btn-stat" style="background: #95a5a6;" onclick="closeBaoPheModal()">Hủy / 取消</button>
+                <button type="button" class="btn-stat" style="background: #e67e22;" onclick="saveBaoPheItem()">💾 Lưu Dữ Liệu / 保存</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- TAB 4: QUY TRÌNH THIẾT KẾ & SẢN XUẤT       -->
+    <!-- ========================================== -->
+    <div id="appQuyTrinh" class="app-section">
+        <div class="controls" style="background-color: #0f172a; color: #e2e8f0; border-left: 5px solid #2563eb; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; border-radius: 6px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 20px;">📐</span>
+                <div>
+                    <h3 style="margin: 0; font-size: 15px; color: #fff; font-weight: bold;">Quy Trình Thiết Kế & Chuẩn Bị Sản Xuất Thùng Carton / 瓦楞纸箱设计与生产准备标准流程</h3>
+                    <div style="font-size: 12px; color: #94a3b8;">SOP Chuẩn Hóa Chế Bản, Làm Mẫu & Quản Lý ECN (Hỗ trợ kéo thả node, phóng to thu nhỏ canvas, bấm xem chi tiết từng công đoạn)</div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn-shelf-action" style="background: #334155; font-size: 13px;" onclick="reloadQuyTrinhIframe()" title="Tải lại sơ đồ">
+                    🔄 Tải lại / 刷新
+                </button>
+                <button type="button" class="btn-shelf-action" style="background: #2563eb; font-size: 13px;" onclick="openQuyTrinhFullscreen()" title="Mở toàn màn hình hoặc tab mới">
+                    ⛶ Toàn màn hình / 全屏
+                </button>
+            </div>
+        </div>
+        <div style="width: 100%; height: calc(100vh - 210px); min-height: 820px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 1px solid #1e293b; background: #020617;">
+            <iframe id="iframeQuyTrinh" src="quytrinh_sanxuat.html" style="width: 100%; height: 100%; border: none; display: block;" allowfullscreen></iframe>
+        </div>
+    </div>
+
     <!-- MODAL ĐỔI ẢNH GIF BẤT KỲ CỦA NGƯỜI DÙNG -->
     <div id="gifModal" class="modal">
         <div class="modal-content" style="max-width: 450px;">
@@ -875,7 +1263,7 @@
                     <label><b>3. Dữ liệu in / 打印数据:</b></label>
                     <select id="printContentSelect" onchange="updatePrintPreview()">
                         <option value="with_data">Kèm mã bản in thực tế trên kệ (Như mẫu) / 包含实际印版号</option>
-                        <option value="blank">Biểu mẫu trống (Cột mã bản in để trống) / 空白表格</option>
+                        <option value="blank">Biểu mẫu trống (Mã bản in để trống) / 空白表格</option>
                     </select>
                 </div>
             </div>
@@ -906,7 +1294,88 @@
     <div id="printArea"></div>
 
 <script>
-    Chart.register(ChartDataLabels);
+        Chart.register(ChartDataLabels);
+
+    // sort variables declared at top of script===============================
+    // CẤU HÌNH FIREBASE & DATABASE REFERENCES
+    // =========================================================================
+    const firebaseConfig = {
+        apiKey: "AIzaSyCMGoIYGKPb1Nwc3PVAWwBSDhB8yK0orWM",
+        authDomain: "quanlytiendo-13146.firebaseapp.com",
+        databaseURL: "https://quanlytiendo-13146-default-rtdb.asia-southeast1.firebasedatabase.app", 
+        projectId: "quanlytiendo-13146",
+        storageBucket: "quanlytiendo-13146.firebasestorage.app",
+        messagingSenderId: "222233123520",
+        appId: "1:222233123520:web:83f33442776f44c0402b25"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const dbRef = db.ref('TienDoDuAn'); 
+    const keRef = db.ref('KeBanIn'); 
+    const cmRef = db.ref('CatMauDonHang'); 
+    const baoPheRef = db.ref('BanInKhuonBeBaoPhe');
+
+    let excelData = []; 
+    let keData = {}; 
+    let cmData = [];
+    let baoPheList = [];
+    let currentFilteredBaoPheList = [];
+    let chartInstance = null; 
+    let chartInstanceCatMau = null;
+    let sortCol = '';
+    let sortAsc = true;
+
+    const fixedCustomerList = [
+        "辰旺 TRAN VUONG", "宁波昌亚 NINGBO CHANGYA", "优易达 YOU YI DA", "焯悦 ZHUO YUE",
+        "安琦 ANQI", "国翔 QUOC TUONG", "泉峰 CHERVON", "乐家", "UNITED CREATION",
+        "盈德 DOANH DUC", "恒信 HẰNG TÍN", "品越 PINYUE", "DECHANG 德昌", "宏德 HUNGDER",
+        "亨运 HENGYUN", "泰普森 HENGFENG", "周全国际", "铭辉 MINH HUY", "越南易达",
+        "合富- HOP PHU", "利百加", "昇辉 CALLPACK", "永全 VIỄN TOÀN", "佳创 JIA CHUANG",
+        "悦美华 YUE MEI HUA", "华美 HOA MY", "康德盛 KHANG DUC THINH", "SAM WELL",
+        "晋文 JINWEN", "百美 BAIMEI", "美的 MIDEA", "HERUI和瑞", "倍加福 PEPPERL+FUCHS",
+        "焯悦家具 TRAC DUYET FURNITURE", "台闽 TAI MIN", "中泰 TEXTILE", "泓美  HONG MEI",
+        "创源 CHUANGYUAN", "宏森 HONG SEN", "好好 HAO HAO", "抚达 FUDA", "百适乐 BESTWAY",
+        "骅麟 HOA LAN", "嘉视 JIASHI BVT", "旭程光伏 QUANG DIEN XUCHENG", "OLYMPIA",
+        "永吉 VINH CAT", "仁泰 NHƠN THÁI", "越嘉 VIET GIA", "新星石材 NOVA STONE QUARTZ",
+        "越境 VKING", "南祥 NAM TƯỜNG", "星运 SHINING", "顺义 SHUNYI", "好迪 HAODY"
+    ];
+
+    dbRef.on('value', (snapshot) => {
+        const data = snapshot.val(); excelData = [];
+        if (data) {
+            for (let key in data) excelData.push({ firebaseId: key, ...data[key] });
+            excelData.sort((a, b) => (b.ngayDat || "").localeCompare((a.ngayDat || "")));
+        }
+        const syncEl = document.getElementById('syncStatus');
+        if (syncEl) {
+            syncEl.innerText = "Đã đồng bộ / 已同步";
+            syncEl.style.background = "#27ae60";
+        }
+        populateCustomerDatalist(); updateDropdowns(); filterAndRender(); checkSuggestions(); checkDailyAutoBackup(); updateTopSummary(); 
+    }, (error) => {
+        const syncEl = document.getElementById('syncStatus');
+        if (syncEl) {
+            syncEl.innerText = "Lỗi kết nối DB / 数据库连接错误";
+            syncEl.style.background = "red";
+        }
+    });
+
+    keRef.on('value', (snapshot) => { keData = snapshot.val() || {}; updateKeGridValues(); checkSuggestions(); });
+
+    cmRef.on('value', (snapshot) => {
+        const data = snapshot.val(); cmData = [];
+        if (data) {
+            for (let key in data) cmData.push({ firebaseId: key, ...data[key] });
+            
+            cmData.sort((a, b) => {
+                let dateCmp = (b.ngay || "").localeCompare(a.ngay || "");
+                if (dateCmp === 0) return b.firebaseId.localeCompare(a.firebaseId);
+                return dateCmp;
+            });
+        }
+        renderCatMau(); 
+    });
     const _AUTH_KEY = "QuanLyBanIn_Secured_2026_!#%";
     const _TARGET_AUTH_HASH = "8ad249d55ea6a942bce64c579c830125bd2574e09f5ae3777695a69894669cf4";
 
@@ -953,7 +1422,10 @@
         
         if (isAdmin) {
             document.getElementById('btnLogin').style.display = 'none';
-            document.getElementById('btnLogout').style.display = 'inline-block';
+            document.getElementById('btnLogout').style.display = 'inline-flex';
+            const lblRestore = document.getElementById('lblRestore');
+            if (lblRestore) lblRestore.style.display = 'inline-flex';
+            
             document.getElementById('divUpload').style.display = 'flex';
             document.getElementById('btnManual').style.display = 'inline-block';
             document.getElementById('btnDelete').style.display = 'inline-block';
@@ -963,11 +1435,29 @@
             document.getElementById('btnAddCatMau').style.display = 'inline-block';
             document.getElementById('btnDelCatMau').style.display = 'inline-block';
             document.getElementById('cmSelectAll').disabled = false;
-            
+
+            const bpSelectAll = document.getElementById('bpSelectAll');
+            if(bpSelectAll) bpSelectAll.disabled = false;
+            const btnAddBaoPhe = document.getElementById('btnAddBaoPhe');
+            if(btnAddBaoPhe) btnAddBaoPhe.style.display = 'inline-block';
+            const btnDelBaoPhe = document.getElementById('btnDelBaoPhe');
+            if(btnDelBaoPhe) btnDelBaoPhe.style.display = 'inline-block';
+
             document.getElementById('keHint').innerHTML = '(Có thể Kéo thả mã bản in thả vào ô trống, hoặc Click gõ nhập tay như thường / 可以拖拽标签放入空格，或直接点击输入)';
         } else {
+            document.getElementById('btnLogin').style.display = 'inline-flex';
+            document.getElementById('btnLogout').style.display = 'none';
+            const lblRestore = document.getElementById('lblRestore');
+            if (lblRestore) lblRestore.style.display = 'none';
+
             document.getElementById('selectAll').disabled = true;
             document.getElementById('cmSelectAll').disabled = true;
+            const bpSelectAll = document.getElementById('bpSelectAll');
+            if(bpSelectAll) bpSelectAll.disabled = true;
+            const btnAddBaoPhe = document.getElementById('btnAddBaoPhe');
+            if(btnAddBaoPhe) btnAddBaoPhe.style.display = 'none';
+            const btnDelBaoPhe = document.getElementById('btnDelBaoPhe');
+            if(btnDelBaoPhe) btnDelBaoPhe.style.display = 'none';
         }
     });
 
@@ -1021,6 +1511,9 @@
             _loginFailCount = 0;
             sessionStorage.setItem('isAdmin', 'true');
             sessionStorage.setItem('_authSig', _TARGET_AUTH_HASH);
+            isAdmin = true;
+            const lblRestore = document.getElementById('lblRestore');
+            if (lblRestore) lblRestore.style.display = 'inline-flex';
             document.getElementById('authPassword').value = '';
             location.reload();
         } else {
@@ -1038,6 +1531,9 @@
     function doLogout() {
         sessionStorage.removeItem('isAdmin');
         sessionStorage.removeItem('_authSig');
+        isAdmin = false;
+        const lblRestore = document.getElementById('lblRestore');
+        if (lblRestore) lblRestore.style.display = 'none';
         location.reload();
     }
 
@@ -1047,7 +1543,693 @@
         document.getElementById(tabId).classList.add('active'); btnElement.classList.add('active');
         if(tabId === 'appKhoKe') { checkSuggestions(); searchKe(false); }
         if(tabId === 'appCatMau') renderCatMau();
+        if(tabId === 'appBaoPhe') renderBaoPhe();
+        if(tabId === 'appQuyTrinh') onOpenQuyTrinhTab();
     }
+
+    function onOpenQuyTrinhTab() {
+        setTimeout(() => {
+            const iframe = document.getElementById('iframeQuyTrinh');
+            if (iframe && iframe.contentWindow) {
+                try {
+                    if (typeof iframe.contentWindow.resetToOptimalView === 'function') {
+                        iframe.contentWindow.resetToOptimalView();
+                    } else if (typeof iframe.contentWindow.drawConnectionLines === 'function') {
+                        iframe.contentWindow.drawConnectionLines();
+                    }
+                } catch(e) {}
+            }
+        }, 100);
+    }
+
+    function openQuyTrinhFullscreen() {
+        const iframe = document.getElementById('iframeQuyTrinh');
+        if (iframe) {
+            if (iframe.requestFullscreen) {
+                iframe.requestFullscreen();
+            } else if (iframe.webkitRequestFullscreen) {
+                iframe.webkitRequestFullscreen();
+            } else {
+                window.open('quytrinh_sanxuat.html', '_blank');
+            }
+        } else {
+            window.open('quytrinh_sanxuat.html', '_blank');
+        }
+    }
+
+    function reloadQuyTrinhIframe() {
+        const iframe = document.getElementById('iframeQuyTrinh');
+        if (iframe) {
+            iframe.src = iframe.src;
+        }
+    }
+
+    
+    // =========================================================================
+    // LOGIC TAB: BÁO PHẾ BẢN IN & KHUÔN BẾ (印版与模板报废管理)
+    // =========================================================================
+    let bpCurrentPage = 1;
+    let bpPageSize = 50;
+    let _bpDebounceTimer = null;
+
+    // Load initial data from baophe_data.js or local cache
+    function initBaoPheLocalData() {
+        if (typeof INITIAL_BAOPHE_DATA !== 'undefined' && INITIAL_BAOPHE_DATA.length > 0) {
+            const cached = localStorage.getItem('baoPheDataCache');
+            if (cached) {
+                try {
+                    const parsed = JSON.parse(cached);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        baoPheList = parsed;
+                    } else {
+                        baoPheList = [...INITIAL_BAOPHE_DATA];
+                    }
+                } catch(e) {
+                    baoPheList = [...INITIAL_BAOPHE_DATA];
+                }
+            } else {
+                baoPheList = [...INITIAL_BAOPHE_DATA];
+            }
+        }
+        populateBaoPheCustomerDropdown();
+        filterAndRenderBaoPhe();
+    }
+
+    // Firebase Listener
+    baoPheRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            baoPheList = [];
+            for (let key in data) {
+                baoPheList.push({ firebaseId: key, ...data[key] });
+            }
+            localStorage.setItem('baoPheDataCache', JSON.stringify(baoPheList));
+        } else {
+            // Firebase is empty: initialize with INITIAL_BAOPHE_DATA
+            if (typeof INITIAL_BAOPHE_DATA !== 'undefined' && INITIAL_BAOPHE_DATA.length > 0) {
+                baoPheList = [...INITIAL_BAOPHE_DATA];
+                localStorage.setItem('baoPheDataCache', JSON.stringify(baoPheList));
+                initFirebaseBaoPheIfEmpty();
+            }
+        }
+        populateBaoPheCustomerDropdown();
+        filterAndRenderBaoPhe();
+    }, (error) => {
+        console.warn('[BaoPhe] Firebase error, using local data:', error);
+        initBaoPheLocalData();
+    });
+
+    function initFirebaseBaoPheIfEmpty() {
+        if (!isAdmin) return;
+        baoPheRef.once('value').then(snap => {
+            if (!snap.exists() || !snap.val()) {
+                console.log('[BaoPhe] Seeding initial data to Firebase...');
+                let initialObj = {};
+                INITIAL_BAOPHE_DATA.forEach(item => {
+                    let key = baoPheRef.push().key;
+                    initialObj[key] = item;
+                });
+                baoPheRef.set(initialObj);
+            }
+        }).catch(e => console.warn('[BaoPhe] Firebase init error:', e));
+    }
+
+    function renderBaoPhe() {
+        if (baoPheList.length === 0) {
+            initBaoPheLocalData();
+        } else {
+            filterAndRenderBaoPhe();
+        }
+    }
+
+    function debounceFilterBaoPhe() {
+        if (_bpDebounceTimer) clearTimeout(_bpDebounceTimer);
+        _bpDebounceTimer = setTimeout(() => {
+            filterAndRenderBaoPhe();
+        }, 200);
+    }
+
+    function onBaoPheLoaiChange() {
+        filterAndRenderBaoPhe();
+    }
+
+    function resetBaoPheFilters() {
+        const kwEl = document.getElementById('bpSearchKeyword');
+        if (kwEl) kwEl.value = '';
+        const khEl = document.getElementById('bpFilterKhachHang');
+        if (khEl) khEl.value = '';
+        const loaiEl = document.getElementById('bpFilterLoai');
+        if (loaiEl) loaiEl.value = '';
+        const daysEl = document.getElementById('bpFilterDays');
+        if (daysEl) daysEl.value = '';
+        const sortEl = document.getElementById('bpSortBy');
+        if (sortEl) sortEl.value = 'ngayDesc';
+        bpCurrentPage = 1;
+        filterAndRenderBaoPhe();
+    }
+
+    function filterAndRenderBaoPhe() {
+        const keyword = (document.getElementById('bpSearchKeyword') ? document.getElementById('bpSearchKeyword').value : '').trim().toLowerCase();
+        const filterKh = (document.getElementById('bpFilterKhachHang') ? document.getElementById('bpFilterKhachHang').value : '').trim().toLowerCase();
+        const filterLoai = document.getElementById('bpFilterLoai') ? document.getElementById('bpFilterLoai').value : '';
+        const filterDays = document.getElementById('bpFilterDays') ? document.getElementById('bpFilterDays').value : '';
+        const sortBy = document.getElementById('bpSortBy') ? document.getElementById('bpSortBy').value : 'ngayDesc';
+
+        // Update column header dynamically based on selected type
+        const thMa = document.getElementById('thBaoPheMa');
+        if (thMa) {
+            if (filterLoai === '印版') {
+                thMa.innerHTML = 'Mã Bản In<br>印版编号';
+            } else if (filterLoai === '模板') {
+                thMa.innerHTML = 'Mã Khuôn Bế<br>模板编号';
+            } else {
+                thMa.innerHTML = 'Mã Bản In / Khuôn Bế<br>印版/模板编号';
+            }
+        }
+
+        currentFilteredBaoPheList = baoPheList.filter(item => {
+            // 1. Keyword search (like %% in all fields: Mã, Khách hàng, Tên sản phẩm, Hình thái)
+            if (keyword) {
+                const matchKw = (item.ma && item.ma.toLowerCase().includes(keyword)) ||
+                                (item.khachHang && item.khachHang.toLowerCase().includes(keyword)) ||
+                                (item.tenSP && item.tenSP.toLowerCase().includes(keyword)) ||
+                                (item.hinhThai && item.hinhThai.toLowerCase().includes(keyword));
+                if (!matchKw) return false;
+            }
+
+            // 2. Customer filter
+            if (filterKh && !(item.khachHang && item.khachHang.toLowerCase() === filterKh)) {
+                return false;
+            }
+
+            // 3. Type filter (印版 vs 模板)
+            if (filterLoai && item.loai !== filterLoai) {
+                return false;
+            }
+
+            // 4. Days unused filter
+            if (filterDays) {
+                const minDays = Number(filterDays);
+                const days = Number(item.soNgayChuaDung) || 0;
+                if (days < minDays) return false;
+            }
+
+            return true;
+        });
+
+        // Sorting
+        currentFilteredBaoPheList.sort((a, b) => {
+            if (sortBy === 'ngayDesc') {
+                return (b.ngayDungGanNhat || '').localeCompare(a.ngayDungGanNhat || '');
+            } else if (sortBy === 'ngayAsc') {
+                return (a.ngayDungGanNhat || '').localeCompare(b.ngayDungGanNhat || '');
+            } else if (sortBy === 'daysDesc') {
+                return (Number(b.soNgayChuaDung) || 0) - (Number(a.soNgayChuaDung) || 0);
+            } else if (sortBy === 'donDesc') {
+                return (Number(b.tongDon) || 0) - (Number(a.tongDon) || 0);
+            } else if (sortBy === 'maAsc') {
+                return (a.ma || '').localeCompare(b.ma || '');
+            }
+            return 0;
+        });
+
+        bpCurrentPage = 1;
+        renderBaoPhePage();
+        updateBaoPheStats();
+    }
+
+    function renderBaoPhePage() {
+        const tbody = document.getElementById('tableBaoPheBody');
+        if (!tbody) return;
+
+        const total = currentFilteredBaoPheList.length;
+        let startIdx = 0;
+        let endIdx = total;
+
+        if (bpPageSize !== 'all') {
+            const pSize = Number(bpPageSize);
+            const maxPage = Math.ceil(total / pSize) || 1;
+            if (bpCurrentPage > maxPage) bpCurrentPage = maxPage;
+            if (bpCurrentPage < 1) bpCurrentPage = 1;
+            startIdx = (bpCurrentPage - 1) * pSize;
+            endIdx = Math.min(startIdx + pSize, total);
+        }
+
+        if (total === 0) {
+            tbody.innerHTML = '<tr><td colspan="11" style="text-align: center; padding: 35px; color: #7f8c8d; font-size: 14px;">Không tìm thấy bản in / khuôn bế báo phế nào phù hợp! / 未找到匹配的报废记录！</td></tr>';
+            renderBaoPhePagination(0, 0, 0);
+            return;
+        }
+
+        const pageItems = currentFilteredBaoPheList.slice(startIdx, endIdx);
+        let html = '';
+        pageItems.forEach((item, index) => {
+            const stt = startIdx + index + 1;
+            const isBanIn = item.loai === '印版';
+            const badgeClass = isBanIn ? 'badge-ban-in' : 'badge-khuon-be';
+            const loaiText = isBanIn ? '印版 Bản in' : '模板 Khuôn bế';
+            
+            let daysHtml = (item.soNgayChuaDung !== '' && item.soNgayChuaDung != null) ? item.soNgayChuaDung : '-';
+            if (Number(item.soNgayChuaDung) >= 365) {
+                daysHtml = '<span class="badge-unused-alert">⚠️ ' + item.soNgayChuaDung + '</span>';
+            }
+
+            const tongDonFormatted = (item.tongDon !== '' && item.tongDon != null) 
+                ? Number(item.tongDon).toLocaleString('vi-VN') 
+                : '0';
+
+            let actionHtml = '';
+            if (isAdmin) {
+                actionHtml = '<button type="button" class="btn-delete" style="padding: 2px 7px; font-size: 11px; margin: 0; border-radius: 3px;" onclick="deleteSingleBaoPheRow(\'' + (item.firebaseId || '') + '\', \'' + (item.ma || '').replace(/'/g, "\\'") + '\')" title="Xóa dòng này / 删除该行">🗑️ Xóa</button>';
+            } else {
+                actionHtml = '<span style="color: #cbd5e1; font-size: 12px;" title="Chỉ Admin đã đăng nhập mới có quyền xóa / 仅已登录管理员可删除">🔒</span>';
+            }
+
+            html += '<tr>' +
+                '<td style="text-align: center;">' +
+                    '<input type="checkbox" class="bp-row-check" data-id="' + (item.firebaseId || '') + '" data-code="' + (item.ma || '') + '" ' + (isAdmin ? '' : 'disabled') + '>' +
+                '</td>' +
+                '<td style="text-align: center; font-weight: bold; color: #7f8c8d;">' + stt + '</td>' +
+                '<td style="font-weight: 600; color: #2c3e50;">' + (item.khachHang || '-') + '</td>' +
+                '<td style="text-align: center;"><span class="badge-loai ' + badgeClass + '">' + loaiText + '</span></td>' +
+                '<td style="font-family: monospace; font-weight: bold; color: #2980b9; font-size: 13px;">' + (item.ma || '-') + '</td>' +
+                '<td style="color: #34495e;">' + (item.tenSP || '-') + '</td>' +
+                '<td style="text-align: center; color: #7f8c8d; font-size: 12px;">' + (item.hinhThai || '-') + '</td>' +
+                '<td style="text-align: center; font-family: monospace; font-size: 12px; color: #555;">' + (item.ngayDungGanNhat || '-') + '</td>' +
+                '<td style="text-align: center;">' + daysHtml + '</td>' +
+                '<td style="text-align: right; font-weight: 600; color: #27ae60;">' + tongDonFormatted + '</td>' +
+                '<td style="text-align: center;">' + actionHtml + '</td>' +
+            '</tr>';
+        });
+
+        tbody.innerHTML = html;
+        renderBaoPhePagination(startIdx + 1, endIdx, total);
+    }
+
+    function renderBaoPhePagination(startNum, endNum, total) {
+        const pageInfo = document.getElementById('bpPageInfo');
+        const pageBtns = document.getElementById('bpPageButtons');
+        if (!pageInfo || !pageBtns) return;
+
+        if (total === 0) {
+            pageInfo.innerHTML = "Hiển thị 0 - 0 trong tổng số 0 mục / 显示 0 - 0 共 0 条";
+            pageBtns.innerHTML = "";
+            return;
+        }
+
+        pageInfo.innerHTML = "Hiển thị <b>" + startNum + "</b> - <b>" + endNum + "</b> trong tổng số <b>" + total.toLocaleString('vi-VN') + "</b> mục / 显示 " + startNum + " - " + endNum + " 共 " + total + " 条";
+
+        if (bpPageSize === 'all') {
+            pageBtns.innerHTML = "";
+            return;
+        }
+
+        const pSize = Number(bpPageSize);
+        const maxPage = Math.ceil(total / pSize);
+        if (maxPage <= 1) {
+            pageBtns.innerHTML = "";
+            return;
+        }
+
+        let btns = '';
+        btns += '<button type="button" onclick="gotoBaoPhePage(1)" ' + (bpCurrentPage === 1 ? 'disabled' : '') + ' title="Trang đầu / 首页">«</button>';
+        btns += '<button type="button" onclick="gotoBaoPhePage(' + (bpCurrentPage - 1) + ')" ' + (bpCurrentPage === 1 ? 'disabled' : '') + ' title="Trang trước / 上页">‹</button>';
+
+        let pStart = Math.max(1, bpCurrentPage - 2);
+        let pEnd = Math.min(maxPage, pStart + 4);
+        if (pEnd - pStart < 4) pStart = Math.max(1, pEnd - 4);
+
+        for (let p = pStart; p <= pEnd; p++) {
+            btns += '<button type="button" class="' + (p === bpCurrentPage ? 'active' : '') + '" onclick="gotoBaoPhePage(' + p + ')">' + p + '</button>';
+        }
+
+        btns += '<button type="button" onclick="gotoBaoPhePage(' + (bpCurrentPage + 1) + ')" ' + (bpCurrentPage === maxPage ? 'disabled' : '') + ' title="Trang sau / 下页">›</button>';
+        btns += '<button type="button" onclick="gotoBaoPhePage(' + maxPage + ')" ' + (bpCurrentPage === maxPage ? 'disabled' : '') + ' title="Trang cuối / 末页">»</button>';
+
+        pageBtns.innerHTML = btns;
+    }
+
+    function gotoBaoPhePage(p) {
+        bpCurrentPage = p;
+        renderBaoPhePage();
+        const tbl = document.getElementById('tableBaoPhe');
+        if (tbl) tbl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function changeBaoPhePageSize(val) {
+        bpPageSize = val;
+        bpCurrentPage = 1;
+        renderBaoPhePage();
+    }
+
+    function updateBaoPheStats() {
+        let totalAll = baoPheList.length;
+        let banInCount = 0;
+        let khuonBeCount = 0;
+        let unused1YCount = 0;
+
+        baoPheList.forEach(item => {
+            if (item.loai === '印版') banInCount++;
+            else if (item.loai === '模板') khuonBeCount++;
+            if (Number(item.soNgayChuaDung) >= 365) unused1YCount++;
+        });
+
+        const statTotal = document.getElementById('bpStatTotal');
+        const statBanIn = document.getElementById('bpStatBanIn');
+        const statKhuonBe = document.getElementById('bpStatKhuonBe');
+        const statUnused = document.getElementById('bpStatUnused1Y');
+        const statSub = document.getElementById('bpStatTotalSub');
+
+        if (statTotal) statTotal.innerText = totalAll.toLocaleString('vi-VN');
+        if (statBanIn) statBanIn.innerText = banInCount.toLocaleString('vi-VN');
+        if (statKhuonBe) statKhuonBe.innerText = khuonBeCount.toLocaleString('vi-VN');
+        if (statUnused) statUnused.innerText = unused1YCount.toLocaleString('vi-VN');
+
+        const filteredTotal = currentFilteredBaoPheList.length;
+        if (statSub) statSub.innerText = "Đang lọc / 筛选: " + filteredTotal.toLocaleString('vi-VN');
+    }
+
+    function populateBaoPheCustomerDropdown() {
+        const select = document.getElementById('bpFilterKhachHang');
+        const datalist = document.getElementById('bpCustomerList');
+        if (!select) return;
+
+        const customers = [...new Set(baoPheList.map(item => item.khachHang).filter(Boolean))].sort((a,b) => a.localeCompare(b));
+        let opts = '<option value="">-- Tất cả khách hàng / 全部客户 --</option>';
+        let dlOpts = '';
+        customers.forEach(kh => {
+            opts += '<option value="' + kh + '">' + kh + '</option>';
+            dlOpts += '<option value="' + kh + '"></option>';
+        });
+        select.innerHTML = opts;
+        if (datalist) datalist.innerHTML = dlOpts;
+    }
+
+    function toggleBpSelectAll() {
+        const selectAllCb = document.getElementById('bpSelectAll');
+        const isChecked = selectAllCb ? selectAllCb.checked : false;
+        document.querySelectorAll('.bp-row-check').forEach(cb => {
+            if (!cb.disabled) cb.checked = isChecked;
+        });
+    }
+
+    // Modal Add functions
+    function openBaoPheModal() {
+        if (!isAdmin) {
+            alert("Chỉ Quản trị viên mới có quyền thêm mới! / 只有管理员可以新增！");
+            return;
+        }
+        document.getElementById('bpAddKhachHang').value = '';
+        document.getElementById('bpAddLoai').value = '印版';
+        document.getElementById('bpAddMa').value = '';
+        document.getElementById('bpAddTenSP').value = '';
+        document.getElementById('bpAddHinhThai').value = '';
+        document.getElementById('bpAddNgayDung').value = '';
+        document.getElementById('bpAddDays').value = '';
+        document.getElementById('bpAddTongDon').value = '';
+        onAddLoaiChange('印版');
+        document.getElementById('baoPheModal').style.display = 'block';
+    }
+
+    function closeBaoPheModal() {
+        document.getElementById('baoPheModal').style.display = 'none';
+    }
+
+    function onAddLoaiChange(val) {
+        const label = document.getElementById('bpAddMaLabel');
+        if (label) {
+            label.innerHTML = (val === '模板') 
+                ? 'Mã Khuôn Bế / 模板编号: <span style="color: red;">*</span>'
+                : 'Mã Bản In / 印版编号: <span style="color: red;">*</span>';
+        }
+    }
+
+    function isBaoPheCodeDuplicate(code) {
+        if (!code) return false;
+        const cleanCode = code.toString().trim().toUpperCase();
+        return baoPheList.some(item => (item.ma || '').toString().trim().toUpperCase() === cleanCode);
+    }
+
+    function saveBaoPheItem() {
+        if (!isAdmin) return;
+        const kh = (document.getElementById('bpAddKhachHang').value || '').trim();
+        const loai = document.getElementById('bpAddLoai').value;
+        const ma = (document.getElementById('bpAddMa').value || '').trim();
+        const tenSP = (document.getElementById('bpAddTenSP').value || '').trim();
+        const hinhThai = (document.getElementById('bpAddHinhThai').value || '').trim();
+        const ngayDung = document.getElementById('bpAddNgayDung').value;
+        const days = document.getElementById('bpAddDays').value;
+        const tongDon = document.getElementById('bpAddTongDon').value;
+
+        if (!ma) {
+            alert("Vui lòng nhập Mã bản in / khuôn bế! / 请输入印模编号！");
+            document.getElementById('bpAddMa').focus();
+            return;
+        }
+
+        // KIỂM TRA TRÙNG LẶP (DỰA VÀO MÃ LÀM CHUẨN)
+        if (isBaoPheCodeDuplicate(ma)) {
+            alert("MÃ NÀY ĐÃ TỒN TẠI TRONG HỆ THỐNG! Không cho phép nhập thêm.\n该编号已存在于系统中！不允许重复添加。\nMã / 编号: " + ma);
+            document.getElementById('bpAddMa').focus();
+            return;
+        }
+
+        const newItem = {
+            khachHang: kh,
+            loai: loai,
+            ma: ma,
+            tenSP: tenSP,
+            hinhThai: hinhThai,
+            ngayDungGanNhat: ngayDung,
+            soNgayChuaDung: days !== '' ? Math.round(Number(days)) : '',
+            tongDon: tongDon !== '' ? Math.round(Number(tongDon)) : ''
+        };
+
+        const newKey = baoPheRef.push().key;
+        baoPheRef.child(newKey).set(newItem).then(() => {
+            closeBaoPheModal();
+            alert("Đã thêm thành công! / 添加成功！");
+        }).catch(err => {
+            console.error("Firebase save error:", err);
+            baoPheList.unshift({ firebaseId: newKey, ...newItem });
+            localStorage.setItem('baoPheDataCache', JSON.stringify(baoPheList));
+            closeBaoPheModal();
+            populateBaoPheCustomerDropdown();
+            filterAndRenderBaoPhe();
+            alert("Đã lưu cục bộ! / 已本地保存！");
+        });
+    }
+
+    // NHẬP FILE EXCEL VÀO HỆ THỐNG (CÓ KIỂM TRA LOẠI TRỪ TRÙNG LẶP)
+    function importBaoPheExcel(event) {
+        if (!isAdmin) {
+            alert("Chỉ Quản trị viên mới có quyền nhập file! / 只有管理员可以导入文件！");
+            event.target.value = '';
+            return;
+        }
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array', cellDates: true });
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, raw: false });
+
+                if (!jsonData || jsonData.length === 0) {
+                    alert("File không có dữ liệu! / 文件无数据！");
+                    event.target.value = '';
+                    return;
+                }
+
+                let headerRowIdx = 0;
+                let colKh = 1, colMa = 3, colLoai = 4, colSP = 5, colHinhThai = 6, colNgay = 11, colDays = 13, colDon = 14;
+
+                for (let i = 0; i < Math.min(10, jsonData.length); i++) {
+                    const row = jsonData[i];
+                    if (row && row.some(cell => typeof cell === 'string' && (
+                        cell.includes('模版编号') || cell.includes('印模版') || cell.includes('客户') || 
+                        cell.toLowerCase().includes('mã bản in') || cell.toLowerCase().includes('mã khuôn')
+                    ))) {
+                        headerRowIdx = i;
+                        row.forEach((cellText, cIdx) => {
+                            if (typeof cellText === 'string') {
+                                const cLower = cellText.toLowerCase().trim();
+                                if (cellText.includes('客户简称') || cLower.includes('khách hàng')) colKh = cIdx;
+                                else if (cellText.includes('模版编号') || cLower.includes('mã bản in') || cLower.includes('mã khuôn') || cLower === 'mã') colMa = cIdx;
+                                else if (cellText.includes('印模版类型') || cLower.includes('loại') || cLower.includes('phân loại')) colLoai = cIdx;
+                                else if (cellText.includes('模版名称') || cLower.includes('tên sản phẩm') || cLower.includes('tên sp')) colSP = cIdx;
+                                else if (cellText.includes('印模版形态') || cLower.includes('hình thái')) colHinhThai = cIdx;
+                                else if (cellText.includes('最后使用日期') || cLower.includes('ngày dùng gần nhất') || cLower.includes('ngày dùng')) colNgay = cIdx;
+                                else if (cellText.includes('未使用天数') || cLower.includes('số ngày chưa dùng') || cLower.includes('chưa dùng')) colDays = cIdx;
+                                else if (cellText.includes('总下单数') || cLower.includes('tổng số lượng xuống đơn') || cLower.includes('tổng đơn')) colDon = cIdx;
+                            }
+                        });
+                        break;
+                    }
+                }
+
+                // Tập hợp các mã đã có trong hệ thống để đối soát loại trừ
+                const existingCodes = new Set(baoPheList.map(item => (item.ma || '').toString().trim().toUpperCase()));
+                let countNew = 0;
+                let countDup = 0;
+                let newItems = [];
+                let batchFirebase = {};
+
+                for (let r = headerRowIdx + 1; r < jsonData.length; r++) {
+                    const row = jsonData[r];
+                    if (!row || row.length === 0) continue;
+
+                    const rawMa = row[colMa] != null ? row[colMa].toString().trim() : '';
+                    if (!rawMa) continue;
+
+                    const cleanMaKey = rawMa.toUpperCase();
+
+                    // HÀM KIỂM TRA LOẠI TRỪ TRÙNG LẶP THEO MÃ
+                    if (existingCodes.has(cleanMaKey)) {
+                        countDup++;
+                        continue; // LOẠI TRỪ KHÔNG CHO PHÉP NHẬP THÊM
+                    }
+
+                    existingCodes.add(cleanMaKey);
+                    const rawLoai = row[colLoai] != null ? row[colLoai].toString().trim() : '';
+                    let loaiVal = rawLoai;
+                    if (!loaiVal) {
+                        loaiVal = (rawMa.includes('-P') || rawMa.includes('-Y')) ? '模板' : '印版';
+                    }
+
+                    const itemObj = {
+                        khachHang: row[colKh] != null ? row[colKh].toString().trim() : '',
+                        ma: rawMa,
+                        loai: loaiVal,
+                        tenSP: row[colSP] != null ? row[colSP].toString().trim() : '',
+                        hinhThai: row[colHinhThai] != null ? row[colHinhThai].toString().trim() : '',
+                        ngayDungGanNhat: row[colNgay] != null ? row[colNgay].toString().trim() : '',
+                        soNgayChuaDung: (row[colDays] !== '' && row[colDays] != null && !isNaN(row[colDays])) ? Math.round(Number(row[colDays])) : '',
+                        tongDon: (row[colDon] !== '' && row[colDon] != null && !isNaN(row[colDon])) ? Math.round(Number(row[colDon])) : ''
+                    };
+
+                    newItems.push(itemObj);
+                    countNew++;
+
+                    const newKey = baoPheRef.push().key;
+                    batchFirebase[newKey] = itemObj;
+                }
+
+                if (countNew > 0) {
+                    baoPheRef.update(batchFirebase).then(() => {
+                        alert("✅ KẾT QUẢ NHẬP FILE EXCEL / 导入结果:\n- Thêm mới thành công / 成功新增: " + countNew + " dòng\n- Trùng lặp (đã loại trừ) / 排除已存在重复: " + countDup + " dòng\n- Tổng số mục hiện tại / 当前总记录数: " + (baoPheList.length + countNew));
+                    }).catch(err => {
+                        console.error('Firebase update error:', err);
+                        baoPheList = [...newItems, ...baoPheList];
+                        localStorage.setItem('baoPheDataCache', JSON.stringify(baoPheList));
+                        populateBaoPheCustomerDropdown();
+                        filterAndRenderBaoPhe();
+                        alert("✅ ĐÃ LƯU CỤC BỘ / 已本地保存 (Lỗi Firebase: " + err.message + ")\n- Thêm mới: " + countNew + "\n- Loại trừ trùng: " + countDup);
+                    });
+                } else {
+                    alert("ℹ️ KHÔNG CÓ DÒNG MỚI NÀO ĐƯỢC THÊM / 未新增任何记录！\n- Tất cả " + countDup + " dòng đều đã có trong hệ thống (đã loại trừ) / 全部记录已存在，已被自动排除。");
+                }
+            } catch(err) {
+                alert("Lỗi khi xử lý file Excel / 处理Excel文件时出错: " + err.message);
+            }
+            event.target.value = '';
+        };
+        reader.readAsArrayBuffer(file);
+    }
+
+    // XUẤT EXCEL DANH SÁCH ĐANG LỌC
+    function exportBaoPheExcel() {
+        const listToExport = currentFilteredBaoPheList || baoPheList;
+        if (!listToExport || listToExport.length === 0) {
+            alert("Không có dữ liệu để xuất! / 无可导出数据！");
+            return;
+        }
+        const exportRows = listToExport.map((item, idx) => ({
+            "STT / 序号": idx + 1,
+            "Khách Hàng / 客户简称": item.khachHang || "",
+            "Phân Loại / 印模版类型": item.loai || "",
+            "Mã Bản In / Khuôn Bế / 模版编号": item.ma || "",
+            "Tên Sản Phẩm / 模版名称": item.tenSP || "",
+            "Hình Thái / 印模版形态": item.hinhThai || "",
+            "Ngày Dùng Gần Nhất / 最后使用日期": item.ngayDungGanNhat || "",
+            "Số Ngày Chưa Dùng / 未使用天数": item.soNgayChuaDung !== "" ? item.soNgayChuaDung : "",
+            "Tổng Số Lượng Xuống Đơn / 总下单数": item.tongDon !== "" ? item.tongDon : ""
+        }));
+
+        const ws = XLSX.utils.json_to_sheet(exportRows);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "BaoPhe");
+        const todayStr = new Date().toISOString().split('T')[0];
+        XLSX.writeFile(wb, "Danh_Sach_Bao_Phe_" + todayStr + ".xlsx");
+    }
+
+    // XÓA MỤC BÁO PHẾ ĐÃ CHỌN
+    
+    // XÓA 1 DÒNG BÁO PHẾ (CHỈ DÀNH CHO ADMIN ĐÃ ĐĂNG NHẬP)
+    function deleteSingleBaoPheRow(firebaseId, code) {
+        if (!isAdmin) {
+            alert("Chỉ Quản trị viên đã đăng nhập mới có quyền xóa dòng! Vui lòng đăng nhập.\n只有已登录的管理员可以删除记录！请先登录。");
+            return;
+        }
+        if (!code) return;
+        if (confirm("Bạn có chắc chắn muốn xóa mục này khỏi danh sách báo phế?\n您确定要删除该报废记录吗？\n\n🔖 Mã / 编号: " + code)) {
+            if (firebaseId) {
+                baoPheRef.child(firebaseId).remove().then(() => {
+                    baoPheList = baoPheList.filter(item => (item.ma || '').toUpperCase() !== code.toUpperCase());
+                    localStorage.setItem('baoPheDataCache', JSON.stringify(baoPheList));
+                    filterAndRenderBaoPhe();
+                }).catch(err => {
+                    console.error('Delete error:', err);
+                    baoPheList = baoPheList.filter(item => (item.ma || '').toUpperCase() !== code.toUpperCase());
+                    localStorage.setItem('baoPheDataCache', JSON.stringify(baoPheList));
+                    filterAndRenderBaoPhe();
+                });
+            } else {
+                baoPheList = baoPheList.filter(item => (item.ma || '').toUpperCase() !== code.toUpperCase());
+                localStorage.setItem('baoPheDataCache', JSON.stringify(baoPheList));
+                filterAndRenderBaoPhe();
+            }
+        }
+    }
+
+    function deleteBaoPheSelected() {
+        if (!isAdmin) return;
+        const selectedCheckboxes = document.querySelectorAll('.bp-row-check:checked');
+        if (selectedCheckboxes.length === 0) {
+            alert("Vui lòng chọn ít nhất 1 dòng để xóa! / 请至少选择一行进行删除！");
+            return;
+        }
+        if (confirm("Bạn có chắc chắn muốn xóa " + selectedCheckboxes.length + " mục đã chọn?\n您确定要删除选中的 " + selectedCheckboxes.length + " 条记录吗？")) {
+            let keysToRemove = [];
+            let codesToRemove = [];
+            selectedCheckboxes.forEach(cb => {
+                const fbId = cb.getAttribute('data-id');
+                const code = cb.getAttribute('data-code');
+                if (fbId) keysToRemove.push(fbId);
+                if (code) codesToRemove.push(code.toUpperCase());
+            });
+
+            let updates = {};
+            keysToRemove.forEach(k => updates[k] = null);
+            baoPheRef.update(updates).then(() => {
+                baoPheList = baoPheList.filter(item => !codesToRemove.includes((item.ma || '').toUpperCase()));
+                localStorage.setItem('baoPheDataCache', JSON.stringify(baoPheList));
+                filterAndRenderBaoPhe();
+                alert("Đã xóa thành công " + codesToRemove.length + " mục! / 成功删除 " + codesToRemove.length + " 条记录！");
+            }).catch(err => {
+                console.error('Delete error:', err);
+                baoPheList = baoPheList.filter(item => !codesToRemove.includes((item.ma || '').toUpperCase()));
+                localStorage.setItem('baoPheDataCache', JSON.stringify(baoPheList));
+                filterAndRenderBaoPhe();
+                alert("Đã xóa khỏi bộ nhớ cục bộ! / 已从本地删除！");
+            });
+        }
+    }
+
 
     function startLiveClock() {
         setInterval(() => {
@@ -1058,55 +2240,7 @@
     }
     startLiveClock();
 
-    // =========================================================================
-    // CẤU HÌNH FIREBASE
-    // =========================================================================
-    const firebaseConfig = {
-        apiKey: "AIzaSyCMGoIYGKPb1Nwc3PVAWwBSDhB8yK0orWM",
-        authDomain: "quanlytiendo-13146.firebaseapp.com",
-        databaseURL: "https://quanlytiendo-13146-default-rtdb.asia-southeast1.firebasedatabase.app", 
-        projectId: "quanlytiendo-13146",
-        storageBucket: "quanlytiendo-13146.firebasestorage.app",
-        messagingSenderId: "222233123520",
-        appId: "1:222233123520:web:83f33442776f44c0402b25"
-    };
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    const dbRef = db.ref('TienDoDuAn'); const keRef = db.ref('KeBanIn'); const cmRef = db.ref('CatMauDonHang'); 
-
-    let excelData = []; let keData = {}; let cmData = [];
-    let chartInstance = null; let chartInstanceCatMau = null;
-
-    dbRef.on('value', (snapshot) => {
-        const data = snapshot.val(); excelData = [];
-        if (data) {
-            for (let key in data) excelData.push({ firebaseId: key, ...data[key] });
-            excelData.sort((a, b) => (b.ngayDat || "").localeCompare((a.ngayDat || "")));
-        }
-        document.getElementById('syncStatus').innerText = "Đã đồng bộ / 已同步";
-        document.getElementById('syncStatus').style.background = "#27ae60";
-        populateCustomerDatalist(); updateDropdowns(); filterAndRender(); checkSuggestions(); checkDailyAutoBackup(); updateTopSummary(); 
-    }, (error) => {
-        document.getElementById('syncStatus').innerText = "Lỗi kết nối DB / 数据库连接错误";
-        document.getElementById('syncStatus').style.background = "red";
-    });
-
-    keRef.on('value', (snapshot) => { keData = snapshot.val() || {}; updateKeGridValues(); checkSuggestions(); });
-
-    cmRef.on('value', (snapshot) => {
-        const data = snapshot.val(); cmData = [];
-        if (data) {
-            for (let key in data) cmData.push({ firebaseId: key, ...data[key] });
-            
-            cmData.sort((a, b) => {
-                let dateCmp = (b.ngay || "").localeCompare(a.ngay || "");
-                if (dateCmp === 0) return b.firebaseId.localeCompare(a.firebaseId);
-                return dateCmp;
-            });
-        }
-        renderCatMau(); 
-    });
 
     function updateTopSummary() {
         let banInChuaGiao = 0; let khuonBeChuaGiao = 0; let khuonSuaChuaGiao = 0;
@@ -1255,20 +2389,7 @@
     // ==========================================
     // LOGIC NHẬP TAY / CHỈNH SỬA (TIẾN ĐỘ)
     // ==========================================
-    const fixedCustomerList = [
-        "辰旺 TRAN VUONG", "宁波昌亚 NINGBO CHANGYA", "优易达 YOU YI DA", "焯悦 ZHUO YUE",
-        "安琦 ANQI", "国翔 QUOC TUONG", "泉峰 CHERVON", "乐家", "UNITED CREATION",
-        "盈德 DOANH DUC", "恒信 HẰNG TÍN", "品越 PINYUE", "DECHANG 德昌", "宏德 HUNGDER",
-        "亨运 HENGYUN", "泰普森 HENGFENG", "周全国际", "铭辉 MINH HUY", "越南易达",
-        "合富- HOP PHU", "利百加", "昇辉 CALLPACK", "永全 VIỄN TOÀN", "佳创 JIA CHUANG",
-        "悦美华 YUE MEI HUA", "华美 HOA MY", "康德盛 KHANG DUC THINH", "SAM WELL",
-        "晋文 JINWEN", "百美 BAIMEI", "美的 MIDEA", "HERUI和瑞", "倍加福 PEPPERL+FUCHS",
-        "焯悦家具 TRAC DUYET FURNITURE", "台闽 TAI MIN", "中泰 TEXTILE", "泓美  HONG MEI",
-        "创源 CHUANGYUAN", "宏森 HONG SEN", "好好 HAO HAO", "抚达 FUDA", "百适乐 BESTWAY",
-        "骅麟 HOA LAN", "嘉视 JIASHI BVT", "旭程光伏 QUANG DIEN XUCHENG", "OLYMPIA",
-        "永吉 VINH CAT", "仁泰 NHƠN THÁI", "越嘉 VIET GIA", "新星石材 NOVA STONE QUARTZ",
-        "越境 VKING", "南祥 NAM TƯỜNG", "星运 SHINING", "顺义 SHUNYI", "好迪 HAODY"
-    ];
+    // fixedCustomerList declared at top of script
 
     function populateCustomerDatalist() {
         const datalist = document.getElementById('customerDatalist'); datalist.innerHTML = '';
@@ -1352,7 +2473,7 @@
     // BACKUP & RESTORE
     // ==========================================
     function manualBackup() {
-        const fullBackupObject = { timestamp: new Date().toISOString(), TienDoDuAn: excelData, KeBanIn: keData, CatMauDonHang: cmData };
+        const fullBackupObject = { timestamp: new Date().toISOString(), TienDoDuAn: excelData, KeBanIn: keData, CatMauDonHang: cmData, BanInKhuonBeBaoPhe: baoPheList, BanInKhuonBeBaoPhe: baoPheList };
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(fullBackupObject, null, 2));
         const downloadAnchor = document.createElement('a'); downloadAnchor.setAttribute("href", dataStr);
         downloadAnchor.setAttribute("download", `Backup_QuanLySanXuat_${new Date().toISOString().split('T')[0]}.json`);
@@ -1432,6 +2553,13 @@
                             parsedData.CatMauDonHang.forEach(item => { delete item.firebaseId; let newRef = cmRef.push(); cleanCM[newRef.key] = item; });
                             cmRef.set(cleanCM);
                         } else { cmRef.set(parsedData.CatMauDonHang); }
+                    }
+                    if (parsedData.BanInKhuonBeBaoPhe) {
+                        let cleanBP = {};
+                        if (Array.isArray(parsedData.BanInKhuonBeBaoPhe)) {
+                            parsedData.BanInKhuonBeBaoPhe.forEach(item => { delete item.firebaseId; let newRef = baoPheRef.push(); cleanBP[newRef.key] = item; });
+                            baoPheRef.set(cleanBP);
+                        } else { baoPheRef.set(parsedData.BanInKhuonBeBaoPhe); }
                     }
                     alert("Khôi phục dữ liệu thành công! / 数据恢复成功！");
                 }
@@ -1767,7 +2895,7 @@
         document.querySelectorAll('.ke-input').forEach(input => {
             input.style.backgroundColor = ''; 
             input.style.color = '';
-            input.parentElement.style.backgroundColor = ''; 
+            if (input.parentElement) input.parentElement.style.backgroundColor = ''; 
         });
 
         if (!keyword) {
@@ -1925,8 +3053,6 @@
     // ==========================================
     // THÊM LOGIC SẮP XẾP GIAO DIỆN
     // ==========================================
-    let sortCol = '';
-    let sortAsc = true;
 
     function handleSort(col) {
         if (sortCol === col) {
