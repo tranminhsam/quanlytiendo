@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quy Trình Thiết Kế & Chuẩn Bị Sản Xuất Thùng Carton | 瓦楞纸箱设计与生产准备标准流程</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              magenta: '#E11D48',
+              blue: '#2563EB',
+              orange: '#EA580C',
+              purple: '#7C3AED',
+              amber: '#D97706',
+              emerald: '#059669',
+              dark: '#0B0F19'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Technical Blueprint Canvas Grid */
+    .canvas-grid {
+      background-size: 28px 28px;
+      background-image: 
+        radial-gradient(circle, rgba(148, 163, 184, 0.18) 1.2px, transparent 1.2px);
+    }
+    .drawer-transition {
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .diamond-shape {
+      transform: rotate(45deg);
+    }
+    .diamond-content {
+      transform: rotate(-45deg);
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="h-full bg-slate-950 text-slate-100 font-sans overflow-hidden select-none">
+
+  <!-- Main Top Bar (Bilingual Header) -->
+  <header class="absolute top-0 left-0 right-0 h-16 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 z-30 flex items-center justify-between px-3 sm:px-6">
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-600 via-blue-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 text-white font-bold text-lg shrink-0">
+        <i class="fa-solid fa-boxes-packing"></i>
+      </div>
+      <div>
+        <h1 class="text-xs sm:text-sm md:text-base font-bold text-white flex items-center gap-1.5 sm:gap-2">
+          <span>Quy Trình Thiết Kế & Chế Bản Thùng Carton</span>
+          <span class="text-slate-400 font-normal">|</span>
+          <span class="text-blue-300">瓦楞纸箱设计与生产准备流程</span>
+        </h1>
+        <p class="text-[10px] sm:text-xs text-slate-400">
+          SOP Chuẩn Hóa Chế Bản, Làm Mẫu & Quản Lý ECN (标准作业规范 / 越中双语对照)
+        </p>
+      </div>
+    </div>
+
+    <!-- Workflow Filter Selector (Bilingual) -->
+    <div class="hidden xl:flex items-center bg-slate-950/80 p-1 rounded-xl border border-slate-800 text-xs font-medium">
+      <button onclick="setFlowFilter('all')" id="flt-all" class="flow-flt-btn px-3 py-1.5 rounded-lg bg-blue-600 text-white transition">
+        Toàn bộ / 全部
+      </button>
+      <button onclick="setFlowFilter('main')" id="flt-main" class="flow-flt-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">
+        Luồng chuẩn / 标准流程
+      </button>
+      <button onclick="setFlowFilter('sample')" id="flt-sample" class="flow-flt-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">
+        Nhánh cắt mẫu / 打样分支
+      </button>
+      <button onclick="setFlowFilter('ecn')" id="flt-ecn" class="flow-flt-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition">
+        Thay đổi ECN / 变更分支
+      </button>
+    </div>
+
+    <!-- Quick Utilities -->
+    <div class="flex items-center space-x-1.5 sm:space-x-2">
+      <button onclick="resetToOptimalView()" title="Căn giữa màn hình / 居中显示" class="flex items-center space-x-1.5 px-2.5 sm:px-3 py-1.5 bg-slate-800/80 hover:bg-slate-750 text-slate-200 rounded-lg text-xs font-medium border border-slate-700 transition">
+        <i class="fa-solid fa-crosshairs text-blue-400"></i>
+        <span class="hidden md:inline">Căn giữa / 居中</span>
+      </button>
+      <button onclick="resetDefaultPositions()" title="Khôi phục vị trí mặc định / 重置布局" class="flex items-center space-x-1.5 px-2.5 sm:px-3 py-1.5 bg-slate-800/80 hover:bg-slate-750 text-slate-200 rounded-lg text-xs font-medium border border-slate-700 transition">
+        <i class="fa-solid fa-arrow-rotate-left"></i>
+        <span class="hidden md:inline">Đặt lại / 重置</span>
+      </button>
+      <button onclick="toggleHelpModal(true)" title="Hướng dẫn / 使用说明" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-sm border border-slate-700 transition">
+        <i class="fa-solid fa-circle-question"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Interactive Pan/Zoom Workspace -->
+  <main id="viewport" class="relative w-full h-full overflow-hidden canvas-grid cursor-grab active:cursor-grabbing">
+    <!-- SVG Canvas Connectors -->
+    <svg id="svg-connections" class="absolute inset-0 pointer-events-none w-full h-full z-0 overflow-visible">
+      <defs>
+        <marker id="arrow-default" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1 L 10 5 L 0 9 z" fill="#64748b" />
+        </marker>
+        <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1 L 10 5 L 0 9 z" fill="#3b82f6" />
+        </marker>
+        <marker id="arrow-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1 L 10 5 L 0 9 z" fill="#ea580c" />
+        </marker>
+        <marker id="arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1 L 10 5 L 0 9 z" fill="#a855f7" />
+        </marker>
+        <marker id="arrow-emerald" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1 L 10 5 L 0 9 z" fill="#10b981" />
+        </marker>
+        <marker id="arrow-rose" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1 L 10 5 L 0 9 z" fill="#f43f5e" />
+        </marker>
+        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.35"/>
+        </filter>
+      </defs>
+      <g id="line-group" filter="url(#shadow)"></g>
+    </svg>
+
+    <!-- Transformed Workflow Content Container -->
+    <div id="flow-container" class="absolute origin-top-left transition-transform duration-75 ease-out select-none">
+      <!-- Workflow Cards injected via JS -->
+    </div>
+  </main>
+
+  <!-- Zoom & Viewport Floating Controls -->
+  <div class="absolute bottom-6 left-6 z-20 flex flex-col space-y-2 bg-slate-900/90 backdrop-blur-md p-1.5 rounded-2xl border border-slate-800 shadow-2xl">
+    <button onclick="zoomCanvas(0.15)" class="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-800 rounded-xl transition" title="Phóng to / 放大">
+      <i class="fa-solid fa-plus text-sm"></i>
+    </button>
+    <div id="zoom-text" class="text-[11px] text-center font-mono text-slate-400 py-0.5">100%</div>
+    <button onclick="zoomCanvas(-0.15)" class="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-800 rounded-xl transition" title="Thu nhỏ / 缩小">
+      <i class="fa-solid fa-minus text-sm"></i>
+    </button>
+    <div class="h-px bg-slate-800 w-full my-0.5"></div>
+    <button onclick="resetToOptimalView()" class="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-800 rounded-xl transition" title="Toàn cảnh / 最佳视野">
+      <i class="fa-solid fa-expand text-sm"></i>
+    </button>
+  </div>
+
+  <!-- Bilingual Legend Badges -->
+  <div class="absolute bottom-6 right-6 z-20 hidden lg:flex items-center space-x-3.5 bg-slate-900/90 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-slate-800 shadow-2xl text-[11px] text-slate-300">
+    <div class="flex items-center space-x-1.5">
+      <span class="w-3 h-3 rounded-full bg-rose-600"></span>
+      <span>Bắt đầu / Kết thúc (开始/结束)</span>
+    </div>
+    <div class="flex items-center space-x-1.5">
+      <span class="w-3 h-3 rounded bg-blue-600"></span>
+      <span>Công đoạn chuẩn (标准工序)</span>
+    </div>
+    <div class="flex items-center space-x-1.5">
+      <span class="w-3 h-3 rounded bg-purple-600"></span>
+      <span>Họp thẩm định (评审会议)</span>
+    </div>
+    <div class="flex items-center space-x-1.5">
+      <span class="w-3 h-3 rotate-45 bg-amber-600"></span>
+      <span>Phân nhánh điều kiện (判定节点)</span>
+    </div>
+    <div class="flex items-center space-x-1.5">
+      <span class="w-3 h-3 rounded border border-rose-500 bg-rose-950/60"></span>
+      <span>Nhánh ECN (变更分支)</span>
+    </div>
+  </div>
+
+  <!-- Detail Inspection Slide-Out Drawer (100% Song Ngữ Việt - Trung) -->
+  <div id="detail-drawer" class="fixed top-16 right-0 bottom-0 w-full sm:w-[540px] bg-slate-900 border-l border-slate-800 z-40 transform translate-x-full drawer-transition shadow-2xl flex flex-col">
+    <!-- Drawer Header -->
+    <div class="p-5 border-b border-slate-800 flex items-start justify-between bg-slate-900/95">
+      <div>
+        <div id="dr-badge" class="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-md mb-2 bg-blue-500/20 text-blue-400 border border-blue-500/30">
+          QUY TRÌNH THỰC TẾ / 现场标准作业
+        </div>
+        <h2 id="dr-title" class="text-base sm:text-lg font-bold text-white leading-tight">Tên bước công việc</h2>
+        <h3 id="dr-subtitle" class="text-xs sm:text-sm text-blue-400 font-medium mt-1">步骤中文名称</h3>
+      </div>
+      <button onclick="closeDetailDrawer()" class="w-8 h-8 rounded-lg bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition" title="Đóng / 关闭">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Drawer Body -->
+    <div class="flex-1 overflow-y-auto p-5 space-y-4 text-xs sm:text-sm no-scrollbar">
+      <!-- Responsible & Target Machine -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="bg-slate-950/70 p-3 rounded-xl border border-slate-800">
+          <span class="text-[11px] text-slate-400 font-medium block mb-1">BỘ PHẬN THỰC HIỆN / 责任部门:</span>
+          <div id="dr-dept" class="font-bold text-white text-xs flex items-center gap-1.5 leading-snug">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+        <div class="bg-slate-950/70 p-3 rounded-xl border border-slate-800">
+          <span class="text-[11px] text-slate-400 font-medium block mb-1">MÁY MÓC & QUY CÁCH / 匹配机型与规格:</span>
+          <div id="dr-machine" class="font-bold text-amber-300 text-xs flex items-center gap-1.5 leading-snug">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Operations (Song ngữ chi tiết) -->
+      <div>
+        <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-list-check text-blue-400"></i>
+          Thao tác nghiệp vụ thực tế / 实际作业操作规范
+        </h4>
+        <ul id="dr-tasks" class="space-y-2.5 text-slate-300 text-xs leading-relaxed">
+          <!-- Populated by JS -->
+        </ul>
+      </div>
+
+      <!-- Key Engineering Notes (Song ngữ chi tiết) -->
+      <div class="bg-indigo-950/20 p-4 rounded-xl border border-indigo-800/40">
+        <h4 class="text-xs font-bold text-indigo-300 uppercase tracking-wider mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-microchip text-indigo-400"></i>
+          Yêu cầu kỹ thuật trọng tâm / 核心技术标准与公差
+        </h4>
+        <ul id="dr-notes" class="space-y-2 text-xs text-indigo-200/90 list-disc list-inside leading-relaxed">
+          <!-- Populated by JS -->
+        </ul>
+      </div>
+
+      <!-- Interactive Checklist (Song ngữ) -->
+      <div>
+        <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-2">
+          <i class="fa-regular fa-square-check text-emerald-400"></i>
+          Tiêu chuẩn nghiệm thu / 完工验收确认清单
+        </h4>
+        <div id="dr-checklist" class="space-y-2 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Drawer Footer -->
+    <div class="p-4 border-t border-slate-800 bg-slate-900/95 flex items-center justify-between text-xs text-slate-400">
+      <span>Quy trình nhà máy / 纸箱厂标准作业</span>
+      <button onclick="closeDetailDrawer()" class="px-4 py-2 bg-slate-800 hover:bg-slate-750 text-white rounded-lg font-medium transition">
+        Đóng / 关闭
+      </button>
+    </div>
+  </div>
+
+  <!-- Help & Flow Explanation Modal (Bilingual) -->
+  <div id="help-modal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-xl w-full p-6 shadow-2xl relative">
+      <button onclick="toggleHelpModal(false)" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+      <div class="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center mb-4 text-xl">
+        <i class="fa-solid fa-diagram-project"></i>
+      </div>
+      <h3 class="text-base font-bold text-white mb-1">
+        Quy chuẩn vận hành thiết kế & chế bản thùng carton
+      </h3>
+      <p class="text-xs text-blue-400 mb-3 font-medium">瓦楞纸箱设计、打样、新品评审与工模具制作规范指南</p>
+      
+      <div class="space-y-2.5 text-xs text-slate-300 mb-5 leading-relaxed">
+        <div class="p-2.5 rounded-lg bg-slate-950/70 border border-slate-800 flex items-start gap-2.5">
+          <span class="w-5 h-5 rounded bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold shrink-0">1</span>
+          <div>
+            <strong>Kéo thả & Thu phóng (画布平移与缩放):</strong>
+            <p class="text-slate-400 mt-0.5">Nhấp giữ chuột trái ở vùng trống để kéo (Pan). Lăn chuột hoặc dùng nút +/- để phóng to, thu nhỏ.</p>
+          </div>
+        </div>
+        <div class="p-2.5 rounded-lg bg-slate-950/70 border border-slate-800 flex items-start gap-2.5">
+          <span class="w-5 h-5 rounded bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold shrink-0">2</span>
+          <div>
+            <strong>Kéo di chuyển khối (自由拖拽节点):</strong>
+            <p class="text-slate-400 mt-0.5">Bấm giữ bất kỳ node nào để kéo thả sắp xếp lại vị trí. Mũi tên kết nối SVG sẽ tự động cập nhật bám theo.</p>
+          </div>
+        </div>
+        <div class="p-2.5 rounded-lg bg-slate-950/70 border border-slate-800 flex items-start gap-2.5">
+          <span class="w-5 h-5 rounded bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold shrink-0">3</span>
+          <div>
+            <strong>Xem chi tiết & Checklist (查看详情与核查清单):</strong>
+            <p class="text-slate-400 mt-0.5">Nhấp vào từng khối để xem tài liệu song ngữ, thông số máy (1228/1224/2636), điều kiện máy cắt mẫu và checklist nghiệm thu.</p>
+          </div>
+        </div>
+      </div>
+
+      <button onclick="toggleHelpModal(false)" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-medium transition text-xs">
+        Đã hiểu / 明白并关闭
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Comprehensive Workflow Nodes definition 100% Bilingual (Việt - 中文)
+    const factoryWorkflow = [
+      {
+        id: 'start',
+        type: 'terminal',
+        filterTag: ['all', 'main'],
+        titleVi: 'BẮT ĐẦU',
+        titleZh: '开始',
+        color: '#E11D48',
+        x: 60,
+        y: 60,
+        width: 140,
+        height: 54,
+        details: {
+          deptText: 'Kinh doanh & Thiết kế / 业务部与设计部',
+          machine: 'Hệ thống ERP / 企业管理系统',
+          tasks: [
+            'VN: Tiếp nhận yêu cầu phát triển mã bao bì mới từ khách hàng hoặc phòng kinh doanh.<br>CN: 接收来自客户或业务部的新产品建档或新包装项目开发需求。',
+            'VN: Khởi tạo mã hồ sơ dự án trên hệ thống để bắt đầu theo dõi tiến độ.<br>CN: 在ERP系统中建立新项目工程编号以开启全流程追踪。'
+          ],
+          notes: [
+            'VN: Đảm bảo tiếp nhận qua kênh chính thống có văn bản xác nhận (Email, Portal).<br>CN: 确保通过正式渠道接收需求并具备书面凭证（企业邮箱、客户系统）。'
+          ],
+          checklist: [
+            { textVi: 'Khách hàng gửi yêu cầu báo giá/đặt hàng chính thức', textZh: '客户已发送正式报价或下单需求' }
+          ]
+        }
+      },
+      {
+        id: 'receive',
+        type: 'process',
+        filterTag: ['all', 'main'],
+        titleVi: '1. Tiếp nhận bản vẽ',
+        titleZh: '一、接收客户图纸',
+        descVi: 'AI, PDF, CAD + thông số',
+        descZh: 'AI, PDF, CAD及参数',
+        color: '#2563EB',
+        x: 250,
+        y: 50,
+        width: 220,
+        height: 74,
+        details: {
+          deptText: 'Bộ phận Kinh doanh / 业务部',
+          machine: 'Workstation / Mail / Cloud',
+          tasks: [
+            'VN: Nhận bản vẽ từ khách qua Email hoặc Cloud (Định dạng: AI, PDF, CDR, DXF, DWG).<br>CN: 通过邮件或企业网盘接收客户原始设计图（支持格式：AI、PDF、CDR、DXF、DWG等）。',
+            'VN: Xác nhận kết cấu thùng: Khai rãnh A1, nắp cài, âm dương, thùng bế định hình.<br>CN: 确认箱型结构：普通开槽箱（A1）、扣底插口盒、天地盖、异型模切盒。',
+            'VN: Làm rõ kích thước Dài x Rộng x Cao (kích thước phủ bì hay lọt lòng).<br>CN: 明确长 × 宽 × 高尺寸基准（区分外径尺寸或内径尺寸）。',
+            'VN: Xác nhận loại sóng carton (B, C, E, BC...) và công nghệ in (Flexo hay Offset).<br>CN: 明确瓦楞楞型（B、C、E、BC等）及印刷工艺要求（水墨柔印或胶印）。'
+          ],
+          notes: [
+            'VN: Tuyệt đối không dùng ảnh chụp mờ nhòe trên điện thoại làm căn cứ sản xuất.<br>CN: 严禁用模糊的手机截屏作为模切制版的技术依据。',
+            'VN: Cần xác định rõ hướng sóng giấy (Grain direction) để đảm bảo độ nén thùng.<br>CN: 必须明确瓦楞竖向走向，确保纸箱抗压强度（BCT）符合堆码要求。'
+          ],
+          checklist: [
+            { textVi: 'File thiết kế gốc mở được, không bị lỗi file', textZh: '设计源文件可正常打开且无损坏' },
+            { textVi: 'Xác nhận đủ 3 chiều Dài x Rộng x Cao', textZh: '确认长宽高三维尺寸完整' },
+            { textVi: 'Đã chốt loại sóng (B, C, E, BC...)', textZh: '已锁定瓦楞楞型（B, C, E, BC等）' }
+          ]
+        }
+      },
+      {
+        id: 'evaluate',
+        type: 'process',
+        filterTag: ['all', 'main'],
+        titleVi: '2. Đánh giá & Phân tích',
+        titleZh: '二、评估与分析图纸',
+        descVi: 'Kiểm tra kích thước, kết cấu, font',
+        descZh: '核对尺寸、结构与字体',
+        color: '#2563EB',
+        x: 520,
+        y: 50,
+        width: 230,
+        height: 74,
+        details: {
+          deptText: 'Bộ phận Thiết kế / Kỹ thuật (设计/技术部)',
+          machine: 'ArtiosCAD / Illustrator / AutoCAD',
+          tasks: [
+            'VN: Mở file kiểm tra chi tiết bố cục, đường dao đứt, dao cấn nếp gấp và tai dán.<br>CN: 打开图纸全面核对版面、切线、压线位置以及粘舌/钉条尺寸。',
+            'VN: Kiểm tra lỗi font chữ (chưa outline) và liên kết hình ảnh bị thiếu (Missing Links).<br>CN: 检查文字未转曲（Missing Fonts）及图片链接丢失（Missing Links）问题。',
+            'VN: Đánh giá khoảng cách an toàn: Vùng tràn lề (Bleed) và mép nội dung cách rãnh bế >= 5mm.<br>CN: 评估安全距离：图文出血位以及离压痕切口的距离必须 ≥ 5 mm。',
+            'VN: Ghi chú các điểm bất hợp lý để chuẩn bị cho buổi họp sản phẩm mới.<br>CN: 详细记录图纸存在的结构或尺寸缺陷，汇总至新品评审会。'
+          ],
+          notes: [
+            'VN: Phải tính toán độ bù co giãn của sóng khi cấn gập để tránh kích thước thùng bị hụt.<br>CN: 必须根据瓦楞厚度严格核算压痕伸缩补偿量（Creasing Allowance）。'
+          ],
+          checklist: [
+            { textVi: 'Toàn bộ font chữ đã được khóa viền (Outline/Curves)', textZh: '所有文字均已转曲轮廓化' },
+            { textVi: 'Khoảng cách mép cấn và mép cắt chuẩn xác', textZh: '压痕线与裁切线间距精准无干涉' },
+            { textVi: 'Tai dán/đóng ghim đạt chuẩn máy (>= 30mm)', textZh: '粘盒舌/钉条宽度符合设备要求（≥ 30 mm）' }
+          ]
+        }
+      },
+      {
+        id: 'convert',
+        type: 'process',
+        filterTag: ['all', 'main'],
+        titleVi: '3. Chuyển sang chuẩn cty',
+        titleZh: '三、转换为公司标准图纸',
+        descVi: 'Đưa vào template, gán mã, bù dao',
+        descZh: '套用模板、编制图号、补刀',
+        color: '#2563EB',
+        x: 800,
+        y: 50,
+        width: 230,
+        height: 74,
+        details: {
+          deptText: 'Bộ phận Thiết kế (设计部)',
+          machine: 'Khung bản vẽ tiêu chuẩn / 标准图框模板',
+          tasks: [
+            'VN: Tạo file mới trên khung mẫu chuẩn của công ty (Title Block).<br>CN: 使用公司标准化图框模板建立新工程文档。',
+            'VN: Nhập dữ liệu khách hàng vào khung chuẩn, canh đúng hệ lưới tọa độ.<br>CN: 将客户设计导入标准坐标系，确保基准点与拼版网格吻合。',
+            'VN: Phân chia layer chuẩn hóa: Dao cắt (Màu đỏ), Dao cấn (Màu xanh), In ấn (Artwork).<br>CN: 规范分层管理：裁切线（红色）、压线（蓝色）、印刷图文层（Artwork）。',
+            'VN: Gán mã số thiết kế duy nhất, ngày lập, tên khách hàng và phiên bản (Rev 0.1).<br>CN: 编制并标注公司唯一图纸编号、客户名称、设计日期及版本号（Rev 0.1）。'
+          ],
+          notes: [
+            'VN: Việc chuẩn hóa layer giúp máy khắc laser khuôn bế nhận diện tự động chính xác.<br>CN: 图层颜色规范化可确保激光切割机自动识别刀线与压线，防止加工出错。'
+          ],
+          checklist: [
+            { textVi: 'Áp dụng đúng khung tên và logo tiêu chuẩn công ty', textZh: '套用标准公司图框与规范标识' },
+            { textVi: 'Tách biệt hoàn toàn layer dao bế và layer in', textZh: '刀模图层与印刷图层彻底隔离独立' },
+            { textVi: 'Cấp mã số bản vẽ theo quy định ERP', textZh: '按ERP规则分配唯一图纸编号' }
+          ]
+        }
+      },
+      {
+        id: 'meeting',
+        type: 'meeting',
+        filterTag: ['all', 'main'],
+        titleVi: '4. Họp sản phẩm mới',
+        titleZh: '四、新产品评审会议',
+        descVi: 'Chọn máy 1228 / 1224 / 2636 & màu',
+        descZh: '选定1228/1224/2636机型及油墨',
+        color: '#7C3AED',
+        x: 800,
+        y: 200,
+        width: 250,
+        height: 84,
+        details: {
+          deptText: 'Kỹ thuật, Thiết kế, Sản xuất & QC (技术、设计、生产与质检)',
+          machine: 'Máy 1228 / Máy 1224 / Máy 2636',
+          tasks: [
+            'VN: Đánh giá tính khả thi sản xuất hàng loạt trên dây chuyền của nhà máy.<br>CN: 全面评审新包装在大规模流水线上的生产工艺可行性。',
+            'VN: Chọn chỉ định dòng máy in & bế phù hợp theo khổ phôi:<br>CN: 根据纸板门幅与模切要求指定生产机型：<br>' +
+            '  • Máy 1228 (1228机型): Khổ tối đa 1200 × 2800 mm, tốc độ cao, thùng cỡ vừa/dài.<br>' +
+            '  • Máy 1224 (1224机型): Khổ tối đa 1200 × 2400 mm, dòng máy in nét cho thùng phổ thông.<br>' +
+            '  • Máy 2636 (2636机型): Khổ siêu đại 2600 × 3600 mm, chuyên thùng tủ lạnh, máy giặt, jumbo.',
+            'VN: Xác nhận phương án mực in: Kiểm tra mã Pantone hoặc thống nhất lấy mẫu đối chứng.<br>CN: 确定油墨方案：核实客户Pantone色号，或落实实物对色样板索取责任。'
+          ],
+          notes: [
+            'VN: Cần tối ưu khổ giấy lề biên để tỷ lệ hao hụt phôi giấy dưới 2.5%.<br>CN: 必须优化排版门幅，确保纸板修边损耗控制在2.5%以内。'
+          ],
+          checklist: [
+            { textVi: 'Biên bản họp sản phẩm mới có đầy đủ chữ ký các bên', textZh: '新产品评审会议纪要各部门签字齐全' },
+            { textVi: 'Đã chốt máy sản xuất (Máy 1228 / 1224 / 2636)', textZh: '已锁定生产机型（1228 / 1224 / 2636）' },
+            { textVi: 'Xác định phương án khuôn bế (tròn hay phẳng)', textZh: '已明确模切方式（圆压圆滚筒模或平压平模）' }
+          ]
+        }
+      },
+      {
+        id: 'ink_check',
+        type: 'decision',
+        filterTag: ['all', 'main'],
+        titleVi: 'Khách có mã Pantone?',
+        titleZh: '客户提供潘通色号？',
+        color: '#EA580C',
+        x: 875,
+        y: 350,
+        size: 100,
+        details: {
+          deptText: 'Thiết kế & Phòng Pha mực (设计部与调墨房)',
+          machine: 'Quạt màu Pantone / 潘通色卡 Formula Guide',
+          tasks: [
+            'VN: Kiểm tra file thiết kế và đơn hàng xem khách có ghi rõ mã màu quốc tế Pantone hay không.<br>CN: 检查图纸或合同中是否明确标注标准Pantone专色色号（C/U卡）。',
+            'VN: Nếu CÓ: Lưu mã Pantone vào phiếu thông số chế bản để pha mực theo công thức.<br>CN: 若有：将色号录入工艺卡，调墨房调配并制作展色条。',
+            'VN: Nếu KHÔNG: Bắt buộc yêu cầu khách hàng cung cấp mẫu màu thực tế.<br>CN: 若无：业务部必须向客户索取实物色样作为对色基准。'
+          ],
+          notes: [
+            'VN: Giấy carton nâu Kraft làm giảm tông màu; cần quẹt thử mực trên chính phôi giấy thực tế.<br>CN: 瓦楞牛卡纸底色偏黄会导致颜色发暗，必须在实际原纸上刮样展色。'
+          ],
+          checklist: [
+            { textVi: 'Xác nhận mã Pantone hoặc nhận mẫu màu thực tế', textZh: '确认潘通色号或已接收实物色样' }
+          ]
+        }
+      },
+      {
+        id: 'ink_pantone',
+        type: 'process',
+        filterTag: ['all', 'main'],
+        titleVi: 'Áp dụng mã Pantone',
+        titleZh: '采用标准潘通色号',
+        descVi: 'Pha theo tỷ lệ chuẩn',
+        descZh: '按标准配方精准调墨',
+        color: '#2563EB',
+        x: 1100,
+        y: 363,
+        width: 190,
+        height: 72,
+        details: {
+          deptText: 'Phòng Mực / Bộ phận In (油墨配色房)',
+          machine: 'Cân điện tử pha mực & Bàn quẹt mẫu (展色仪)',
+          tasks: [
+            'VN: Tra cứu công thức định lượng mực gốc theo mã Pantone tương ứng.<br>CN: 根据Pantone色号查询原色墨配比参数。',
+            'VN: Pha mẻ mực thử nghiệm và quẹt mẫu (Drawdown test) trên giấy sóng thực tế.<br>CN: 称量试配小样，在批量生产所用瓦楞纸板上进行展色测试。',
+            'VN: Lưu trữ công thức pha mực vào cơ sở dữ liệu cho các đơn hàng sau.<br>CN: 将经检验合格的油墨配比数据归档入库。'
+          ],
+          notes: [
+            'VN: Kiểm soát độ nhớt của mực in Flexo: 15-22 giây (Cúp Zahn #4).<br>CN: 严格控制柔版印刷水墨粘度：15-22秒（Zahn #4号杯）。'
+          ],
+          checklist: [
+            { textVi: 'Đã quẹt mẫu mực kiểm tra độ phủ màu', textZh: '已完成展色条比对测试' }
+          ]
+        }
+      },
+      {
+        id: 'ink_sample',
+        type: 'process',
+        filterTag: ['all', 'main'],
+        titleVi: 'Lấy mẫu màu thực tế',
+        titleZh: '索取客户实物色样',
+        descVi: 'So màu tủ D65 & pha mực',
+        descZh: 'D65光源对色并调配',
+        color: '#2563EB',
+        x: 610,
+        y: 363,
+        width: 200,
+        height: 72,
+        details: {
+          deptText: 'Kinh doanh & Phòng Mực (业务部与调墨房)',
+          machine: 'Tủ so màu chuẩn D65 / 标准对色光源箱',
+          tasks: [
+            'VN: Kinh doanh nhận mẫu thùng in thực tế từ khách hàng làm chuẩn đối chứng.<br>CN: 业务部接收客户签字的实物纸箱样板，作为唯一对色基准。',
+            'VN: Phòng mực tiến hành pha mực đối sánh dưới nguồn sáng D65 / TL84.<br>CN: 调色技师在D65/TL84标准光源箱下比对实物调配水墨。',
+            'VN: Gửi mẫu quẹt mực cho khách hàng ký duyệt trước khi in hàng loạt.<br>CN: 将刮色样寄送客户签字确认后方可批量投产。'
+          ],
+          notes: [
+            'VN: Cẩn trọng với các mẫu cũ bị ố vàng hoặc bay màu do ánh sáng mặt trời.<br>CN: 注意排查因日晒或长期存放导致褪色泛黄的老旧样盒。'
+          ],
+          checklist: [
+            { textVi: 'Mẫu thực tế có chữ ký/con dấu xác nhận của khách', textZh: '实物样板已由客户签字确认' }
+          ]
+        }
+      },
+      {
+        id: 'sample_check',
+        type: 'decision',
+        filterTag: ['all', 'main', 'sample'],
+        titleVi: 'Cần cắt mẫu duyệt?',
+        titleZh: '需打样确认尺寸？',
+        color: '#EA580C',
+        x: 875,
+        y: 500,
+        size: 100,
+        details: {
+          deptText: 'Kinh doanh & Khách hàng (业务部与客户)',
+          machine: 'Bàn mẫu thùng carton / 样品检验台',
+          tasks: [
+            'VN: Xác nhận với khách hàng có yêu cầu cắt mẫu thực tế để thử đóng gói sản phẩm hay không.<br>CN: 与客户确认是否需要制作结构白样供实际产品试装。',
+            'VN: Nếu CÓ: Chuyển dữ liệu sang khâu cắt mẫu thử nghiệm.<br>CN: 若需要：将CAD刀线数据流转至样品制作组。',
+            'VN: Nếu KHÔNG: Chuyển thẳng sang bước đặt làm bản in và khuôn bế.<br>CN: 若不需要：跳过打样，直接进入订购印版与刀模环节。'
+          ],
+          notes: [
+            'VN: Khuyến nghị luôn cắt mẫu với thùng bế định hình phức tạp.<br>CN: 强烈建议结构复杂的异型卡扣纸箱必须打样试装。'
+          ],
+          checklist: [
+            { textVi: 'Có xác nhận bằng văn bản về việc cắt mẫu hay không', textZh: '客户已有明确书面确认是否需要样品' }
+          ]
+        }
+      },
+      {
+        id: 'sample_size_check',
+        type: 'decision',
+        filterTag: ['all', 'sample'],
+        titleVi: 'Khổ <= 1600x2500?',
+        titleZh: '尺寸≤1600x2500？',
+        color: '#EA580C',
+        x: 1125,
+        y: 500,
+        size: 100,
+        details: {
+          deptText: 'Kỹ thuật làm mẫu (打样技术员)',
+          machine: 'Bàn cắt CNC 1600x2500mm / 数控切割机',
+          tasks: [
+            'VN: Đo kích thước phôi trải phẳng tối đa của mẫu thùng.<br>CN: 测量样品展开放料最大长宽尺寸。',
+            'VN: Đối chiếu giới hạn làm việc của máy cắt mẫu tự động (1600 × 2500 mm).<br>CN: 对照数控电脑切割机有效台面（1600 × 2500 mm）。',
+            'VN: Nếu ≤ 1600 × 2500 mm: Cắt tự động bằng máy CNC.<br>CN: 若尺寸在限额内：采用数控自动切割。',
+            'VN: Nếu vượt quá 1600 × 2500 mm: Chuyển sang cắt thủ công bằng tay.<br>CN: 若超出限额：必须安排资深技工手工放样裁切。'
+          ],
+          notes: [
+            'VN: Bàn máy cắt mẫu có lực hút chân không cố định phôi giấy phẳng.<br>CN: 切割机吸风平台必须完全吸平纸板，防止跑位。'
+          ],
+          checklist: [
+            { textVi: 'Kiểm tra chính xác khổ phôi trước khi chỉ định phương án', textZh: '准确测量样品展开最大尺寸' }
+          ]
+        }
+      },
+      {
+        id: 'sample_machine',
+        type: 'process',
+        filterTag: ['all', 'sample'],
+        titleVi: 'Cắt máy tự động CNC',
+        titleZh: '数控切割机自动打样',
+        descVi: 'Khổ <= 1600x2500 mm',
+        descZh: '台面内全自动切割压痕',
+        color: '#2563EB',
+        x: 1350,
+        y: 440,
+        width: 220,
+        height: 74,
+        details: {
+          deptText: 'Tổ Làm Mẫu (打样组)',
+          machine: 'Máy cắt kỹ thuật số / CNC Digital Sample Cutter',
+          tasks: [
+            'VN: Xuất file CAD định dạng DXF/CFF2 vào máy cắt mẫu tự động.<br>CN: 将CAD刀线导出DXF/CFF2格式导入切割机软件。',
+            'VN: Sử dụng dao rung cắt đứt và bánh xe cấn tạo nếp tự động theo lập trình.<br>CN: 采用高频振动刀切割外轮廓，压痕轮自动滚压折痕线。',
+            'VN: Gấp thử hộp, kiểm tra góc cạnh và gửi khách hàng nghiệm thu.<br>CN: 试折装盒，测量外径与内径公差，并寄送客户签样。'
+          ],
+          notes: [
+            'VN: Áp lực bánh xe cấn phải vừa đủ để nếp gấp sắc nét, không vỡ lưng sóng.<br>CN: 调节压线轮下压深度，确保折叠挺度且不压爆瓦楞面纸。'
+          ],
+          checklist: [
+            { textVi: 'Mép cắt sắc nét, không bị xơ rách', textZh: '切口平整光滑无毛边' },
+            { textVi: 'Kích thước kiểm tra thước kẹp đạt sai số ± 1 mm', textZh: '卡尺实测公差在 ± 1 mm 以内' }
+          ]
+        }
+      },
+      {
+        id: 'sample_manual',
+        type: 'process',
+        filterTag: ['all', 'sample'],
+        titleVi: 'Cắt thủ công bằng tay',
+        titleZh: '手工放样划线裁切',
+        descVi: 'Vượt khổ > 1600x2500 mm',
+        descZh: '超大尺寸人工手工制作',
+        color: '#2563EB',
+        x: 1350,
+        y: 570,
+        width: 220,
+        height: 74,
+        details: {
+          deptText: 'Kỹ thuật viên phòng mẫu (样品高级技工)',
+          machine: 'Bàn vẽ mẫu lớn, thước nhôm dài & dao trổ công nghiệp',
+          tasks: [
+            'VN: Trải phôi giấy carton jumbo trên sàn làm việc sạch.<br>CN: 在宽敞平整的样板平台上平铺超大瓦楞纸板。',
+            'VN: Vẽ phóng tỉ lệ 1:1 các đường cắt và đường cấn theo bản vẽ kỹ thuật.<br>CN: 严格依据标准图纸1:1划出切口线与压痕线。',
+            'VN: Dùng dao trổ tay cắt mép ngoài và con lăn cơ học để tạo nếp gấp.<br>CN: 采用工业美工刀手工裁切外缘，手持压线滚轮滚压折痕。',
+            'VN: Lắp ghép hoàn chỉnh thùng cỡ lớn và gửi nghiệm thu kích thước.<br>CN: 组装超大外箱并打钉试封，拍照并提交尺寸验收。'
+          ],
+          notes: [
+            'VN: Cắt tay cần cộng thêm dung sai đường dao khoảng 1-2mm so với máy CNC.<br>CN: 人工放样需考虑手工刀口公差，预留适当组装余量。'
+          ],
+          checklist: [
+            { textVi: 'Các cạnh nắp đối xứng khi gập không bị kênh phồng', textZh: '摇盖对合平整无翘曲现象' },
+            { textVi: 'Khách hàng ký biên bản nghiệm thu mẫu kích thước', textZh: '客户已在样品尺寸验收单上签字' }
+          ]
+        }
+      },
+      {
+        id: 'order_tooling',
+        type: 'process',
+        filterTag: ['all', 'main'],
+        titleVi: '5. Đặt bản in & khuôn bế',
+        titleZh: '五、订制印版与模切刀模',
+        descVi: 'Theo máy 1228 / 1224 / 2636',
+        descZh: '匹配1228/1224/2636设备规格',
+        color: '#2563EB',
+        x: 800,
+        y: 670,
+        width: 250,
+        height: 80,
+        details: {
+          deptText: 'Thiết kế & Thu mua chế bản (设计部与采购部)',
+          machine: 'Xưởng chế bản Polymer & Khắc Laser khuôn bế',
+          tasks: [
+            'VN: Xuất file phim chế bản in và file dao bế theo đúng dòng máy sản xuất:<br>CN: 输出符合指定机型参数的CTP制版图档及刀模CAD图纸：<br>' +
+            '  • Máy 1228: Bản in polymer dày 3.94mm / 4.72mm, khuôn bế tròn R320 hoặc khuôn phẳng.<br>' +
+            '  • Máy 1224: Kẹp bản in theo chu vi trục 1224, khuôn tròn tương thích.<br>' +
+            '  • Máy 2636: Bản in khổ đại, ghép modul chia mảng, khuôn bế jumbo.',
+            'VN: Gửi đơn đặt hàng chế bản có đính kèm bản vẽ kỹ thuật đã ký duyệt.<br>CN: 下达正式外协制作工单，附带三方签字确认的技术图纸。'
+          ],
+          notes: [
+            'VN: Trên bản in bắt buộc có vạch canh chữ thập (Registration marks) và đường tâm.<br>CN: 印版边缘必须设置十字套准线、中线及咬口基准标记。'
+          ],
+          checklist: [
+            { textVi: 'Đơn đặt hàng ghi rõ độ dày bản in và bán kính khuôn', textZh: '采购工单明确版厚及滚筒曲率半径' },
+            { textVi: 'Xác nhận cam kết thời gian giao hàng từ nhà cung cấp', textZh: '外协供应商已确认准确交货期' }
+          ]
+        }
+      },
+      {
+        id: 'track_progress',
+        type: 'process',
+        filterTag: ['all', 'main'],
+        titleVi: '6. Theo dõi tiến độ bản/khuôn',
+        titleZh: '六、跟进印版与刀模进度',
+        descVi: 'Nghiệm thu bản in, thử khuôn bế',
+        descZh: '工模具到厂核验与试制',
+        color: '#2563EB',
+        x: 520,
+        y: 673,
+        width: 230,
+        height: 74,
+        details: {
+          deptText: 'Thiết kế, Kỹ thuật xưởng & QC (设计、车间技术与IQC)',
+          machine: 'Thước đo bản quang học & Máy test khuôn bế',
+          tasks: [
+            'VN: Theo dõi sát sao tiến độ làm bản in và khuôn bế để kịp lịch chạy sóng phôi giấy.<br>CN: 实时跟进制版与刀模制作进度，确保与纸板产线无缝衔接。',
+            'VN: Nghiệm thu bản in: Kiểm tra độ dày, độ sạch chân tram, nẹp treo bản in.<br>CN: 印版进厂检验：检查版厚公差、网点浮雕深度及挂版条牢固度。',
+            'VN: Nghiệm thu khuôn bế: Đo chiều cao dao cắt (23.8mm), dao cấn (23.3-23.5mm), mút đệm cao su.<br>CN: 刀模验收：测量切刀高（23.8mm）、压线高（23.3-23.5mm）及弹力海绵条。'
+          ],
+          notes: [
+            'VN: Nếu phát hiện bản in bị bọt khí hoặc khuôn bị vênh, phải yêu cầu làm lại ngay.<br>CN: 发现版材有气泡或木板变形翘曲，必须当场退回重做。'
+          ],
+          checklist: [
+            { textVi: 'Biên bản kiểm tra bản in đạt tiêu chuẩn quang học', textZh: '印版首检合格报告完成' },
+            { textVi: 'Khuôn bế thử gá trên máy khớp kích thước', textZh: '模具与设备滚筒/卡槽匹配无误' }
+          ]
+        }
+      },
+      {
+        id: 'end_standard',
+        type: 'terminal',
+        filterTag: ['all', 'main'],
+        titleVi: 'HOÀN THÀNH QUY TRÌNH',
+        titleZh: '标准流程结束 / 移交批量生产',
+        color: '#E11D48',
+        x: 250,
+        y: 683,
+        width: 200,
+        height: 54,
+        details: {
+          deptText: 'Thiết kế & Phân xưởng sản xuất (设计部与生产车间)',
+          machine: 'Dây chuyền máy 1228 / 1224 / 2636',
+          tasks: [
+            'VN: Lưu trữ toàn bộ file gốc, file bản in, file CAD lên máy chủ nội bộ theo mã sản phẩm.<br>CN: 将设计源文件、分色版及CAD刀线按产品编号归档至企业云端服务器。',
+            'VN: Bàn giao bộ bản in, khuôn bế kèm Phiếu thông số kỹ thuật (Spec sheet) cho Quản đốc xưởng.<br>CN: 将验收合格的印版、刀模及生产工艺单完整移交至印刷生产车间。',
+            'VN: Khởi động sản xuất hàng loạt theo tiến độ đơn hàng.<br>CN: 按照排产计划正式启动大批量生产作业。'
+          ],
+          notes: [
+            'VN: Bản in sau khi in xong phải được rửa sạch bằng nước ấm, lau khô và treo thẳng đứng.<br>CN: 印刷结束后必须立即用清洗剂洗净版面油墨，晾干后垂直悬挂保存。'
+          ],
+          checklist: [
+            { textVi: 'Hồ sơ kỹ thuật đầy đủ có chữ ký duyệt bàn giao', textZh: '生产交接单据签署齐全' },
+            { textVi: 'Công cụ đã nhập kho kỹ thuật sẵn sàng lên máy', textZh: '工模具已在现场挂架就位' }
+          ]
+        }
+      },
+      // ECN CHANGE MANAGEMENT BRANCH (Song ngữ)
+      {
+        id: 'ecn_trigger',
+        type: 'ecn_card',
+        filterTag: ['all', 'ecn'],
+        titleVi: 'Khách thay đổi thông tin!',
+        titleZh: '⚠️ 客户要求变更信息 (ECN)',
+        descVi: 'Đổi kích thước, market, sóng...',
+        descZh: '变更尺寸、图文、纸质...',
+        color: '#DC2626',
+        x: 450,
+        y: 840,
+        width: 240,
+        height: 74,
+        details: {
+          deptText: 'Bộ phận Kinh doanh / 业务部',
+          machine: 'Phiếu yêu cầu thay đổi (ECR - Change Request)',
+          tasks: [
+            'VN: Tiếp nhận yêu cầu thay đổi từ khách hàng (thay đổi kích thước, nội dung in, mã vạch barcode...).<br>CN: 接收客户提出的紧急变更指令（如改动外箱尺寸、修改图文、更新条形码等）。',
+            'VN: Phát hành phiếu yêu cầu thay đổi kỹ thuật (ECR) và thông báo tạm dừng các khâu liên quan.<br>CN: 签发工程变更申请单（ECR），紧急叫停相关工序的在制生产。'
+          ],
+          notes: [
+            'VN: Cần kiểm tra ngay số lượng phôi giấy đã chạy sóng để hạn chế tối đa phế phẩm.<br>CN: 第一时间清点已备料纸板数量，最大限度减少呆滞报废损失。'
+          ],
+          checklist: [
+            { textVi: 'Có văn bản/email chính thức từ khách hàng về nội dung thay đổi', textZh: '具备客户正式书面变更通知书' }
+          ]
+        }
+      },
+      {
+        id: 'ecn_meeting',
+        type: 'meeting',
+        filterTag: ['all', 'ecn'],
+        titleVi: 'Họp thông báo & Ký xác nhận',
+        titleZh: '变更评审会议与签字确认',
+        descVi: 'Đánh giá chi phí, ký duyệt ECN',
+        descZh: '评估费用影响并签署ECN',
+        color: '#7C3AED',
+        x: 750,
+        y: 835,
+        width: 250,
+        height: 84,
+        details: {
+          deptText: 'Kinh doanh, Thiết kế, Kế toán & Xưởng (业务、设计、财务与车间)',
+          machine: 'Biên bản thay đổi kỹ thuật ECN (Engineering Change Notice)',
+          tasks: [
+            'VN: Tổ chức họp khẩn cấp đánh giá: Bản in/khuôn bế cũ có thể sửa chữa hay phải làm mới hoàn toàn?<br>CN: 召开紧急评估会议：现有刀模能否改刀？印版是否可局部贴改？或整版报废？',
+            'VN: Tính toán chi phí phát sinh (vật tư cũ bỏ đi, chi phí làm lại) và xác định bên chịu chi phí.<br>CN: 核算材料报废与重新制版费用，明确费用承担方（客户承担或公司内部消化）。',
+            'VN: Các bộ phận liên quan và khách hàng ký xác nhận vào biên bản ECN.<br>CN: 业务、设计与客户各方在工程变更通知单（ECN）上联合签字生效。'
+          ],
+          notes: [
+            'VN: Phải có chữ ký duyệt chi phí phát sinh trước khi tiến hành sửa khuôn/bản in.<br>CN: 费用承担方未签字确认前，严禁擅自实施改版作业。'
+          ],
+          checklist: [
+            { textVi: 'Biên bản ECN có đủ chữ ký của khách hàng và lãnh đạo', textZh: 'ECN表单客户及内部权责人签署完整' },
+            { textVi: 'Đã cập nhật lại ngày giao hàng dự kiến', textZh: '重新调整并确认交货期计划' }
+          ]
+        }
+      },
+      {
+        id: 'ecn_modify',
+        type: 'process',
+        filterTag: ['all', 'ecn'],
+        titleVi: 'Sửa khuôn bế & Thay bản in',
+        titleZh: '修改模切刀模与重新制版',
+        descVi: 'Gia công sửa đổi theo ECN',
+        descZh: '实施硬件工模具升级改造',
+        color: '#2563EB',
+        x: 1060,
+        y: 840,
+        width: 250,
+        height: 74,
+        details: {
+          deptText: 'Thiết kế, Kỹ thuật xưởng & Xưởng chế bản (设计与刀模车间)',
+          machine: 'Máy cấy dao laser & Dụng cụ cắt dán polymer',
+          tasks: [
+            'VN: Phòng Thiết kế cập nhật bản vẽ mới lên phiên bản tiếp theo (Rev 1.0, Rev 2.0). Đóng dấu "BẢN VẼ CŨ VÔ HIỆU".<br>CN: 设计部更新图纸至最新版本，并在旧图纸盖上“作废受控”印章。',
+            'VN: Sửa khuôn bế: Gỡ dao cũ, cấy lưỡi dao mới theo kích thước điều chỉnh.<br>CN: 修改刀模：拔除旧刀线，按新图纸补开激光槽并植入新钢刀与压线。',
+            'VN: Thay đổi bản in: Gọt bỏ phần in cũ, dán chắp miếng polymer mới hoặc xuất bản in mới toàn bộ.<br>CN: 更换印版：局部裁切替换新文字树脂条并精准贴版，或全版重晒。'
+          ],
+          notes: [
+            'VN: Phải tiêu hủy hoặc đánh dấu triệt để vật tư cũ để tránh nhầm lẫn khi sản xuất.<br>CN: 必须彻底隔离或销毁旧印版，杜绝现场错拿用旧版风险。'
+          ],
+          checklist: [
+            { textVi: 'Bản vẽ kỹ thuật đã được nâng phiên bản mới trên hệ thống', textZh: '图纸版本号已升级受控' },
+            { textVi: 'Khuôn bế/bản in đã được nghiệm thu lại đạt chuẩn', textZh: '修改后的工模具复测合格' }
+          ]
+        }
+      },
+      {
+        id: 'end_ecn',
+        type: 'terminal',
+        filterTag: ['all', 'ecn'],
+        titleVi: 'KẾT THÚC THAY ĐỔI',
+        titleZh: '变更流程结束 / 恢复生产',
+        color: '#E11D48',
+        x: 1370,
+        y: 850,
+        width: 190,
+        height: 54,
+        details: {
+          deptText: 'Thiết kế & Sản xuất (设计部与生产部)',
+          machine: 'Bàn giao chuyền sản xuất mới / 恢复产线作业',
+          tasks: [
+            'VN: Đóng gói và lưu trữ hồ sơ thay đổi ECN vào cơ sở dữ liệu mã hàng.<br>CN: 将ECN变更全套单据归档入该物料终身质量档案。',
+            'VN: Bàn giao công cụ đã cập nhật sang phân xưởng sản xuất để tiếp tục đơn hàng.<br>CN: 将修改完备的新模具和印版移交生产车间，恢复正常生产排期。',
+            'VN: Theo dõi sát sao 50 thùng carton đầu tiên xuất chuyền sau thay đổi.<br>CN: 首批生产必须严格实施前50个纸箱的100%全检复核。'
+          ],
+          notes: [
+            'VN: Nhân viên QC phải đối chiếu trực tiếp sản phẩm mới với biên bản ECN.<br>CN: 品管员（QC）必须携带最新ECN表单在机台现场首检签样。'
+          ],
+          checklist: [
+            { textVi: 'Đã hoàn tất nghiệm thu sản phẩm đầu tiên (First Article)', textZh: '首件检验确认合格（FA确认）' },
+            { textVi: 'Hồ sơ thay đổi kỹ thuật được lưu trữ an toàn', textZh: '工程变更文档已完整归档' }
+          ]
+        }
+      }
+    ];
+
+    // SVG Flow Connection Links with bilingual descriptions
+    const flowConnections = [
+      { from: 'start', to: 'receive', labelVi: '', labelZh: '', color: '#3b82f6', marker: 'arrow-blue' },
+      { from: 'receive', to: 'evaluate', labelVi: '', labelZh: '', color: '#3b82f6', marker: 'arrow-blue' },
+      { from: 'evaluate', to: 'convert', labelVi: '', labelZh: '', color: '#3b82f6', marker: 'arrow-blue' },
+      { from: 'convert', to: 'meeting', labelVi: '', labelZh: '', color: '#3b82f6', marker: 'arrow-blue' },
+      { from: 'meeting', to: 'ink_check', labelVi: 'Thẩm định máy 1228/1224/2636', labelZh: '匹配1228/1224/2636机型', color: '#a855f7', marker: 'arrow-purple' },
+      
+      // Pantone Decision
+      { from: 'ink_check', to: 'ink_pantone', labelVi: 'Có mã Pantone', labelZh: '有标准色号', color: '#10b981', marker: 'arrow-emerald' },
+      { from: 'ink_check', to: 'ink_sample', labelVi: 'Không có Pantone (Lấy mẫu)', labelZh: '无色号(需实物对色)', color: '#ea580c', marker: 'arrow-orange' },
+      { from: 'ink_pantone', to: 'sample_check', labelVi: '', labelZh: '', color: '#64748b', marker: 'arrow-default' },
+      { from: 'ink_sample', to: 'sample_check', labelVi: 'Đã có mẫu', labelZh: '色样已确认', color: '#64748b', marker: 'arrow-default' },
+
+      // Sample Making Decision
+      { from: 'sample_check', to: 'order_tooling', labelVi: 'Không cắt mẫu', labelZh: '无需打样', color: '#10b981', marker: 'arrow-emerald' },
+      { from: 'sample_check', to: 'sample_size_check', labelVi: 'Cần cắt mẫu', labelZh: '需要打样', color: '#ea580c', marker: 'arrow-orange' },
+      
+      // Sample Machine vs Hand
+      { from: 'sample_size_check', to: 'sample_machine', labelVi: 'Khổ ≤ 1600x2500 mm', labelZh: '尺寸≤1600x2500', color: '#10b981', marker: 'arrow-emerald' },
+      { from: 'sample_size_check', to: 'sample_manual', labelVi: 'Vượt > 1600x2500 mm', labelZh: '超限尺寸手工放样', color: '#ea580c', marker: 'arrow-orange' },
+      { from: 'sample_machine', to: 'order_tooling', labelVi: 'Duyệt kích thước', labelZh: '样品验收合格', color: '#10b981', marker: 'arrow-emerald' },
+      { from: 'sample_manual', to: 'order_tooling', labelVi: 'Duyệt kích thước', labelZh: '手工样验收合格', color: '#10b981', marker: 'arrow-emerald' },
+
+      // Tooling & Completion
+      { from: 'order_tooling', to: 'track_progress', labelVi: '', labelZh: '', color: '#3b82f6', marker: 'arrow-blue' },
+      { from: 'track_progress', to: 'end_standard', labelVi: 'Nghiệm thu đạt', labelZh: '工模具验收合格', color: '#10b981', marker: 'arrow-emerald' },
+
+      // ECN Change Branch
+      { from: 'track_progress', to: 'ecn_trigger', labelVi: 'Khách đổi thông tin', labelZh: '客户变更信息 (ECN)', color: '#f43f5e', marker: 'arrow-rose', style: 'dashed' },
+      { from: 'ecn_trigger', to: 'ecn_meeting', labelVi: '', labelZh: '', color: '#f43f5e', marker: 'arrow-rose' },
+      { from: 'ecn_meeting', to: 'ecn_modify', labelVi: 'Ký duyệt ECN', labelZh: '签署确认单', color: '#a855f7', marker: 'arrow-purple' },
+      { from: 'ecn_modify', to: 'end_ecn', labelVi: 'Hoàn tất sửa đổi', labelZh: '改模制版完毕', color: '#10b981', marker: 'arrow-emerald' }
+    ];
+
+    // State Variables
+    let currentScale = 0.88;
+    let canvasX = 35;
+    let canvasY = 35;
+    let isCanvasDragging = false;
+    let mouseStartX = 0;
+    let mouseStartY = 0;
+    let activeFilter = 'all';
+
+    // Dragging state for individual nodes
+    let activeDraggingId = null;
+    let nodeDragOffsetX = 0;
+    let nodeDragOffsetY = 0;
+
+    const viewportEl = document.getElementById('viewport');
+    const flowContainerEl = document.getElementById('flow-container');
+    const lineGroupEl = document.getElementById('line-group');
+    const zoomTextEl = document.getElementById('zoom-text');
+
+    // Startup Initialization
+    function initWorkflowApp() {
+      renderFlowNodes();
+      applyTransform();
+      drawConnectionLines();
+
+      // Pan Events
+      viewportEl.addEventListener('mousedown', onPointerDown);
+      window.addEventListener('mousemove', onPointerMove);
+      window.addEventListener('mouseup', onPointerUp);
+      viewportEl.addEventListener('wheel', onWheelZoom, { passive: false });
+
+      // Touch Events
+      viewportEl.addEventListener('touchstart', onTouchStart, { passive: false });
+      window.addEventListener('touchmove', onTouchMove, { passive: false });
+      window.addEventListener('touchend', onTouchEnd);
+
+      window.addEventListener('resize', () => {
+        drawConnectionLines();
+      });
+    }
+
+    // Render Nodes into Container (100% Song ngữ trên thẻ)
+    function renderFlowNodes() {
+      flowContainerEl.innerHTML = '';
+
+      factoryWorkflow.forEach(node => {
+        const card = document.createElement('div');
+        card.id = `node-${node.id}`;
+        card.className = 'absolute cursor-pointer transition-shadow hover:shadow-2xl hover:scale-[1.015] duration-150 select-none';
+        card.style.left = `${node.x}px`;
+        card.style.top = `${node.y}px`;
+
+        if (node.type === 'terminal') {
+          // Pill Terminal Shape
+          card.style.width = `${node.width}px`;
+          card.style.height = `${node.height}px`;
+          card.innerHTML = `
+            <div class="w-full h-full rounded-full bg-gradient-to-r from-rose-600 to-pink-600 text-white flex flex-col items-center justify-center p-2 shadow-lg shadow-rose-950/50 border-2 border-rose-400/60 text-center">
+              <span class="text-xs font-bold tracking-wider leading-none">${node.titleVi}</span>
+              <span class="text-[10px] text-rose-200 mt-1 leading-none">${node.titleZh}</span>
+            </div>
+          `;
+        } else if (node.type === 'decision') {
+          // Diamond Decision Shape
+          const size = node.size;
+          card.style.width = `${size}px`;
+          card.style.height = `${size}px`;
+          card.innerHTML = `
+            <div class="w-full h-full bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl diamond-shape shadow-lg shadow-orange-950/40 border-2 border-amber-300/60 flex items-center justify-center">
+              <div class="diamond-content text-center p-2 text-white">
+                <span class="block text-[11px] font-bold leading-tight">${node.titleVi}</span>
+                <span class="block text-[10px] text-amber-100 mt-0.5 leading-tight">${node.titleZh}</span>
+              </div>
+            </div>
+          `;
+        } else if (node.type === 'meeting') {
+          // Purple Meeting Node
+          card.style.width = `${node.width}px`;
+          card.style.height = `${node.height}px`;
+          card.innerHTML = `
+            <div class="w-full h-full rounded-2xl bg-gradient-to-br from-purple-900/90 to-slate-900 text-white p-3 shadow-xl border-2 border-purple-500 hover:border-purple-400 flex flex-col justify-between">
+              <div class="flex items-start justify-between">
+                <div>
+                  <div class="flex items-center gap-1.5 mb-1">
+                    <span class="px-1.5 py-0.2 rounded bg-purple-500/30 text-purple-300 text-[9px] font-bold border border-purple-500/40">HỌP THẨM ĐỊNH / 评审会</span>
+                  </div>
+                  <h4 class="text-xs font-bold text-white tracking-wide leading-tight">${node.titleVi}</h4>
+                  <p class="text-[10px] text-purple-200 leading-tight">${node.titleZh}</p>
+                </div>
+                <div class="w-2.5 h-2.5 rounded-full bg-purple-400 animate-pulse shrink-0"></div>
+              </div>
+              <div class="text-[10px] text-slate-300 border-t border-purple-700/50 pt-1 flex items-center justify-between">
+                <span class="truncate font-mono">${node.descVi || ''}</span>
+                <i class="fa-solid fa-chevron-right text-[8px] text-purple-400"></i>
+              </div>
+            </div>
+          `;
+        } else if (node.type === 'ecn_card') {
+          // High-contrast Warning ECN Node
+          card.style.width = `${node.width}px`;
+          card.style.height = `${node.height}px`;
+          card.innerHTML = `
+            <div class="w-full h-full rounded-2xl bg-gradient-to-br from-rose-950 to-slate-900 text-white p-3 shadow-xl border-2 border-rose-500 hover:border-rose-400 flex flex-col justify-between">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-rose-300 tracking-wide leading-tight">${node.titleVi}</h4>
+                  <p class="text-[10px] text-rose-200 leading-tight">${node.titleZh}</p>
+                </div>
+                <i class="fa-solid fa-triangle-exclamation text-rose-400 animate-bounce shrink-0"></i>
+              </div>
+              <div class="text-[10px] text-slate-300 border-t border-rose-800/60 pt-1 flex items-center justify-between">
+                <span class="truncate">${node.descVi || ''} | ${node.descZh || ''}</span>
+                <i class="fa-solid fa-arrow-right text-[8px] text-rose-400"></i>
+              </div>
+            </div>
+          `;
+        } else {
+          // Standard Technical Process Card
+          card.style.width = `${node.width}px`;
+          card.style.height = `${node.height}px`;
+          card.innerHTML = `
+            <div class="w-full h-full rounded-2xl bg-slate-900 text-white p-3 shadow-xl border-2 border-blue-500/80 hover:border-blue-400 flex flex-col justify-between bg-gradient-to-b from-slate-850 to-slate-900">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white tracking-wide leading-tight">${node.titleVi}</h4>
+                  <p class="text-[10px] text-blue-300 leading-tight">${node.titleZh}</p>
+                </div>
+                <div class="w-2 h-2 rounded-full bg-blue-400 shrink-0"></div>
+              </div>
+              <div class="text-[10px] text-slate-400 border-t border-slate-800 pt-1 flex items-center justify-between">
+                <span class="truncate">${node.descVi || ''}</span>
+                <i class="fa-solid fa-chevron-right text-[8px] text-slate-500"></i>
+              </div>
+            </div>
+          `;
+        }
+
+        // Click to view inspection drawer
+        card.addEventListener('click', () => {
+          if (!card.dataset.dragged) {
+            showStepDetail(node.id);
+          }
+          delete card.dataset.dragged;
+        });
+
+        // Dragging individual node
+        card.addEventListener('mousedown', (e) => {
+          e.stopPropagation();
+          activeDraggingId = node.id;
+          nodeDragOffsetX = (e.clientX - canvasX) / currentScale - node.x;
+          nodeDragOffsetY = (e.clientY - canvasY) / currentScale - node.y;
+        });
+
+        flowContainerEl.appendChild(card);
+      });
+    }
+
+    // Anchor helper for bounding box
+    function getAnchor(node, side = 'center') {
+      const w = node.width || node.size;
+      const h = node.height || node.size;
+      switch (side) {
+        case 'top': return { x: node.x + w / 2, y: node.y };
+        case 'bottom': return { x: node.x + w / 2, y: node.y + h };
+        case 'left': return { x: node.x, y: node.y + h / 2 };
+        case 'right': return { x: node.x + w, y: node.y + h / 2 };
+        default: return { x: node.x + w / 2, y: node.y + h / 2 };
+      }
+    }
+
+    // Draw dynamic connections with bilingual badges
+    function drawConnectionLines() {
+      lineGroupEl.innerHTML = '';
+
+      flowConnections.forEach(conn => {
+        const src = factoryWorkflow.find(n => n.id === conn.from);
+        const tgt = factoryWorkflow.find(n => n.id === conn.to);
+        if (!src || !tgt) return;
+
+        // Determine best ports based on relative positions
+        let startPort = 'bottom';
+        let endPort = 'top';
+
+        if (src.x + (src.width || src.size) < tgt.x) {
+          startPort = 'right';
+          endPort = 'left';
+        } else if (src.x > tgt.x + (tgt.width || tgt.size)) {
+          startPort = 'left';
+          endPort = 'right';
+        } else if (src.y > tgt.y) {
+          startPort = 'top';
+          endPort = 'bottom';
+        } else {
+          startPort = 'bottom';
+          endPort = 'top';
+        }
+
+        // Specific overrides for clean diagram flow
+        if (conn.from === 'meeting' && conn.to === 'ink_check') {
+          startPort = 'bottom'; endPort = 'top';
+        }
+        if (conn.from === 'ink_pantone' && conn.to === 'sample_check') {
+          startPort = 'bottom'; endPort = 'right';
+        }
+        if (conn.from === 'ink_sample' && conn.to === 'sample_check') {
+          startPort = 'bottom'; endPort = 'left';
+        }
+        if (conn.from === 'sample_machine' && conn.to === 'order_tooling') {
+          startPort = 'bottom'; endPort = 'right';
+        }
+        if (conn.from === 'sample_manual' && conn.to === 'order_tooling') {
+          startPort = 'left'; endPort = 'right';
+        }
+        if (conn.from === 'track_progress' && conn.to === 'ecn_trigger') {
+          startPort = 'bottom'; endPort = 'top';
+        }
+
+        const startPt = getAnchor(src, startPort);
+        const endPt = getAnchor(tgt, endPort);
+
+        const sx = startPt.x * currentScale + canvasX;
+        const sy = startPt.y * currentScale + canvasY;
+        const tx = endPt.x * currentScale + canvasX;
+        const ty = endPt.y * currentScale + canvasY;
+
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        let d = '';
+
+        if (Math.abs(sx - tx) < 8 || Math.abs(sy - ty) < 8) {
+          d = `M ${sx} ${sy} L ${tx} ${ty}`;
+        } else {
+          const dx = (tx - sx) * 0.45;
+          const dy = (ty - sy) * 0.45;
+          d = `M ${sx} ${sy} C ${sx + dx} ${sy + dy}, ${tx - dx} ${ty - dy}, ${tx} ${ty}`;
+        }
+
+        path.setAttribute('d', d);
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', conn.color || '#64748b');
+        path.setAttribute('stroke-width', '2.5');
+        if (conn.style === 'dashed') {
+          path.setAttribute('stroke-dasharray', '5 4');
+        }
+        path.setAttribute('marker-end', `url(#${conn.marker || 'arrow-default'})`);
+        lineGroupEl.appendChild(path);
+
+        // Path bilingual label if exists
+        if (conn.labelVi || conn.labelZh) {
+          const midX = (sx + tx) / 2;
+          const midY = (sy + ty) / 2;
+
+          const fo = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
+          fo.setAttribute('x', midX - 100);
+          fo.setAttribute('y', midY - 16);
+          fo.setAttribute('width', '200');
+          fo.setAttribute('height', '32');
+
+          const labelText = conn.labelZh ? `${conn.labelVi} / ${conn.labelZh}` : conn.labelVi;
+
+          fo.innerHTML = `
+            <div xmlns="http://www.w3.org/1999/xhtml" class="w-full flex items-center justify-center">
+              <span class="text-[9.5px] font-semibold px-2 py-0.5 rounded-md border backdrop-blur-md bg-slate-950/85 border-slate-700 text-slate-200 shadow-md whitespace-nowrap text-center">
+                ${labelText}
+              </span>
+            </div>
+          `;
+          lineGroupEl.appendChild(fo);
+        }
+      });
+    }
+
+    // Apply viewport transformation
+    function applyTransform() {
+      flowContainerEl.style.transform = `translate(${canvasX}px, ${canvasY}px) scale(${currentScale})`;
+      zoomTextEl.textContent = `${Math.round(currentScale * 100)}%`;
+      drawConnectionLines();
+    }
+
+    // Zoom Logic
+    function zoomCanvas(delta, mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2) {
+      const prevScale = currentScale;
+      currentScale = Math.min(Math.max(0.35, currentScale + delta), 2.2);
+      canvasX = mouseX - (mouseX - canvasX) * (currentScale / prevScale);
+      canvasY = mouseY - (mouseY - canvasY) * (currentScale / prevScale);
+      applyTransform();
+    }
+
+    function onWheelZoom(e) {
+      e.preventDefault();
+      const delta = e.deltaY < 0 ? 0.12 : -0.12;
+      zoomCanvas(delta, e.clientX, e.clientY);
+    }
+
+    function resetToOptimalView() {
+      currentScale = 0.85;
+      canvasX = 40;
+      canvasY = 30;
+      applyTransform();
+    }
+
+    function resetDefaultPositions() {
+      const defaults = {
+        'start': { x: 60, y: 60 },
+        'receive': { x: 250, y: 50 },
+        'evaluate': { x: 520, y: 50 },
+        'convert': { x: 800, y: 50 },
+        'meeting': { x: 800, y: 200 },
+        'ink_check': { x: 875, y: 350 },
+        'ink_pantone': { x: 1100, y: 363 },
+        'ink_sample': { x: 610, y: 363 },
+        'sample_check': { x: 875, y: 500 },
+        'sample_size_check': { x: 1125, y: 500 },
+        'sample_machine': { x: 1350, y: 440 },
+        'sample_manual': { x: 1350, y: 570 },
+        'order_tooling': { x: 800, y: 670 },
+        'track_progress': { x: 520, y: 673 },
+        'end_standard': { x: 250, y: 683 },
+        'ecn_trigger': { x: 450, y: 840 },
+        'ecn_meeting': { x: 750, y: 835 },
+        'ecn_modify': { x: 1060, y: 840 },
+        'end_ecn': { x: 1370, y: 850 }
+      };
+
+      factoryWorkflow.forEach(n => {
+        if (defaults[n.id]) {
+          n.x = defaults[n.id].x;
+          n.y = defaults[n.id].y;
+        }
+      });
+
+      renderFlowNodes();
+      resetToOptimalView();
+      setFlowFilter(activeFilter);
+    }
+
+    // Pointer Event Listeners
+    function onPointerDown(e) {
+      if (e.target.closest('#detail-drawer') || e.target.closest('header')) return;
+      isCanvasDragging = true;
+      mouseStartX = e.clientX - canvasX;
+      mouseStartY = e.clientY - canvasY;
+    }
+
+    function onPointerMove(e) {
+      if (activeDraggingId) {
+        const node = factoryWorkflow.find(n => n.id === activeDraggingId);
+        if (node) {
+          node.x = (e.clientX - canvasX) / currentScale - nodeDragOffsetX;
+          node.y = (e.clientY - canvasY) / currentScale - nodeDragOffsetY;
+          const el = document.getElementById(`node-${node.id}`);
+          if (el) {
+            el.style.left = `${node.x}px`;
+            el.style.top = `${node.y}px`;
+            el.dataset.dragged = 'true';
+          }
+          drawConnectionLines();
+        }
+        return;
+      }
+
+      if (isCanvasDragging) {
+        canvasX = e.clientX - mouseStartX;
+        canvasY = e.clientY - mouseStartY;
+        applyTransform();
+      }
+    }
+
+    function onPointerUp() {
+      isCanvasDragging = false;
+      activeDraggingId = null;
+    }
+
+    // Touch Support
+    let initialTouchDist = 0;
+    function onTouchStart(e) {
+      if (e.touches.length === 1) {
+        isCanvasDragging = true;
+        mouseStartX = e.touches[0].clientX - canvasX;
+        mouseStartY = e.touches[0].clientY - canvasY;
+      } else if (e.touches.length === 2) {
+        isCanvasDragging = false;
+        initialTouchDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+      }
+    }
+
+    function onTouchMove(e) {
+      if (e.touches.length === 1 && isCanvasDragging) {
+        canvasX = e.touches[0].clientX - mouseStartX;
+        canvasY = e.touches[0].clientY - mouseStartY;
+        applyTransform();
+      } else if (e.touches.length === 2) {
+        const dist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        const factor = (dist - initialTouchDist) * 0.005;
+        zoomCanvas(factor);
+        initialTouchDist = dist;
+      }
+    }
+
+    function onTouchEnd() {
+      isCanvasDragging = false;
+    }
+
+    // Filter Logic
+    function setFlowFilter(type) {
+      activeFilter = type;
+      document.querySelectorAll('.flow-flt-btn').forEach(btn => {
+        btn.className = 'flow-flt-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition';
+      });
+      const activeEl = document.getElementById(`flt-${type}`);
+      if (activeEl) {
+        activeEl.className = 'flow-flt-btn px-3 py-1.5 rounded-lg bg-blue-600 text-white transition';
+      }
+
+      factoryWorkflow.forEach(node => {
+        const el = document.getElementById(`node-${node.id}`);
+        if (!el) return;
+
+        if (type === 'all' || node.filterTag.includes(type)) {
+          el.style.opacity = '1';
+          el.style.filter = 'none';
+        } else {
+          el.style.opacity = '0.2';
+          el.style.filter = 'grayscale(100%)';
+        }
+      });
+    }
+
+    // Step Detail Drawer (100% Song ngữ đối chiếu)
+    function showStepDetail(nodeId) {
+      const node = factoryWorkflow.find(n => n.id === nodeId);
+      if (!node) return;
+
+      document.getElementById('dr-title').textContent = node.titleVi;
+      document.getElementById('dr-subtitle').textContent = node.titleZh;
+      document.getElementById('dr-dept').innerHTML = `
+        <i class="fa-solid fa-users-gear text-blue-400"></i>
+        <span>${node.details.deptText}</span>
+      `;
+      document.getElementById('dr-machine').innerHTML = `
+        <i class="fa-solid fa-print text-amber-400"></i>
+        <span>${node.details.machine}</span>
+      `;
+
+      // Render tasks (Bilingual)
+      const tasksEl = document.getElementById('dr-tasks');
+      tasksEl.innerHTML = node.details.tasks.map((task, i) => `
+        <li class="flex items-start gap-2.5 bg-slate-950/40 p-2.5 rounded-xl border border-slate-800/80">
+          <span class="w-5 h-5 rounded-md bg-blue-500/20 text-blue-300 flex items-center justify-center text-[10px] shrink-0 font-mono mt-0.5">${i + 1}</span>
+          <div class="leading-relaxed text-slate-300 text-xs">${task}</div>
+        </li>
+      `).join('');
+
+      // Render technical notes (Bilingual)
+      const notesEl = document.getElementById('dr-notes');
+      notesEl.innerHTML = node.details.notes.map(note => `<li class="leading-relaxed">${note}</li>`).join('');
+
+      // Render checklist (Bilingual)
+      const chkEl = document.getElementById('dr-checklist');
+      chkEl.innerHTML = node.details.checklist.map((item, idx) => `
+        <label class="flex items-start space-x-3 p-2.5 rounded-lg hover:bg-slate-900 cursor-pointer select-none border border-slate-800/40">
+          <input type="checkbox" class="w-4 h-4 rounded text-blue-600 bg-slate-950 border-slate-700 focus:ring-0 mt-0.5">
+          <div class="text-xs">
+            <span class="text-slate-200 block font-medium">VN: ${item.textVi}</span>
+            <span class="text-slate-400 block text-[11px] mt-0.5">CN: ${item.textZh}</span>
+          </div>
+        </label>
+      `).join('');
+
+      document.getElementById('detail-drawer').classList.remove('translate-x-full');
+    }
+
+    function closeDetailDrawer() {
+      document.getElementById('detail-drawer').classList.add('translate-x-full');
+    }
+
+    function toggleHelpModal(show) {
+      const modal = document.getElementById('help-modal');
+      if (show) modal.classList.remove('hidden');
+      else modal.classList.add('hidden');
+    }
+
+    // Startup
+    window.addEventListener('load', () => {
+      initWorkflowApp();
+    });
+  </script>
+</body>
+</html>
