@@ -56,6 +56,92 @@
         }
 
         /* THANH CÔNG CỤ */
+        
+        /* THANH TÌM KIẾM GỌN GÀNG CHO TAB TIẾN ĐỘ ĐẶT HÀNG */
+        
+        /* TỐI ƯU BẢNG TIẾN ĐỘ ĐẶT HÀNG - VỪA SÁT CHỮ, GỌN GÀNG */
+        #tableTienDo {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        #tableTienDo th {
+            padding: 5px 6px;
+            font-size: 11.5px;
+            line-height: 1.25;
+            text-align: center;
+            white-space: nowrap;
+            letter-spacing: -0.2px;
+            background-color: #2c3e50;
+            color: #fff;
+        }
+        #tableTienDo td {
+            padding: 3px 5px;
+            font-size: 12px;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+        #tableTienDo .td-sp {
+            white-space: normal;
+            word-break: break-word;
+            min-width: 150px;
+            max-width: 260px;
+            line-height: 1.25;
+            font-size: 12px;
+        }
+        #tableTienDo input[type="text"],
+        #tableTienDo input[type="date"],
+        #tableTienDo select {
+            height: 26px;
+            padding: 2px 4px;
+            font-size: 11.5px;
+            border: 1px solid #ccd1d9;
+            border-radius: 3px;
+            box-sizing: border-box;
+            background: #fff;
+        }
+        #tableTienDo select.ncc-select {
+            width: auto;
+            min-width: 110px;
+            max-width: 145px;
+            font-weight: 500;
+            color: #1e293b;
+            cursor: pointer;
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 1px 3px;
+            border-radius: 3px;
+        }
+        #tableTienDo select.ncc-select:focus {
+            border-color: #3498db;
+            outline: none;
+            background-color: #fff;
+        }
+        #tableTienDo input.input-money {
+            width: 85px;
+            text-align: right;
+            font-weight: bold;
+        }
+        #tableTienDo .input-ghichu {
+            min-width: 70px;
+            width: 100%;
+        }
+
+        .td-controls-compact {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            margin-bottom: 15px;
+            background: #fff;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            box-sizing: border-box;
+        }
         .controls { background: #fff; padding: 15px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-end; box-sizing: border-box; }
         .control-group { display: flex; flex-direction: column; gap: 5px; font-size: 14px; }
         input[type="file"], input[type="date"], input[type="text"], input[type="number"], select { padding: 6px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; box-sizing: border-box; }
@@ -760,49 +846,69 @@
             </div>
         </div>
 
-        <div class="controls">
-            <div class="control-group" id="divUpload" style="display: none;"><label><b>Tải file / 上传 Excel:</b></label><input type="file" id="excelFile" accept=".xlsx, .xls"></div>
-            <button class="btn-manual" id="btnManual" style="display: none;" onclick="openManualModal()">✍️ Nhập tay / 手动录入</button>
+        <div class="controls td-controls-compact">
+            <label id="divUpload" class="btn-backup" style="display: none; padding: 0 12px; height: 36px; border-radius: 4px; cursor: pointer; margin: 0; font-size: 12px; font-weight: bold; align-items: center; justify-content: center; gap: 4px; white-space: nowrap; box-sizing: border-box;" title="Tải file Excel / 上传 Excel">
+                📥 Tải Excel
+                <input type="file" id="excelFile" accept=".xlsx, .xls" style="display: none;">
+            </label>
+            <button type="button" class="btn-manual" id="btnManual" style="display: none; height: 36px; padding: 0 12px; font-size: 12px; margin: 0; white-space: nowrap; flex-shrink: 0;" onclick="openManualModal()" title="Nhập đơn thủ công / 手动录入">✍️ Nhập tay</button>
 
-            <div class="control-group"><label><b>Khách hàng / 客户:</b></label><select id="customerSearch" onchange="filterAndRender()"><option value="">-- Tất cả / 全部 --</option></select></div>
-            <div class="control-group"><label><b>Người nhập / 录入员:</b></label><select id="nguoiNhapSearch" onchange="filterAndRender()"><option value="">-- Tất cả / 全部 --</option></select></div>
-            <div class="control-group"><label><b>Mã số / 编号:</b></label><input type="text" id="maSearch" placeholder="Nhập mã..." onkeyup="filterAndRender()"></div>
-            <div class="control-group"><label><b>Tên SP / 产品名称:</b></label><input type="text" id="tenSPSearch" placeholder="Nhập tên SP..." onkeyup="filterAndRender()"></div>
-            <div class="control-group">
-                <label><b>Phân loại / 分类:</b></label>
-                <select id="typeFilter" onchange="filterAndRender()">
-                    <option value="all">Tất cả / 全部</option><option value="Bản in">Bản in / 印版</option><option value="Khuôn bế">Khuôn bế / 模板</option>
-                </select>
+            <!-- GOM TÌM KIẾM KHÁCH HÀNG, MÃ SỐ, TÊN SẢN PHẨM VÀO 1 TEXTBOX DUY NHẤT (THU HẸP GỌN GÀNG) -->
+            <div style="flex: 1 1 170px; min-width: 130px; max-width: 220px;">
+                <input type="text" id="orderSearchInput" placeholder="🔍 Tìm kiếm... / 搜索..." title="Tìm khách hàng, mã khuôn/bản in, tên SP, nhà cung cấp... / 搜索客户、编号、产品、供应商" oninput="filterAndRender()" style="width: 100%; height: 36px; padding: 6px 10px; border: 1px solid #3498db; border-radius: 4px; font-size: 12px; box-sizing: border-box;">
             </div>
-            <div class="control-group">
-                <label><b>Trạng thái / 状态:</b></label>
-                <select id="statusFilter" onchange="filterAndRender()">
-                    <option value="all">Tất cả / 全部</option><option value="Đã giao">Đã giao / 已交货</option><option value="Đang chờ giao">Đang chờ giao / 待交货</option><option value="Trễ">Trễ / 逾期</option>
-                </select>
+
+            <select id="typeFilter" onchange="filterAndRender()" style="height: 36px; padding: 4px 6px; font-size: 12px; border-radius: 4px; border: 1px solid #ccc; width: 115px; flex-shrink: 0;">
+                <option value="all">Loại: Tất cả / 分类</option>
+                <option value="Bản in">Bản in / 印版</option>
+                <option value="Khuôn bế">Khuôn bế / 模板</option>
+            </select>
+
+            <!-- TRƯỜNG TÌM KIẾM LỌC CHỌN NHÀ CUNG CẤP -->
+            <select id="supplierFilter" onchange="filterAndRender()" style="height: 36px; padding: 4px 6px; font-size: 12px; border-radius: 4px; border: 1px solid #ccc; width: 135px; flex-shrink: 0;" title="Lọc theo Nhà cung cấp / 按供应商筛选">
+                <option value="all">NCC: Tất cả / 供应商</option>
+                <option value="英杰 Amjet">英杰 Amjet</option>
+                <option value="聚源 JuYuan">聚源 JuYuan</option>
+                <option value="嘉鑫 Gia Thang">嘉鑫 Gia Thang</option>
+                <option value="朗城 LangCheng">朗城 LangCheng</option>
+                <option value="chua_chon">-- Chưa chọn / 未选 --</option>
+            </select>
+
+            <select id="statusFilter" onchange="filterAndRender()" style="height: 36px; padding: 4px 6px; font-size: 12px; border-radius: 4px; border: 1px solid #ccc; width: 130px; flex-shrink: 0;">
+                <option value="all">Trạng thái: Tất cả / 状态</option>
+                <option value="Đang chờ giao">Đang chờ giao / 待交货</option>
+                <option value="Đã giao">Đã giao / 已交货</option>
+                <option value="Trễ">Trễ / 逾期</option>
+            </select>
+
+            <div style="display: flex; align-items: center; gap: 4px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 4px; padding: 0 6px; height: 36px; flex-shrink: 0;">
+                <span style="font-size: 12px; color: #64748b;" title="Khoảng thời gian đặt hàng / 下单日期范围">📅</span>
+                <input type="date" id="startDate" onchange="filterAndRender()" title="Từ ngày / 开始日期" style="height: 28px; padding: 2px 4px; border: 1px solid #cbd5e1; border-radius: 3px; font-size: 12px; width: 115px;">
+                <span style="color: #94a3b8; font-weight: bold;">~</span>
+                <input type="date" id="endDate" onchange="filterAndRender()" title="Đến ngày / 结束日期" style="height: 28px; padding: 2px 4px; border: 1px solid #cbd5e1; border-radius: 3px; font-size: 12px; width: 115px;">
             </div>
-            <div class="control-group"><label><b>Từ ngày / 从日期:</b></label><input type="date" id="startDate" onchange="filterAndRender()"></div>
-            <div class="control-group"><label><b>Đến ngày / 至日期:</b></label><input type="date" id="endDate" onchange="filterAndRender()"></div>
-            
-            <button class="btn-stat" onclick="openStats()">Thống kê / 详细统计</button>
-            <button class="btn-delete" id="btnDelete" style="display: none;" onclick="deleteSelected()">🗑️ Xóa dòng / 删除</button>
+
+            <button type="button" class="btn-stat" style="height: 36px; padding: 0 12px; font-size: 12px; margin: 0; white-space: nowrap; flex-shrink: 0;" onclick="openStats()">📊 Thống kê</button>
+            <button type="button" class="btn-delete" id="btnDelete" style="display: none; height: 36px; padding: 0 12px; font-size: 12px; margin: 0; white-space: nowrap; flex-shrink: 0;" onclick="deleteSelected()">🗑️ Xóa</button>
         </div>
 
         <div class="table-container">
             <table id="tableTienDo">
                 <thead>
                     <tr>
-                        <th width="2%" style="text-align: center;"><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
-                        <th width="4%" onclick="handleSort('stt')" style="cursor:pointer" title="Sắp xếp theo STT">STT<br>序号 <span class="sort-icon" id="sort-stt"></span></th>
-                        <th width="12%" onclick="handleSort('khachHang')" style="cursor:pointer" title="Sắp xếp theo Khách hàng">Khách hàng<br>客户名称 <span class="sort-icon" id="sort-khachHang"></span></th>
-                        <th width="10%" onclick="handleSort('ma')" style="cursor:pointer" title="Sắp xếp theo Mã số">Mã số<br>编号 <span class="sort-icon" id="sort-ma"></span></th>
-                        <th width="8%" onclick="handleSort('phanLoai')" style="cursor:pointer" title="Sắp xếp theo Phân loại">Phân loại<br>分类 <span class="sort-icon" id="sort-phanLoai"></span></th>
-                        <th width="15%" onclick="handleSort('tenSP')" style="cursor:pointer" title="Sắp xếp theo Tên sản phẩm">Tên sản phẩm<br>产品名称 <span class="sort-icon" id="sort-tenSP"></span></th>
-                        <th width="8%" onclick="handleSort('nguoiNhap')" style="cursor:pointer" title="Sắp xếp theo Người nhập">Người nhập<br>录入员 <span class="sort-icon" id="sort-nguoiNhap"></span></th>
-                        <th width="8%" onclick="handleSort('ngayDat')" style="cursor:pointer" title="Sắp xếp theo Ngày đặt">Ngày đặt<br>下单日期 <span class="sort-icon" id="sort-ngayDat"></span></th>
-                        <th width="9%" onclick="handleSort('ngayGiao')" style="cursor:pointer" title="Sắp xếp theo Ngày giao">Ngày giao<br>交货日期 <span class="sort-icon" id="sort-ngayGiao"></span></th>
-                        <th width="8%" onclick="handleSort('status')" style="cursor:pointer" title="Sắp xếp theo Trạng thái">Trạng thái<br>状态 <span class="sort-icon" id="sort-status"></span></th>
-                        <th width="8%" onclick="handleSort('tongTien')" style="cursor:pointer" title="Sắp xếp theo Tổng số tiền">Tổng số tiền<br>总金额 <span class="sort-icon" id="sort-tongTien"></span></th>
-                        <th width="14%" onclick="handleSort('ghiChu')" style="cursor:pointer" title="Sắp xếp theo Ghi chú">Ghi chú<br>备注 <span class="sort-icon" id="sort-ghiChu"></span></th>
+                        <th style="width: 28px; text-align: center;"><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
+                        <th onclick="handleSort('stt')" style="cursor:pointer; width: 40px;" title="Sắp xếp theo STT">STT<br>序号 <span class="sort-icon" id="sort-stt"></span></th>
+                        <th onclick="handleSort('khachHang')" style="cursor:pointer;" title="Sắp xếp theo Khách hàng">Khách hàng<br>客户 <span class="sort-icon" id="sort-khachHang"></span></th>
+                        <th onclick="handleSort('ma')" style="cursor:pointer;" title="Sắp xếp theo Mã số">Mã số<br>编号 <span class="sort-icon" id="sort-ma"></span></th>
+                        <th onclick="handleSort('phanLoai')" style="cursor:pointer;" title="Sắp xếp theo Phân loại">Phân loại<br>分类 <span class="sort-icon" id="sort-phanLoai"></span></th>
+                        <th onclick="handleSort('nhaCungCap')" style="cursor:pointer;" title="Sắp xếp theo Nhà cung cấp">Nhà cung cấp<br>供应商 <span class="sort-icon" id="sort-nhaCungCap"></span></th>
+                        <th onclick="handleSort('tenSP')" style="cursor:pointer;" title="Sắp xếp theo Tên sản phẩm">Tên sản phẩm<br>产品名称 <span class="sort-icon" id="sort-tenSP"></span></th>
+                        <th onclick="handleSort('nguoiNhap')" style="cursor:pointer;" title="Sắp xếp theo Người nhập">Người nhập<br>录入员 <span class="sort-icon" id="sort-nguoiNhap"></span></th>
+                        <th onclick="handleSort('ngayDat')" style="cursor:pointer;" title="Sắp xếp theo Ngày đặt">Ngày đặt<br>下单 <span class="sort-icon" id="sort-ngayDat"></span></th>
+                        <th onclick="handleSort('ngayGiao')" style="cursor:pointer;" title="Sắp xếp theo Ngày giao">Ngày giao<br>交货 <span class="sort-icon" id="sort-ngayGiao"></span></th>
+                        <th onclick="handleSort('status')" style="cursor:pointer;" title="Sắp xếp theo Trạng thái">Trạng thái<br>状态 <span class="sort-icon" id="sort-status"></span></th>
+                        <th onclick="handleSort('tongTien')" style="cursor:pointer;" title="Sắp xếp theo Tổng số tiền">Tổng số tiền<br>总金额 <span class="sort-icon" id="sort-tongTien"></span></th>
+                        <th onclick="handleSort('ghiChu')" style="cursor:pointer;" title="Sắp xếp theo Ghi chú">Ghi chú<br>备注 <span class="sort-icon" id="sort-ghiChu"></span></th>
                     </tr>
                 </thead>
                 <tbody id="tableBody"></tbody>
@@ -1162,7 +1268,8 @@
             <div class="form-grid">
                 <div class="form-group"><label>Khách hàng / 客户名称 (*):</label><input type="text" id="mKhachHang" list="customerDatalist" placeholder="Gõ để tìm kiếm (LIKE %)..." autocomplete="off"></div>
                 <div class="form-group"><label>Mã số / 编号 (*):</label><input type="text" id="mMa" placeholder="VD: QF-1228-001..."></div>
-                <div class="form-group"><label>Phân loại / 分类 (*):</label><select id="mPhanLoai"><option value="印版 Bản in">Bản in / 印版</option><option value="模板 Khuôn bế">Khuôn bế / 模板</option></select></div>
+                <div class="form-group"><label>Phân loại / 分类 (*):</label><select id="mPhanLoai" onchange="updateManualSuppliers()"><option value="印版 Bản in">Bản in / 印版</option><option value="模板 Khuôn bế">Khuôn bế / 模板</option></select></div>
+                <div class="form-group"><label>Nhà cung cấp / 供应商:</label><select id="mNhaCungCap"><option value="">-- Chọn nhà cung cấp / 选择供应商 --</option></select></div>
                 <div class="form-group"><label>Tên sản phẩm / 产品名称 (*):</label><input type="text" id="mTenSP" placeholder="VD: Hộp khẩu trang..."></div>
                 <div class="form-group"><label>Người nhập / 录入员 (*):</label><select id="mNguoiNhap"><option value="杨福计">杨福计</option><option value="陈明森">陈明森</option><option value="阮明风">阮明风</option></select></div>
                 <div class="form-group"><label>Ngày đặt / 下单日期 (*):</label><input type="date" id="mNgayDat"></div>
@@ -1368,12 +1475,55 @@
         "越境 VKING", "南祥 NAM TƯỜNG", "星运 SHINING", "顺义 SHUNYI", "好迪 HAODY"
     ];
 
+    let _nccMigrationChecked = false;
+    function migrateDefaultSuppliersOnce() {
+        if (_nccMigrationChecked) return;
+        _nccMigrationChecked = true;
+        if (localStorage.getItem('_migrated_ncc_v1')) return;
+
+        db.ref('Meta/migrated_ncc_v1').once('value').then(snap => {
+            if (snap.val()) {
+                localStorage.setItem('_migrated_ncc_v1', 'true');
+                return;
+            }
+            const updates = {};
+            excelData.forEach(item => {
+                if (!item.nhaCungCap || item.nhaCungCap.trim() === '') {
+                    let def = '';
+                    const pl = (item.phanLoai || '').toLowerCase();
+                    if (pl.includes('bản in') || pl.includes('印版') || pl.includes('ban in')) {
+                        def = '英杰 Amjet';
+                    } else if (pl.includes('khuôn') || pl.includes('模板') || pl.includes('khuon')) {
+                        def = '聚源 JuYuan';
+                    } else {
+                        def = '英杰 Amjet';
+                    }
+                    if (def && item.firebaseId) {
+                        item.nhaCungCap = def;
+                        updates[item.firebaseId + '/nhaCungCap'] = def;
+                    }
+                }
+            });
+            localStorage.setItem('_migrated_ncc_v1', 'true');
+            db.ref('Meta/migrated_ncc_v1').set(true).catch(() => {});
+            if (Object.keys(updates).length > 0) {
+                dbRef.update(updates).then(() => {
+                    console.log('Đã tự động gán NCC mặc định ban đầu cho ' + Object.keys(updates).length + ' đơn hàng.');
+                    filterAndRender();
+                }).catch(e => console.error('Lỗi cập nhật NCC ban đầu:', e));
+            }
+        }).catch(e => {
+            localStorage.setItem('_migrated_ncc_v1', 'true');
+        });
+    }
+
     dbRef.on('value', (snapshot) => {
         const data = snapshot.val(); excelData = [];
         if (data) {
             for (let key in data) excelData.push({ firebaseId: key, ...data[key] });
             excelData.sort((a, b) => (b.ngayDat || "").localeCompare((a.ngayDat || "")));
         }
+        migrateDefaultSuppliersOnce();
         const syncEl = document.getElementById('syncStatus');
         if (syncEl) {
             syncEl.innerText = "Đã đồng bộ / 已同步";
@@ -1446,6 +1596,7 @@
         applyGifUrl(); 
         initYears(); 
         initResizableTable(document.getElementById('tableTienDo'));
+        loadQuyTrinhIframe();
         
         if (isAdmin) {
             document.getElementById('btnLogin').style.display = 'none';
@@ -2381,15 +2532,15 @@
                 let tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td style="text-align: center;"><input type="checkbox" class="cm-checkbox" value="${item.firebaseId}" ${disAttr}></td>
-                    <td style="text-align: center; font-weight: bold;">${stt++}</td>
+                    <td style="text-align: center;">${stt++}</td>
                     <td><input type="date" class="${readAttr}" value="${item.ngay || ''}" onchange="if(isAdmin) updateCatMau('${item.firebaseId}', 'ngay', this.value)" style="cursor: pointer;" ${disAttr}></td>
                     <td><input type="text" class="${readAttr}" value="${item.ma || ''}" placeholder="Nhập mã / 编号" onchange="if(isAdmin) updateCatMau('${item.firebaseId}', 'ma', this.value)" ${readAttr}></td>
                     <td><input type="text" class="${readAttr}" list="customerDatalist" value="${item.khachHang || ''}" placeholder="Tìm KH / 客户" onchange="if(isAdmin) updateCatMau('${item.firebaseId}', 'khachHang', this.value)" ${readAttr}></td>
                     <td><input type="text" class="${readAttr}" value="${item.tenSP || ''}" placeholder="Tên SP / 产品" onchange="if(isAdmin) updateCatMau('${item.firebaseId}', 'tenSP', this.value)" ${readAttr}></td>
                     <td><input type="text" class="${readAttr}" value="${item.quyCach || ''}" placeholder="Quy cách / 规格" onchange="if(isAdmin) updateCatMau('${item.firebaseId}', 'quyCach', this.value)" ${readAttr}></td>
-                    <td><input type="number" class="${readAttr}" value="${item.soLuong || ''}" placeholder="0" style="width: 100%; text-align: center; font-weight: bold; color: #2c3e50;" onchange="if(isAdmin) updateCatMau('${item.firebaseId}', 'soLuong', this.value)" ${readAttr}></td>
+                    <td><input type="number" class="${readAttr}" value="${item.soLuong || ''}" placeholder="0" style="width: 100%; text-align: center; font-weight: bold; color: #2c3e50;" onchange="if(isAdmin) updateCatMau('${item.firebaseId}', 'soLuong', this.value); renderChartCatMau();" ${readAttr}></td>
                     <td>
-                        <select style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px; font-weight: bold; color: #d35400;" onchange="if(isAdmin) updateCatMau('${item.firebaseId}', 'ghiChu', this.value)" ${disAttr}>
+                        <select style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px; font-weight: bold; color: #d35400;" onchange="if(isAdmin) updateCatMau('${item.firebaseId}', 'ghiChu', this.value); renderChartCatMau();" ${disAttr}>
                             <option value="Đơn hàng / 订单" ${item.ghiChu === 'Đơn hàng / 订单' ? 'selected' : ''}>Đơn hàng / 订单</option>
                             <option value="Đơn mẫu / 样品" ${item.ghiChu === 'Đơn mẫu / 样品' ? 'selected' : ''}>Đơn mẫu / 样品</option>
                         </select>
@@ -2432,6 +2583,35 @@
         sortedList.forEach(kh => { let opt = document.createElement('option'); opt.value = kh; datalist.appendChild(opt); });
     }
 
+    
+    // DANH SÁCH NHÀ CUNG CẤP KHUÔN BẾ & BẢN IN
+    const NCC_KHUON_BE = ["嘉鑫 Gia Thang", "聚源 JuYuan", "朗城 LangCheng"];
+    const NCC_BAN_IN = ["嘉鑫 Gia Thang", "英杰 Amjet"];
+
+    function updateManualSuppliers() {
+        const pl = document.getElementById('mPhanLoai')?.value || '';
+        const nccSelect = document.getElementById('mNhaCungCap');
+        if (!nccSelect) return;
+        const currentVal = nccSelect.value;
+        let list = [];
+        if (pl.includes('Khuôn bế') || pl.includes('模板')) {
+            list = NCC_KHUON_BE;
+        } else {
+            list = NCC_BAN_IN;
+        }
+        nccSelect.innerHTML = '<option value="">-- Chọn nhà cung cấp / 选择供应商 --</option>' +
+            list.map(n => `<option value="${n}">${n}</option>`).join('');
+        if (list.includes(currentVal)) {
+            nccSelect.value = currentVal;
+        }
+    }
+
+    function updateNhaCungCap(id, v) {
+        if (isAdmin) {
+            dbRef.child(id).update({ nhaCungCap: v });
+        }
+    }
+
     function openManualModal() {
         document.getElementById('manualModal').style.display = 'block';
         document.getElementById('manualModalTitle').innerHTML = '✍️ Nhập tay đơn mới / Đặt lại bản in (重新制作/手动录入)';
@@ -2444,6 +2624,8 @@
         document.getElementById('mTongTien').value = ''; 
         document.getElementById('mGhiChu').value = '';
         document.getElementById('mNgayDat').value = new Date().toISOString().split('T')[0];
+        updateManualSuppliers();
+        if (document.getElementById('mNhaCungCap')) document.getElementById('mNhaCungCap').value = '';
     }
 
     function openEditModal(id) {
@@ -2468,6 +2650,8 @@
         document.getElementById('mNgayGiao').value = item.ngayGiao || '';
         document.getElementById('mTongTien').value = formatCurrencyVND(item.tongTien || 0);
         document.getElementById('mGhiChu').value = item.ghiChu || '';
+        updateManualSuppliers();
+        if (document.getElementById('mNhaCungCap')) document.getElementById('mNhaCungCap').value = item.nhaCungCap || '';
     }
 
     function closeManualModal() {
@@ -2490,7 +2674,8 @@
         
         if (!kh || !ma || !sp || !nn || !nd) return alert("Vui lòng điền đầy đủ các mục bắt buộc (*)!\n请填写所有必填项 (*)！");
         
-        const dataObj = { khachHang: kh, ma: ma, phanLoai: pl, tenSP: sp, nguoiNhap: nn, ngayDat: nd, ngayGiao: ng, tongTien: tien, ghiChu: gc, isManual: true };
+        const ncc = document.getElementById('mNhaCungCap') ? document.getElementById('mNhaCungCap').value : '';
+        const dataObj = { khachHang: kh, ma: ma, phanLoai: pl, nhaCungCap: ncc, tenSP: sp, nguoiNhap: nn, ngayDat: nd, ngayGiao: ng, tongTien: tien, ghiChu: gc, isManual: true };
 
         if (editId) {
             dbRef.child(editId).update(dataObj);
@@ -2998,37 +3183,61 @@
     // LOGIC TAB 1 (TIẾN ĐỘ) - LỌC VÀ HIỂN THỊ
     // ==========================================
     function updateDropdowns() {
-        const dropdownKH = document.getElementById('customerSearch'); const currentKH = dropdownKH.value; 
-        const uniqueKH = [...new Set(excelData.map(item => item.khachHang || 'Khách lẻ / 散客'))].filter(c => c.trim() !== ''); uniqueKH.sort();
-        dropdownKH.innerHTML = '<option value="">-- Tất cả / 全部 --</option>';
-        uniqueKH.forEach(kh => { let opt = document.createElement('option'); opt.value = kh; opt.textContent = kh; dropdownKH.appendChild(opt); });
-        if (uniqueKH.includes(currentKH)) dropdownKH.value = currentKH;
+        const dropdownKH = document.getElementById('customerSearch');
+        if (dropdownKH) {
+            const currentKH = dropdownKH.value; 
+            const uniqueKH = [...new Set(excelData.map(item => item.khachHang || 'Khách lẻ / 散客'))].filter(c => c.trim() !== ''); uniqueKH.sort();
+            dropdownKH.innerHTML = '<option value="">-- Tất cả / 全部 --</option>';
+            uniqueKH.forEach(kh => { let opt = document.createElement('option'); opt.value = kh; opt.textContent = kh; dropdownKH.appendChild(opt); });
+            if (uniqueKH.includes(currentKH)) dropdownKH.value = currentKH;
+        }
 
-        const dropdownNN = document.getElementById('nguoiNhapSearch'); const currentNN = dropdownNN.value; 
-        const uniqueNN = [...new Set(excelData.map(item => item.nguoiNhap || 'Chưa rõ / 未知'))].filter(c => c.trim() !== ''); uniqueNN.sort();
-        dropdownNN.innerHTML = '<option value="">-- Tất cả / 全部 --</option>';
-        uniqueNN.forEach(nn => { let opt = document.createElement('option'); opt.value = nn; opt.textContent = nn; dropdownNN.appendChild(opt); });
-        if (uniqueNN.includes(currentNN)) dropdownNN.value = currentNN;
+        const dropdownNN = document.getElementById('nguoiNhapSearch');
+        if (dropdownNN) {
+            const currentNN = dropdownNN.value; 
+            const uniqueNN = [...new Set(excelData.map(item => item.nguoiNhap || 'Chưa rõ / 未知'))].filter(c => c.trim() !== ''); uniqueNN.sort();
+            dropdownNN.innerHTML = '<option value="">-- Tất cả / 全部 --</option>';
+            uniqueNN.forEach(nn => { let opt = document.createElement('option'); opt.value = nn; opt.textContent = nn; dropdownNN.appendChild(opt); });
+            if (uniqueNN.includes(currentNN)) dropdownNN.value = currentNN;
+        }
     }
 
     function filterAndRender() { filterData(); renderChart(); }
 
     function renderChart() {
-        const start = document.getElementById('startDate').value; const end = document.getElementById('endDate').value;
-        const typeFilter = document.getElementById('typeFilter').value; const statusFilter = document.getElementById('statusFilter').value;
-        const customerFilter = document.getElementById('customerSearch').value; const nguoiNhapFilter = document.getElementById('nguoiNhapSearch').value;
-        const maFilter = document.getElementById('maSearch').value.toLowerCase().trim(); const spFilter = document.getElementById('tenSPSearch').value.toLowerCase().trim();
+        const start = document.getElementById('startDate')?.value || ''; 
+        const end = document.getElementById('endDate')?.value || '';
+        const typeFilter = document.getElementById('typeFilter')?.value || 'all'; 
+        const supplierFilter = document.getElementById('supplierFilter')?.value || 'all';
+        const statusFilter = document.getElementById('statusFilter')?.value || 'all';
+        const searchKeyword = (document.getElementById('orderSearchInput')?.value || '').toLowerCase().trim();
         
         let customersData = {};
         excelData.forEach(item => {
-            if (start && item.ngayDat < start) return; if (end && item.ngayDat > end) return;
-            if (typeFilter !== 'all' && !item.phanLoai.includes(typeFilter)) return;
+            if (start && item.ngayDat < start) return; 
+            if (end && item.ngayDat > end) return;
+            if (typeFilter !== 'all' && (!item.phanLoai || !item.phanLoai.includes(typeFilter))) return;
+            if (supplierFilter !== 'all') {
+                if (supplierFilter === 'chua_chon') {
+                    if (item.nhaCungCap && item.nhaCungCap.trim() !== '') return;
+                } else {
+                    if (!item.nhaCungCap || !item.nhaCungCap.includes(supplierFilter)) return;
+                }
+            }
             const status = calculateStatus(item.ngayDat, item.ngayGiao);
             if (statusFilter !== 'all' && !status.text.includes(statusFilter)) return;
-            let khCheck = item.khachHang || 'Khách lẻ / 散客'; if (customerFilter && khCheck !== customerFilter) return;
-            let nnCheck = item.nguoiNhap || 'Chưa rõ / 未知'; if (nguoiNhapFilter && nnCheck !== nguoiNhapFilter) return;
-            if (maFilter && (!item.ma || !item.ma.toLowerCase().includes(maFilter))) return;
-            if (spFilter && (!item.tenSP || !item.tenSP.toLowerCase().includes(spFilter))) return;
+            
+            // Gom tìm kiếm khách hàng, mã khuôn/bản in, tên sản phẩm, nhà cung cấp
+            if (searchKeyword) {
+                const kh = (item.khachHang || '').toLowerCase();
+                const ma = (item.ma || '').toLowerCase();
+                const sp = (item.tenSP || '').toLowerCase();
+                const dh = (item.maDonHang || '').toLowerCase();
+                const ncc = (item.nhaCungCap || '').toLowerCase();
+                if (!kh.includes(searchKeyword) && !ma.includes(searchKeyword) && !sp.includes(searchKeyword) && !dh.includes(searchKeyword) && !ncc.includes(searchKeyword)) {
+                    return;
+                }
+            }
             
             let kh = item.khachHang || 'Khách lẻ / 散客';
             if (!customersData[kh]) customersData[kh] = { banIn: 0, tienBanIn: 0, khuonBe: 0, tienKhuonBe: 0, khuonSua: 0, tienKhuonSua: 0 };
@@ -3108,22 +3317,41 @@
     // CẬP NHẬT HÀM LỌC, SẮP XẾP VÀ HIỂN THỊ (filterData)
     // ==========================================
     function filterData() {
-        const start = document.getElementById('startDate').value; const end = document.getElementById('endDate').value;
-        const typeFilter = document.getElementById('typeFilter').value; const customerFilter = document.getElementById('customerSearch').value;
-        const nguoiNhapFilter = document.getElementById('nguoiNhapSearch').value; const statusFilter = document.getElementById('statusFilter').value; 
-        const maFilter = document.getElementById('maSearch').value.toLowerCase().trim(); const spFilter = document.getElementById('tenSPSearch').value.toLowerCase().trim();
-        const tbody = document.getElementById('tableBody'); tbody.innerHTML = ''; 
+        const start = document.getElementById('startDate')?.value || ''; 
+        const end = document.getElementById('endDate')?.value || '';
+        const typeFilter = document.getElementById('typeFilter')?.value || 'all'; 
+        const supplierFilter = document.getElementById('supplierFilter')?.value || 'all';
+        const statusFilter = document.getElementById('statusFilter')?.value || 'all'; 
+        const searchKeyword = (document.getElementById('orderSearchInput')?.value || '').toLowerCase().trim();
+        const tbody = document.getElementById('tableBody'); 
+        if (tbody) tbody.innerHTML = ''; 
 
         let filteredList = [];
         excelData.forEach((item, index) => {
-            if (start && item.ngayDat < start) return; if (end && item.ngayDat > end) return;
-            if (typeFilter !== 'all' && !item.phanLoai.includes(typeFilter)) return;
-            let khCheck = item.khachHang || 'Khách lẻ / 散客'; if (customerFilter && khCheck !== customerFilter) return;
-            let nnCheck = item.nguoiNhap || 'Chưa rõ / 未知'; if (nguoiNhapFilter && nnCheck !== nguoiNhapFilter) return;
+            if (start && item.ngayDat < start) return; 
+            if (end && item.ngayDat > end) return;
+            if (typeFilter !== 'all' && (!item.phanLoai || !item.phanLoai.includes(typeFilter))) return;
+            if (supplierFilter !== 'all') {
+                if (supplierFilter === 'chua_chon') {
+                    if (item.nhaCungCap && item.nhaCungCap.trim() !== '') return;
+                } else {
+                    if (!item.nhaCungCap || !item.nhaCungCap.includes(supplierFilter)) return;
+                }
+            }
             const status = calculateStatus(item.ngayDat, item.ngayGiao);
             if (statusFilter !== 'all' && !status.text.includes(statusFilter)) return;
-            if (maFilter && (!item.ma || !item.ma.toLowerCase().includes(maFilter))) return;
-            if (spFilter && (!item.tenSP || !item.tenSP.toLowerCase().includes(spFilter))) return;
+            
+            // Gom tìm kiếm khách hàng, mã khuôn/bản in, tên sản phẩm, nhà cung cấp
+            if (searchKeyword) {
+                const kh = (item.khachHang || '').toLowerCase();
+                const ma = (item.ma || '').toLowerCase();
+                const sp = (item.tenSP || '').toLowerCase();
+                const dh = (item.maDonHang || '').toLowerCase();
+                const ncc = (item.nhaCungCap || '').toLowerCase();
+                if (!kh.includes(searchKeyword) && !ma.includes(searchKeyword) && !sp.includes(searchKeyword) && !dh.includes(searchKeyword) && !ncc.includes(searchKeyword)) {
+                    return;
+                }
+            }
             
             filteredList.push({ ...item, originalIndex: index + 1, computedStatus: status });
         });
@@ -3182,26 +3410,40 @@
                 `<input type="date" value="${item.ngayGiao || ''}" onchange="if(isAdmin) updateNgayGiao('${item.firebaseId}', this.value)" onkeydown="return false" onpaste="return false" onclick="if(isAdmin) this.showPicker()" style="cursor: pointer;" ${disAttr}>`
                 : `<span style="font-weight: bold; color: #2c3e50;">${formattedNgayGiaoDisplay}</span>`;
 
+            let isBanIn = item.phanLoai && (item.phanLoai.includes('Bản in') || item.phanLoai.includes('印版'));
+            let isKhuonBe = item.phanLoai && (item.phanLoai.includes('Khuôn bế') || item.phanLoai.includes('模板'));
+            let nccList = isBanIn ? NCC_BAN_IN : (isKhuonBe ? NCC_KHUON_BE : [...new Set([...NCC_BAN_IN, ...NCC_KHUON_BE])]);
+            let curNcc = item.nhaCungCap || '';
+            let nccOpts = [...nccList];
+            if (curNcc && !nccOpts.includes(curNcc)) nccOpts.unshift(curNcc);
+
+            let nccSelectHTML = `
+                <select class="ncc-select" onchange="if(isAdmin) updateNhaCungCap('${item.firebaseId}', this.value)" ${disAttr}>
+                    <option value="">-- Chọn / 选择 --</option>
+                    ${nccOpts.map(n => `<option value="${n}" ${n === curNcc ? 'selected' : ''}>${n}</option>`).join('')}
+                </select>
+            `;
+
             let tr = document.createElement('tr'); tr.className = rowClass;
             
-            // Ghi chú và nút Sửa nằm chung 1 hàng (flex-direction: row)
             tr.innerHTML = `
-                <td style="text-align: center;"><input type="checkbox" class="row-checkbox" value="${item.firebaseId}" ${disAttr}></td>
-                <td>${sttCounter++}</td> 
+                <td style="text-align: center; width: 28px;"><input type="checkbox" class="row-checkbox" value="${item.firebaseId}" ${disAttr}></td>
+                <td style="text-align: center; width: 34px;">${sttCounter++}</td> 
                 <td>${item.khachHang || ''}</td>
-                <td>${item.ma || ''}</td>
-                <td style="text-align:center;">${plText}</td>
-                <td style="white-space: normal; min-width: 200px;">${item.tenSP || ''}</td>
-                <td>${item.nguoiNhap || ''}</td>
-                <td>${item.ngayDat || ''}</td>
-                <td>${ngayGiaoHTML}</td>
-                <td class="${item.computedStatus.class}" style="text-align:center;">${item.computedStatus.text}</td>
-                <td><input type="text" class="input-money ${readAttr}" value="${displayTien}" placeholder="0" onchange="if(isAdmin) updateTien('${item.firebaseId}', this)" ${readAttr}></td>
+                <td style="font-weight: 600; color: #1e40af;">${item.ma || ''}</td>
+                <td style="text-align: center; font-size: 11px; line-height: 1.2;">${plText}</td>
+                <td style="text-align: center;">${nccSelectHTML}</td>
+                <td class="td-sp">${item.tenSP || ''}</td>
+                <td style="text-align: center;">${item.nguoiNhap || ''}</td>
+                <td style="text-align: center;">${item.ngayDat || ''}</td>
+                <td style="text-align: center;">${ngayGiaoHTML}</td>
+                <td class="${item.computedStatus.class}" style="text-align: center; font-weight: 600;">${item.computedStatus.text}</td>
+                <td style="text-align: right;"><input type="text" class="input-money ${readAttr}" value="${displayTien}" placeholder="0" onchange="if(isAdmin) updateTien('${item.firebaseId}', this)" ${readAttr}></td>
                 
-                <td style="min-width: 170px;">
-                    <div style="display: flex; flex-direction: row; align-items: center; gap: 5px; width: 100%; box-sizing: border-box;">
+                <td style="min-width: 130px;">
+                    <div style="display: flex; flex-direction: row; align-items: center; gap: 4px; width: 100%; box-sizing: border-box;">
                         ${manualTag}
-                        <input type="text" class="${readAttr}" value="${item.ghiChu || ''}" onchange="if(isAdmin) updateGhiChu('${item.firebaseId}', this.value)" style="flex: 1; min-width: 60px; box-sizing: border-box;" ${readAttr}>
+                        <input type="text" class="input-ghichu ${readAttr}" value="${item.ghiChu || ''}" onchange="if(isAdmin) updateGhiChu('${item.firebaseId}', this.value)" style="flex: 1; box-sizing: border-box;" ${readAttr}>
                     </div>
                 </td>
             `;
@@ -3292,7 +3534,7 @@
                 let ngayDatStr = (ngayDatRaw && !isNaN(ngayDatRaw)) ? `${ngayDatRaw.getFullYear()}-${String(ngayDatRaw.getMonth() + 1).padStart(2, '0')}-${String(ngayDatRaw.getDate()).padStart(2, '0')}` : (row[28] || ''); 
                 let khachHang = row[1] || ''; let ma = row[2] || ''; let tenSP = row[5] || ''; 
                 if (excelData.some(item => item.khachHang === khachHang && item.ma === ma && item.tenSP === tenSP && !item.isManual)) countDup++; 
-                else { dbRef.push({ khachHang: khachHang, ma: ma, phanLoai: phanLoai, tenSP: tenSP, nguoiNhap: row[27] || '', ngayDat: ngayDatStr, ngayGiao: '', tongTien: 0, ghiChu: '', isManual: false }); countNew++; }
+                else { dbRef.push({ khachHang: khachHang, ma: ma, phanLoai: phanLoai, nhaCungCap: '', tenSP: tenSP, nguoiNhap: row[27] || '', ngayDat: ngayDatStr, ngayGiao: '', tongTien: 0, ghiChu: '', isManual: false }); countNew++; }
             }
             alert(`TẢI FILE HOÀN TẤT! / 上传完成！\n- Đã thêm mới/新增: ${countNew} dòng.\n- Bỏ qua trùng lặp/跳过重复: ${countDup} dòng.`);
         };
@@ -3318,28 +3560,45 @@
     // ==========================================
     function openStats() {
         document.getElementById('statsModal').style.display = "block";
-        const start = document.getElementById('startDate').value; const end = document.getElementById('endDate').value;
-        const customerFilter = document.getElementById('customerSearch').value; const nguoiNhapFilter = document.getElementById('nguoiNhapSearch').value;
-        const statusFilter = document.getElementById('statusFilter').value; const maFilter = document.getElementById('maSearch').value;
-        const spFilter = document.getElementById('tenSPSearch').value;
+        const start = document.getElementById('startDate')?.value || ''; 
+        const end = document.getElementById('endDate')?.value || '';
+        const typeFilter = document.getElementById('typeFilter')?.value || 'all';
+        const supplierFilter = document.getElementById('supplierFilter')?.value || 'all';
+        const statusFilter = document.getElementById('statusFilter')?.value || 'all'; 
+        const searchKeyword = (document.getElementById('orderSearchInput')?.value || '').toLowerCase().trim();
         
         let titleInfo = `Khoảng thời gian / 时间: ${start || 'Từ đầu/开始'} - ${end || 'Đến nay/至今'} | Trạng thái / 状态: ${statusFilter}`;
-        if (customerFilter) titleInfo += ` | Khách / 客户: ${customerFilter}`;
-        if (nguoiNhapFilter) titleInfo += ` | Người nhập / 录入员: ${nguoiNhapFilter}`;
-        if (maFilter) titleInfo += ` | Mã / 编号: ${maFilter}`;
-        if (spFilter) titleInfo += ` | SP / 产品: ${spFilter}`;
+        if (typeFilter !== 'all') titleInfo += ` | Loại: ${typeFilter}`;
+        if (supplierFilter !== 'all') titleInfo += ` | NCC: ${supplierFilter}`;
+        if (searchKeyword) titleInfo += ` | Tìm kiếm / 搜索: ${searchKeyword}`;
         document.getElementById('statDateRange').innerText = titleInfo;
             
         let statBanIn = {}, statKhuonBe = {}, statKhuonSua = {};
         
         excelData.forEach(item => {
-            if (start && item.ngayDat < start) return; if (end && item.ngayDat > end) return;
-            let khCheck = item.khachHang || 'Khách lẻ / 散客'; if (customerFilter && khCheck !== customerFilter) return;
-            let nnCheck = item.nguoiNhap || 'Chưa rõ / 未知'; if (nguoiNhapFilter && nnCheck !== nguoiNhapFilter) return;
+            if (start && item.ngayDat < start) return; 
+            if (end && item.ngayDat > end) return;
+            if (typeFilter !== 'all' && (!item.phanLoai || !item.phanLoai.includes(typeFilter))) return;
+            if (supplierFilter !== 'all') {
+                if (supplierFilter === 'chua_chon') {
+                    if (item.nhaCungCap && item.nhaCungCap.trim() !== '') return;
+                } else {
+                    if (!item.nhaCungCap || !item.nhaCungCap.includes(supplierFilter)) return;
+                }
+            }
             const status = calculateStatus(item.ngayDat, item.ngayGiao);
             if (statusFilter !== 'all' && !status.text.includes(statusFilter)) return;
-            if (maFilter && (!item.ma || !item.ma.toLowerCase().includes(maFilter.toLowerCase().trim()))) return;
-            if (spFilter && (!item.tenSP || !item.tenSP.toLowerCase().includes(spFilter.toLowerCase().trim()))) return;
+            
+            if (searchKeyword) {
+                const kh = (item.khachHang || '').toLowerCase();
+                const ma = (item.ma || '').toLowerCase();
+                const sp = (item.tenSP || '').toLowerCase();
+                const dh = (item.maDonHang || '').toLowerCase();
+                const ncc = (item.nhaCungCap || '').toLowerCase();
+                if (!kh.includes(searchKeyword) && !ma.includes(searchKeyword) && !sp.includes(searchKeyword) && !dh.includes(searchKeyword) && !ncc.includes(searchKeyword)) {
+                    return;
+                }
+            }
 
             let tien = parseFloat(item.tongTien) || 0;
             let isKhuonSua = item.ghiChu && (item.ghiChu.includes('Khuôn sửa') || item.ghiChu.includes('修模'));
