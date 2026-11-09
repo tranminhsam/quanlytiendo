@@ -883,6 +883,11 @@
                 <option value="chua_chon">-- Chưa chọn / 未选 --</option>
             </select>
 
+            <!-- TRƯỜNG TÌM KIẾM CHỌN NGƯỜI NHẬP -->
+            <select id="nguoiNhapSearch" onchange="filterAndRender()" style="height: 36px; padding: 4px 6px; font-size: 12px; border-radius: 4px; border: 1px solid #ccc; width: 140px; flex-shrink: 0;" title="Lọc theo Người nhập / 按录入员筛选">
+                <option value="">Người nhập: Tất cả / 录入员</option>
+            </select>
+
             <select id="statusFilter" onchange="filterAndRender()" style="height: 36px; padding: 4px 6px; font-size: 12px; border-radius: 4px; border: 1px solid #ccc; width: 130px; flex-shrink: 0;">
                 <option value="all">Trạng thái: Tất cả / 状态</option>
                 <option value="Đang chờ giao">Đang chờ giao / 待交货</option>
@@ -3205,7 +3210,7 @@
         if (dropdownNN) {
             const currentNN = dropdownNN.value; 
             const uniqueNN = [...new Set(excelData.map(item => item.nguoiNhap || 'Chưa rõ / 未知'))].filter(c => c.trim() !== ''); uniqueNN.sort();
-            dropdownNN.innerHTML = '<option value="">-- Tất cả / 全部 --</option>';
+            dropdownNN.innerHTML = '<option value="">Người nhập: Tất cả / 录入员</option>';
             uniqueNN.forEach(nn => { let opt = document.createElement('option'); opt.value = nn; opt.textContent = nn; dropdownNN.appendChild(opt); });
             if (uniqueNN.includes(currentNN)) dropdownNN.value = currentNN;
         }
@@ -3218,6 +3223,7 @@
         const end = document.getElementById('endDate')?.value || '';
         const typeFilter = document.getElementById('typeFilter')?.value || 'all'; 
         const supplierFilter = document.getElementById('supplierFilter')?.value || 'all';
+        const nguoiNhapFilter = document.getElementById('nguoiNhapSearch')?.value || '';
         const statusFilter = document.getElementById('statusFilter')?.value || 'all';
         const searchKeyword = (document.getElementById('orderSearchInput')?.value || '').toLowerCase().trim();
         
@@ -3233,17 +3239,19 @@
                     if (!item.nhaCungCap || !item.nhaCungCap.includes(supplierFilter)) return;
                 }
             }
+            if (nguoiNhapFilter && (item.nguoiNhap || 'Chưa rõ / 未知') !== nguoiNhapFilter) return;
             const status = calculateStatus(item.ngayDat, item.ngayGiao);
             if (statusFilter !== 'all' && !status.text.includes(statusFilter)) return;
             
-            // Gom tìm kiếm khách hàng, mã khuôn/bản in, tên sản phẩm, nhà cung cấp
+            // Gom tìm kiếm khách hàng, mã khuôn/bản in, tên sản phẩm, nhà cung cấp, người nhập
             if (searchKeyword) {
                 const kh = (item.khachHang || '').toLowerCase();
                 const ma = (item.ma || '').toLowerCase();
                 const sp = (item.tenSP || '').toLowerCase();
                 const dh = (item.maDonHang || '').toLowerCase();
                 const ncc = (item.nhaCungCap || '').toLowerCase();
-                if (!kh.includes(searchKeyword) && !ma.includes(searchKeyword) && !sp.includes(searchKeyword) && !dh.includes(searchKeyword) && !ncc.includes(searchKeyword)) {
+                const nn = (item.nguoiNhap || '').toLowerCase();
+                if (!kh.includes(searchKeyword) && !ma.includes(searchKeyword) && !sp.includes(searchKeyword) && !dh.includes(searchKeyword) && !ncc.includes(searchKeyword) && !nn.includes(searchKeyword)) {
                     return;
                 }
             }
@@ -3330,6 +3338,7 @@
         const end = document.getElementById('endDate')?.value || '';
         const typeFilter = document.getElementById('typeFilter')?.value || 'all'; 
         const supplierFilter = document.getElementById('supplierFilter')?.value || 'all';
+        const nguoiNhapFilter = document.getElementById('nguoiNhapSearch')?.value || '';
         const statusFilter = document.getElementById('statusFilter')?.value || 'all'; 
         const searchKeyword = (document.getElementById('orderSearchInput')?.value || '').toLowerCase().trim();
         const tbody = document.getElementById('tableBody'); 
@@ -3347,17 +3356,19 @@
                     if (!item.nhaCungCap || !item.nhaCungCap.includes(supplierFilter)) return;
                 }
             }
+            if (nguoiNhapFilter && (item.nguoiNhap || 'Chưa rõ / 未知') !== nguoiNhapFilter) return;
             const status = calculateStatus(item.ngayDat, item.ngayGiao);
             if (statusFilter !== 'all' && !status.text.includes(statusFilter)) return;
             
-            // Gom tìm kiếm khách hàng, mã khuôn/bản in, tên sản phẩm, nhà cung cấp
+            // Gom tìm kiếm khách hàng, mã khuôn/bản in, tên sản phẩm, nhà cung cấp, người nhập
             if (searchKeyword) {
                 const kh = (item.khachHang || '').toLowerCase();
                 const ma = (item.ma || '').toLowerCase();
                 const sp = (item.tenSP || '').toLowerCase();
                 const dh = (item.maDonHang || '').toLowerCase();
                 const ncc = (item.nhaCungCap || '').toLowerCase();
-                if (!kh.includes(searchKeyword) && !ma.includes(searchKeyword) && !sp.includes(searchKeyword) && !dh.includes(searchKeyword) && !ncc.includes(searchKeyword)) {
+                const nn = (item.nguoiNhap || '').toLowerCase();
+                if (!kh.includes(searchKeyword) && !ma.includes(searchKeyword) && !sp.includes(searchKeyword) && !dh.includes(searchKeyword) && !ncc.includes(searchKeyword) && !nn.includes(searchKeyword)) {
                     return;
                 }
             }
@@ -3573,12 +3584,14 @@
         const end = document.getElementById('endDate')?.value || '';
         const typeFilter = document.getElementById('typeFilter')?.value || 'all';
         const supplierFilter = document.getElementById('supplierFilter')?.value || 'all';
+        const nguoiNhapFilter = document.getElementById('nguoiNhapSearch')?.value || '';
         const statusFilter = document.getElementById('statusFilter')?.value || 'all'; 
         const searchKeyword = (document.getElementById('orderSearchInput')?.value || '').toLowerCase().trim();
         
         let titleInfo = `Khoảng thời gian / 时间: ${start || 'Từ đầu/开始'} - ${end || 'Đến nay/至今'} | Trạng thái / 状态: ${statusFilter}`;
         if (typeFilter !== 'all') titleInfo += ` | Loại: ${typeFilter}`;
         if (supplierFilter !== 'all') titleInfo += ` | NCC: ${supplierFilter}`;
+        if (nguoiNhapFilter) titleInfo += ` | Người nhập: ${nguoiNhapFilter}`;
         if (searchKeyword) titleInfo += ` | Tìm kiếm / 搜索: ${searchKeyword}`;
         document.getElementById('statDateRange').innerText = titleInfo;
             
@@ -3595,6 +3608,7 @@
                     if (!item.nhaCungCap || !item.nhaCungCap.includes(supplierFilter)) return;
                 }
             }
+            if (nguoiNhapFilter && (item.nguoiNhap || 'Chưa rõ / 未知') !== nguoiNhapFilter) return;
             const status = calculateStatus(item.ngayDat, item.ngayGiao);
             if (statusFilter !== 'all' && !status.text.includes(statusFilter)) return;
             
@@ -3604,7 +3618,8 @@
                 const sp = (item.tenSP || '').toLowerCase();
                 const dh = (item.maDonHang || '').toLowerCase();
                 const ncc = (item.nhaCungCap || '').toLowerCase();
-                if (!kh.includes(searchKeyword) && !ma.includes(searchKeyword) && !sp.includes(searchKeyword) && !dh.includes(searchKeyword) && !ncc.includes(searchKeyword)) {
+                const nn = (item.nguoiNhap || '').toLowerCase();
+                if (!kh.includes(searchKeyword) && !ma.includes(searchKeyword) && !sp.includes(searchKeyword) && !dh.includes(searchKeyword) && !ncc.includes(searchKeyword) && !nn.includes(searchKeyword)) {
                     return;
                 }
             }
