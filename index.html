@@ -915,7 +915,6 @@
                         <th onclick="handleSort('khachHang')" style="cursor:pointer;" title="Sắp xếp theo Khách hàng">Khách hàng<br>客户 <span class="sort-icon" id="sort-khachHang"></span></th>
                         <th onclick="handleSort('ma')" style="cursor:pointer;" title="Sắp xếp theo Mã số">Mã số<br>编号 <span class="sort-icon" id="sort-ma"></span></th>
                         <th onclick="handleSort('phanLoai')" style="cursor:pointer;" title="Sắp xếp theo Phân loại">Phân loại<br>分类 <span class="sort-icon" id="sort-phanLoai"></span></th>
-                        <th onclick="handleSort('nhaCungCap')" style="cursor:pointer;" title="Sắp xếp theo Nhà cung cấp">Nhà cung cấp<br>供应商 <span class="sort-icon" id="sort-nhaCungCap"></span></th>
                         <th onclick="handleSort('tenSP')" style="cursor:pointer;" title="Sắp xếp theo Tên sản phẩm">Tên sản phẩm<br>产品名称 <span class="sort-icon" id="sort-tenSP"></span></th>
                         <th onclick="handleSort('nguoiNhap')" style="cursor:pointer;" title="Sắp xếp theo Người nhập">Người nhập<br>录入员 <span class="sort-icon" id="sort-nguoiNhap"></span></th>
                         <th onclick="handleSort('ngayDat')" style="cursor:pointer;" title="Sắp xếp theo Ngày đặt">Ngày đặt<br>下单 <span class="sort-icon" id="sort-ngayDat"></span></th>
@@ -923,6 +922,7 @@
                         <th onclick="handleSort('status')" style="cursor:pointer;" title="Sắp xếp theo Trạng thái">Trạng thái<br>状态 <span class="sort-icon" id="sort-status"></span></th>
                         <th onclick="handleSort('tongTien')" style="cursor:pointer;" title="Sắp xếp theo Tổng số tiền">Tổng số tiền<br>总金额 <span class="sort-icon" id="sort-tongTien"></span></th>
                         <th onclick="handleSort('ghiChu')" style="cursor:pointer;" title="Sắp xếp theo Ghi chú">Ghi chú<br>备注 <span class="sort-icon" id="sort-ghiChu"></span></th>
+                        <th onclick="handleSort('nhaCungCap')" style="cursor:pointer;" title="Sắp xếp theo Nhà cung cấp">Nhà cung cấp<br>供应商 <span class="sort-icon" id="sort-nhaCungCap"></span></th>
                     </tr>
                 </thead>
                 <tbody id="tableBody"></tbody>
@@ -3452,7 +3452,6 @@
                 <td>${item.khachHang || ''}</td>
                 <td style="font-weight: 600; color: #1e40af;">${item.ma || ''}</td>
                 <td style="text-align: center; font-size: 14px; line-height: 1.25;">${plText}</td>
-                <td style="text-align: center;">${nccSelectHTML}</td>
                 <td class="td-sp">${item.tenSP || ''}</td>
                 <td style="text-align: center;">${item.nguoiNhap || ''}</td>
                 <td style="text-align: center;">${item.ngayDat || ''}</td>
@@ -3466,6 +3465,7 @@
                         <input type="text" class="input-ghichu ${readAttr}" value="${item.ghiChu || ''}" onchange="if(isAdmin) updateGhiChu('${item.firebaseId}', this.value)" style="flex: 1; box-sizing: border-box;" ${readAttr}>
                     </div>
                 </td>
+                <td style="text-align: center;">${nccSelectHTML}</td>
             `;
             tbody.appendChild(tr);
         });
